@@ -23,16 +23,5 @@ class Gather extends CI_Controller {
 		$this->load->view('welcome_message');
 	}
 
-	public function gather()
-	{
-		$ch = curl_init("http://www20.statcan.gc.ca/tables-tableaux/cansim/csv/");
-		$fp = fopen("02820002-eng.zip", "w");
-
-		curl_setopt($ch, CURLOPT_FILE, $fp);
-		curl_setopt($ch, CURLOPT_HEADER, 0);
-
-		curl_exec($ch);
-		curl_close($ch);
-		fclose($fp);
-	}
+	
 }
