@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Welcome extends CI_Controller {
+class Gather extends CI_Controller {
 
 	/**
 	 * Index Page for this controller.
@@ -21,5 +21,18 @@ class Welcome extends CI_Controller {
 	public function index()
 	{
 		$this->load->view('welcome_message');
+	}
+
+	public function gather()
+	{
+		$ch = curl_init("http://www20.statcan.gc.ca/tables-tableaux/cansim/csv/");
+		$fp = fopen("02820002-eng.zip", "w");
+
+		curl_setopt($ch, CURLOPT_FILE, $fp);
+		curl_setopt($ch, CURLOPT_HEADER, 0);
+
+		curl_exec($ch);
+		curl_close($ch);
+		fclose($fp);
 	}
 }
