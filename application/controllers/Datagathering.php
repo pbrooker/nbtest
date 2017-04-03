@@ -104,7 +104,11 @@ class Datagathering extends CI_Controller {
 				'message' => 'There was an error with the Zip file, please try again'
 			);
 			redirect(base_url('Gather/error'), $data);
-			return false;
+
+		}
+		$csv = './uploads/02820002-eng/02820002-eng.csv';
+		if(file_exists($csv)) {
+			$this->processCsv($csv);
 		}
 
 		return true;
@@ -134,6 +138,27 @@ class Datagathering extends CI_Controller {
 					chmod($directory_path, 0777);
 				}
 			}
+		}
+	}
+
+	function processCsv($csv)
+	{
+		if(($handle = fopen($csv, 'r')) !== false)
+		{
+			// get the first row, which contains the column-titles (if necessary)
+			$header = fgetcsv($handle);
+
+			// loop through the file line-by-line
+			while(($data = $header) !== false)
+			{
+				// resort/rewrite data and insert into DB here
+				// try to use conditions sparingly here, as those will cause slow-performance
+
+				// I don't know if this is really necessary, but it couldn't harm;
+				// see also: http://php.net/manual/en/features.gc.php
+				unset($data);
+			}
+			fclose($handle);
 		}
 	}
 

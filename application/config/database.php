@@ -74,23 +74,20 @@ $active_group = 'default';
 $query_builder = TRUE;
 
 $db['default'] = array(
-	'dsn'	=> '',
-	'hostname' => 'localhost',
-	'username' => '',
-	'password' => '',
-	'database' => '',
+	'hostname' => '104.130.120.26',
+	'username' => 'qimple',
+	'password' => 'DWpz#9YMYRr*w3HQZDCQ4CyNzR',
+	'database' => 'alongside_CI4',
 	'dbdriver' => 'mysqli',
+
 	'dbprefix' => '',
 	'pconnect' => FALSE,
-	'db_debug' => (ENVIRONMENT !== 'production'),
+	'db_debug' => FALSE,
 	'cache_on' => FALSE,
 	'cachedir' => '',
 	'char_set' => 'utf8',
 	'dbcollat' => 'utf8_general_ci',
 	'swap_pre' => '',
-	'encrypt' => FALSE,
-	'compress' => FALSE,
-	'stricton' => FALSE,
-	'failover' => array(),
-	'save_queries' => TRUE
+	'autoinit' => TRUE,
+	'stricton' => FALSE
 );
