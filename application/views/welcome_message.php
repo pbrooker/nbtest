@@ -74,7 +74,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<p>Click to initiate the Curl call</p>
 
         <button type="button" class="btn btn-success"
-                onclick="<?php echo base_url()?>controller/Datagathering/downloadZipFile">Get that data!</button>
+                onclick="<?php echo base_url()?>controller/Datagathering/downloadZipFile?$url=http://www20.statcan.gc.ca/tables-tableaux/cansim/csv/02820002-eng.zip&$path=<?php echo base_url();?>/.uploads">Get that data!</button>
 
 		<p>Data will be gathered from the targeted resource</p>
 
