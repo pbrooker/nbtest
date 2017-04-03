@@ -2,35 +2,66 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Datagathering extends CI_Controller {
-
-
-
+	
 
 	public function downloadZipFile()
 	{
+		//$this->load->model('Datagathering');
 		$url = $this->input->post('url');
 		$filename = './uploads/02820002-eng.zip';
 		if (file_exists($filename)) {
 			unlink($filename);
 		}
 		$filepath = './uploads/02820002-eng.zip';
+		$fp_header = './uploads/header_data.txt';
 
 		$ch = curl_init($url);
-		curl_setopt($ch, CURLOPT_HEADER, 0);
+		curl_setopt($ch, CURLOPT_HEADER, 1);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_BINARYTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 0);
+
 		$raw_file_data = curl_exec($ch);
+
+		//get header data to compare for last update
+		$header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+		$header = substr($raw_file_data, 0, $header_size);
+		$body = substr($raw_file_data, $header_size);
 
 		if(curl_errno($ch)){
 			echo 'error:' . curl_error($ch);
 		}
 		curl_close($ch);
-		file_put_contents($filepath, $raw_file_data);
+		file_put_contents($filepath, $body);
+		file_put_contents($fp_header, $header);
+
+		$file = $fp_header;
+
+		$fopen = fopen($file, r);
+
+		$fread = fread($fopen,filesize($file));
+
+		fclose($fopen);
+
+		$remove = "\n";
+
+		$split = explode($remove, $fread);
+
+		$array[] = null;
+		$tab = "\t";
+
+		foreach ($split as $string)
+		{
+			$row = explode($tab, $string);
+			array_push($array,$row);
+		}
+
+
+		$last_processed = $this->Datagathering->getLastProcessed();
 
 		// if exists, process file
 		if (filesize($filepath) > 0) {
-			//$this->processZipFile($filepath);
+			$this->processZipFile($filepath);
 		}
 	}
 
