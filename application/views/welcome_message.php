@@ -72,10 +72,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	<div id="body">
 		<p>Click to initiate the Curl call</p>
+        <?php $url = 'http://www20.statcan.gc.ca/tables-tableaux/cansim/csv/02820002-eng.zip' ;?>
+        <?php $path = base_url() . 'uploads';?>
 
-        <button type="button" class="btn btn-success"
-                onclick="<?php echo base_url()?>controller/Datagathering/downloadZipFile?$url=http://www20.statcan.gc.ca/tables-tableaux/cansim/csv/02820002-eng.zip&$path=<?php echo base_url();?>/.uploads">Get that data!</button>
-
+        <button type="button" class="btn btn-success" onclick="<?php echo base_url() . 'controller/Datagathering/downloadZipFile?' . $url . '&' . $path ;?>">Get that data!</button>
 		<p>Data will be gathered from the targeted resource</p>
 
 
