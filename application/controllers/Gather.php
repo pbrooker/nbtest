@@ -23,5 +23,16 @@ class Gather extends CI_Controller {
 		$this->load->view('welcome_message');
 	}
 
-	
+	public function error($data = null)
+	{
+		if($data) {
+			$this->load->view('error', $data);
+		} else {
+			$data = array (
+				'header' => 'Unkown Error',
+				'message' => 'An unknown error has occurred, please try again'
+			);
+			$this->load->view('error', $data);
+		}
+	}
 }

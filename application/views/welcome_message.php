@@ -71,14 +71,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<h1>Welcome to Datamining!</h1>
 
 	<div id="body">
+        <?php echo form_open('Datagathering/downloadZipFile') ;?>
 		<p>Click to initiate the Curl call</p>
         <?php $url = 'http://www20.statcan.gc.ca/tables-tableaux/cansim/csv/02820002-eng.zip' ;?>
-        <?php $path = base_url() . 'uploads';?>
 
-        <button type="button" class="btn btn-success" onclick="<?php echo base_url() . 'controller/Datagathering/downloadZipFile?' . $url . '&' . $path ;?>">Get that data!</button>
+        <input hidden value="<?=$url;?>" name="url" id="url">
+
+		<?php echo form_submit('Datagathering', 'Get that data!');?>
+        <?php echo form_close();?>
 		<p>Data will be gathered from the targeted resource</p>
-
-
 		<p>If you want to do something else, sorry, that is all this page is for right now. :-)</p>
 	</div>
 
