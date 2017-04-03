@@ -30,7 +30,7 @@ class Datagathering extends CI_Controller {
 
 		// if exists, process file
 		if (filesize($filepath) > 0) {
-			$this->processZipFile($filepath);
+			//$this->processZipFile($filepath);
 		}
 	}
 
@@ -143,24 +143,47 @@ class Datagathering extends CI_Controller {
 
 	function processCsv($csv)
 	{
+		$cutoffYear = (int)date('Y') - 10;
+		$outfile = './uploads/02820002-eng/output.csv';
+		if (file_exists($outfile)) {
+			unlink($outfile);
+		}
+		$output = fopen('./uploads/02820002-eng/output.csv','w');
 		if(($handle = fopen($csv, 'r')) !== false)
 		{
 			// get the first row, which contains the column-titles (if necessary)
 			$header = fgetcsv($handle);
+			array_push($header, "," . 'hash_value');
+			fputcsv($output, $header);
 
 			// loop through the file line-by-line
 			while(($data = $header) !== false)
 			{
+				$line = fgets($handle);
 				// resort/rewrite data and insert into DB here
 				// try to use conditions sparingly here, as those will cause slow-performance
+				$linearray = str_getcsv($line);
+				$year = (int)$linearray[0];
+				if(!($year <= $cutoffYear)) {
+					$data = str_getcsv($line);
+					$hash = hash('md5', $line);
+					array_push($data, $hash);
+					fputcsv($output, $data);
+
+				}
 
 				// I don't know if this is really necessary, but it couldn't harm;
 				// see also: http://php.net/manual/en/features.gc.php
+				unset($line);
 				unset($data);
 			}
 			fclose($handle);
+		} else {
+			exit;
 		}
 	}
+
+
 
 
 

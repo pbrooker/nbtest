@@ -1,7 +1,9 @@
 <?php
 class Nbdata_model extends CI_Model
 {
-	public function save_data($data) {
-		
+	public function process_data($csv) {
+		$con = $this->db->conn_id;
+
+
 	}
 }
