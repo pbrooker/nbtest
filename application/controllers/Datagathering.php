@@ -2,7 +2,13 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Datagathering extends CI_Controller {
-	
+
+	public function __construct()
+	{
+		parent::__construct();
+		$this->load->model('Datagathering_model', 'Nbdata');
+	}
+
 
 	public function downloadZipFile()
 	{
@@ -34,34 +40,21 @@ class Datagathering extends CI_Controller {
 		curl_close($ch);
 		file_put_contents($filepath, $body);
 		file_put_contents($fp_header, $header);
-
-		$file = $fp_header;
-
-		$fopen = fopen($file, r);
-
-		$fread = fread($fopen,filesize($file));
-
-		fclose($fopen);
-
-		$remove = "\n";
-
-		$split = explode($remove, $fread);
-
-		$array[] = null;
-		$tab = "\t";
-
-		foreach ($split as $string)
-		{
-			$row = explode($tab, $string);
-			array_push($array,$row);
-		}
+		$header_hash = $this->processHeaderText($fp_header);
 
 
-		$last_processed = $this->Datagathering->getLastProcessed();
+		if($header_hash) {
 
-		// if exists, process file
-		if (filesize($filepath) > 0) {
-			$this->processZipFile($filepath);
+			$last_processed = $this->Nbdata->getLastProcessed($header_hash);
+			if($last_processed->result_id->num_rows > 0) {
+				echo "Record already exists";
+			} else {
+
+				// if exists, process file
+				if (filesize($filepath) > 0) {
+					$this->processZipFile($filepath);
+				}
+			}
 		}
 	}
 
@@ -215,7 +208,48 @@ class Datagathering extends CI_Controller {
 	}
 
 
+	function processHeaderText($header)
+	{
 
+		$file = $header;
+
+		$fopen = fopen($file, 'r');
+		$fread = fread($fopen,filesize($file));
+
+		fclose($fopen);
+
+		$remove = "\n";
+
+		$split = explode($remove, $fread);
+
+		$array[] = null;
+		$colon = ":";
+
+		foreach ($split as $string)
+		{
+			$row = explode($colon, $string, 2);
+			array_push($array,$row);
+		}
+		$save_data = "";
+		foreach($array as $value) {
+			switch ($value[0]) {
+				case "Last-Modified":
+					$save_data .=  $value[1] . ',';
+					break;
+				case "Content-Length":
+					$save_data .=  $value[1];
+					break;
+			}
+		}
+
+		$header_hash = hash('md5', $save_data);
+		$insert_data = array ('last_modified' => $header_hash );
+		$this->Nbdata->saveLastProcessed($insert_data);
+
+		return $header_hash;
+
+
+	}
 
 
 

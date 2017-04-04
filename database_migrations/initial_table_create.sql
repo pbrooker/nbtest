@@ -13,7 +13,7 @@ CREATE TABLE `nbdata` (
 
 CREATE TABLE `nbdata_last_update` (
   `id` int(6) unsigned NOT NULL AUTO_INCREMENT,
-  `scan_date` varchar(50) DEFAULT NULL,
-  `last_modified` varchar(50) DEFAULT NULL,
+  `scan_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `last_modified` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
