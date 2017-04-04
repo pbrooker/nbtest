@@ -24,4 +24,35 @@ class Datagathering_model extends CI_Model
 
 		return $query;
 	}
+
+	public function processZipFile($filepath)
+	{
+		$this->db->select('hash_value')
+				 ->from('nbdata');
+		$result1 = $this->db->get();
+
+		$initial_count = $result1->num_rows();
+
+		$this->db->query('LOAD DATA LOCAL INFILE "'. $filepath .'"
+        INTO TABLE `nbdata`
+        FIELDS TERMINATED by \',\'
+        LINES TERMINATED BY \'\n\'');
+
+
+
+		$this->db->select('hash_value')
+			->from('nbdata');
+		$result2  = $this->db->get();
+
+		$final_count = $result2->num_rows();
+
+		$count = $final_count - $initial_count;
+		if($count > 0) {
+			return $count;
+		} else {
+			return false;
+		}
+
+
+	}
 }

@@ -8,7 +8,8 @@ CREATE TABLE `nbdata` (
   `coordinate` varchar(10) DEFAULT NULL,
   `value` varchar(30) DEFAULT NULL,
   `hash_value` varchar(255) NOT NULL,
-  PRIMARY KEY (`hash_value`)
+  PRIMARY KEY (`hash_value`),
+  KEY `hash_value` (`hash_value`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `nbdata_last_update` (

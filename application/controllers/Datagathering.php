@@ -20,6 +20,7 @@ class Datagathering extends CI_Controller {
 		}
 		$filepath = './uploads/02820002-eng.zip';
 		$fp_header = './uploads/header_data.txt';
+		$output = './uploads/02820002-eng/output.csv';
 
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_HEADER, 1);
@@ -46,13 +47,13 @@ class Datagathering extends CI_Controller {
 		if($header_hash) {
 
 			$last_processed = $this->Nbdata->getLastProcessed($header_hash);
-			if($last_processed->result_id->num_rows > 0) {
+			if($last_processed->result_id->num_rows > 1) {
 				echo "Record already exists";
 			} else {
 
 				// if exists, process file
-				if (filesize($filepath) > 0) {
-					$this->processZipFile($filepath);
+				if (filesize($output) > 0) {
+					$this->processZipFile($output);
 				}
 			}
 		}
