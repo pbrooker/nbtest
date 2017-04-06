@@ -1,19 +1,21 @@
 <?php
 class Datagathering_model extends CI_Model
 {
-	public function process_data($csv)
-	{
-		$con = $this->db->conn_id;
-
-
-	}
-
+	/**
+	 * Inserts last scan data into database
+	 * @param $data
+	 */
 	public function saveLastProcessed($data)
 	{
 		$this->db->insert('nbdata_last_update', $data);
 
 	}
 
+	/**
+	 * Gets hash record from database if it exists
+	 * @param $header_hash
+	 * @return mixed
+	 */
 	public function getLastProcessed($header_hash) {
 
 		$this->db->select('last_modified')
@@ -24,18 +26,26 @@ class Datagathering_model extends CI_Model
 		return $query;
 	}
 
+
+	/**
+	 * Processes large CSV file and inserts it. Returns a count if records successfully inserted
+	 * @param $filepath
+	 * @return bool
+	 */
 	public function processZipFile($filepath)
 	{
 
+		//hardcoded temporarily for testing
 		$file_path = 'https://qimple.s3.amazonaws.com/NBData_Temp/output.csv';
 		//$new_name = str_replace("\\","/",$file_path);
-		$con = $this->db->conn_id;
+
 		$this->db->select('hash_value')
 				 ->from('nbdata');
 		$result1 = $this->db->get();
 
 		$initial_count = $result1->num_rows();
 
+		//Only if we can't do LOAD DATA LOCAL INFILE
 //		if(($handle = fopen($new_name, 'r')) !== false) {
 //
 //			$csv = new SplFileObject($new_name);
@@ -88,59 +98,5 @@ class Datagathering_model extends CI_Model
 		} else {
 			return false;
 		}
-
-
-	}
-
-
-	/*
-	*Function For Batch Insert using Ignore Into
-	*/
-	public function custom_insert_batch($table = '', $set = NULL)
-	{
-		if ( ! is_null($set))
-		{
-			$this->set_insert_batch($set);
-		}
-
-		if (count($this->ar_set) == 0)
-		{
-			if ($this->db_debug)
-			{
-				//No valid data array.  Folds in cases where keys and values did not match up
-				return $this->display_error('db_must_use_set');
-			}
-			return FALSE;
-		}
-
-		if ($table == '')
-		{
-			if ( ! isset($this->ar_from[0]))
-			{
-				if ($this->db_debug)
-				{
-					return $this->display_error('db_must_set_table');
-				}
-				return FALSE;
-			}
-
-			$table = $this->ar_from[0];
-		}
-
-		// Batch this baby
-		for ($i = 0, $total = count($this->ar_set); $i < $total; $i = $i + 100)
-		{
-
-			$sql = $this->_insert_batch($this->_protect_identifiers($table, TRUE, NULL, FALSE), $this->ar_keys, array_slice($this->ar_set, $i, 100));
-			$sql = str_replace('INSERT INTO','INSERT IGNORE INTO',$sql);
-			//echo $sql;
-
-			$this->query($sql);
-		}
-
-		$this->_reset_write();
-
-
-		return TRUE;
 	}
 }

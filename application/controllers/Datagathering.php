@@ -232,7 +232,8 @@ class Datagathering extends CI_Controller {
 
 	/**
 	 * Reads header file data and creates a unique hash code based on length and date created. Then checks it against
-	 * the database of current 
+	 * the database of hash records. If the hash exists, the process exits. Otherwise it goes to the next stage of
+	 * processing
 	 * @param $header
 	 * @return bool|string
 	 */
