@@ -6,21 +6,25 @@ class Datagathering extends CI_Controller {
 	public function __construct()
 	{
 		parent::__construct();
-		$this->load->model('Datagathering_model', 'Nbdata');
+		$this->load->model('Datagathering_model', 'nbdata');
 	}
 
-
+/**
+ * Function to gather zip files. Currently hard coded to button post, but each button can be linked to a different URL,
+ * or input could be adjusted to a function call with a url input
+ *
+ */
 	public function downloadZipFile()
 	{
-		//$this->load->model('Datagathering');
 		$url = $this->input->post('url');
 		$filename = './uploads/02820002-eng.zip';
 		if (file_exists($filename)) {
+			chmod($filename, 0777);
+			//flock($filename, LOCK_UN);
 			unlink($filename);
 		}
-		$filepath = './uploads/02820002-eng.zip';
+		//$filepath = './uploads/02820002-eng.zip';
 		$fp_header = './uploads/header_data.txt';
-		$output = './uploads/02820002-eng/output.csv';
 
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_HEADER, 1);
@@ -39,24 +43,27 @@ class Datagathering extends CI_Controller {
 			echo 'error:' . curl_error($ch);
 		}
 		curl_close($ch);
-		file_put_contents($filepath, $body);
+		file_put_contents($filename, $body);
 		file_put_contents($fp_header, $header);
 		$header_hash = $this->processHeaderText($fp_header);
 
 
 		if($header_hash) {
 
-			$last_processed = $this->Nbdata->getLastProcessed($header_hash);
-			if($last_processed->result_id->num_rows > 1) {
-				echo "Record already exists";
-			} else {
-
-				// if exists, process file
-				if (filesize($output) > 0) {
-					$this->processZipFile($output);
+			// if exists, process file
+			if (filesize($filename) > 0) {
+				$processed_csv = $this->processZipFile($filename);
+				if($processed_csv) {
+					$result = $this->nbdata->processZipFile('/uploads/02820002-eng/output.csv');
+					if($result) {
+						echo $result . 'records saved';
+					} else {
+						echo 'Error processing csv';
+					}
 				}
 			}
 		}
+
 	}
 
 	/**
@@ -166,48 +173,69 @@ class Datagathering extends CI_Controller {
 		}
 	}
 
-	function processCsv($csv)
+	/**
+	 * Function takes a CSV and processes it to remove not relevant entries ($age).
+	 * @param $csv
+	 * @param $age
+	 * @return bool
+	 */
+
+	function processCsv($csv, $age = 10)
 	{
-		$cutoffYear = (int)date('Y') - 10;
+		set_time_limit(300);
+		$cutoffYear = (int)date('Y') - $age;
 		$outfile = './uploads/02820002-eng/output.csv';
 		if (file_exists($outfile)) {
+			chmod($outfile, 0766);
+			//flock($outfile, LOCK_UN);
 			unlink($outfile);
 		}
-		$output = fopen('./uploads/02820002-eng/output.csv','w');
-		if(($handle = fopen($csv, 'r')) !== false)
-		{
+
+		if(($handle = fopen($csv, 'r')) !== false) {
+
+			$csv = new SplFileObject($csv);
+			$csv->setFlags(SplFileObject::READ_CSV);
+			$start = 0;
+			$batch = 10000000;
+			$output = fopen('./uploads/02820002-eng/output.csv', 'w');
 			// get the first row, which contains the column-titles (if necessary)
 			$header = fgetcsv($handle);
 			array_push($header, "," . 'hash_value');
 			fputcsv($output, $header);
 
-			// loop through the file line-by-line
-			while(($data = $header) !== false)
-			{
-				$line = fgets($handle);
-				// resort/rewrite data and insert into DB here
-				// try to use conditions sparingly here, as those will cause slow-performance
-				$linearray = str_getcsv($line);
-				$year = (int)$linearray[0];
-				if(!($year <= $cutoffYear)) {
-					$data = str_getcsv($line);
-					$hash = hash('md5', $line);
-					array_push($data, $hash);
-					fputcsv($output, $data);
+			while (!$csv->eof()) {
+				foreach (new LimitIterator($csv, $start, $batch) as $line) {
 
+					//get line and ensure first entry is cast as int for comparison
+					$year = (int)$line[0];
+
+					//verify within year range
+					if (!($year <= $cutoffYear)) {
+						$data = $line;
+						$hash = hash('md5', implode($line));
+						array_push($data, $hash);
+						fputcsv($output, $data);
+					}
 				}
+				$start += $batch;
+				return true;
+				chmod($outfile, 0766);
 
-				// I don't know if this is really necessary, but it couldn't harm;
-				// see also: http://php.net/manual/en/features.gc.php
-				unset($line);
-				unset($data);
 			}
-			fclose($handle);
-		} else {
-			exit;
+
+		}   else {
+
+			return false;
 		}
+
 	}
 
+	/**
+	 * Reads header file data and creates a unique hash code based on length and date created. Then checks it against
+	 * the database of current 
+	 * @param $header
+	 * @return bool|string
+	 */
 
 	function processHeaderText($header)
 	{
@@ -245,9 +273,20 @@ class Datagathering extends CI_Controller {
 
 		$header_hash = hash('md5', $save_data);
 		$insert_data = array ('last_modified' => $header_hash );
-		$this->Nbdata->saveLastProcessed($insert_data);
 
-		return $header_hash;
+		//check for existing hash
+		$last_processed = $this->nbdata->getLastProcessed($header_hash);
+		if($last_processed == null ) {
+			$this->nbdata->saveLastProcessed($insert_data);
+			return $header_hash;
+		} else {
+			$exists_data = array ('last_modified' => null);
+			$this->nbdata->saveLastProcessed($exists_data);
+			echo 'Record already exists. Database has been updated with scan date.';
+			return false;
+		}
+
+
 
 
 	}
