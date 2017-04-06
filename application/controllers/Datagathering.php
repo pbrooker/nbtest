@@ -45,16 +45,16 @@ class Datagathering extends CI_Controller {
 		curl_close($ch);
 		file_put_contents($filename, $body);
 		file_put_contents($fp_header, $header);
-		$header_hash = $this->processHeaderText($fp_header);
+		$insert_data = $this->processHeaderText($fp_header);
 
 
-		if($header_hash) {
+		if($insert_data) {
 
 			// if exists, process file
 			if (filesize($filename) > 0) {
 				$processed_csv = $this->processZipFile($filename);
 				if($processed_csv) {
-					$result = $this->nbdata->processZipFile('/uploads/02820002-eng/output.csv');
+					$result = $this->nbdata->processZipFile($insert_data);
 					if($result) {
 						echo $result . 'records saved';
 					} else {
@@ -279,7 +279,7 @@ class Datagathering extends CI_Controller {
 		$last_processed = $this->nbdata->getLastProcessed($header_hash);
 		if($last_processed == null ) {
 			$this->nbdata->saveLastProcessed($insert_data);
-			return $header_hash;
+			return $insert_data;
 		} else {
 			$exists_data = array ('last_modified' => null);
 			$this->nbdata->saveLastProcessed($exists_data);

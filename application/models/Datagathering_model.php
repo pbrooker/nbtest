@@ -32,7 +32,7 @@ class Datagathering_model extends CI_Model
 	 * @param $filepath
 	 * @return bool
 	 */
-	public function processZipFile($filepath)
+	public function processZipFile($insert_data)
 	{
 
 		//hardcoded temporarily for testing
@@ -45,46 +45,19 @@ class Datagathering_model extends CI_Model
 
 		$initial_count = $result1->num_rows();
 
-		//Only if we can't do LOAD DATA LOCAL INFILE
-//		if(($handle = fopen($new_name, 'r')) !== false) {
-//
-//			$csv = new SplFileObject($new_name);
-//			$csv->setFlags(SplFileObject::READ_CSV);
-//			$start = 0;
-//			$batch = 10000000;
-//			$db_data[] = array();
-//			while (!$csv->eof()) {
-//				foreach (new LimitIterator($csv, $start, $batch) as $line) {
-//					$data = $line;
-//
-//					array_push($data, $line);
-//				}
-//			}
-//			$this->db->trans_start();
-//			foreach ($db_data as $item) {
-//				$insert_query = $this->db->insert_string('table_name', $item);
-//				$insert_query = str_replace('INSERT INTO', 'INSERT IGNORE INTO', $insert_query);
-//				$this->db->query($insert_query);
-//			}
-//			$this->db->trans_complete();
-//		}
-
-
          //import from temp csv file into database
 		$sql    = (
 			'LOAD DATA LOCAL INFILE "'. $file_path . '" 
             IGNORE INTO TABLE `nbdata`
             FIELDS TERMINATED by \',\'
+            ENCLOSED BY \'"\' 
             LINES TERMINATED BY  \'\n\' 
             IGNORE 1 LINES
             (`ref_date`, `geography`, `characteristics`, `sex`,`agegroup`,`vector`, `coordinate`, `value`, `hash_value`)'
             );
 
 		$query  = $this->db->query( $sql );
-		$var = $this->db->last_query();
-		var_dump($var);
-
-
+		
 
 		$this->db->select('hash_value')
 			->from('nbdata');
@@ -95,6 +68,7 @@ class Datagathering_model extends CI_Model
 		$count = $final_count - $initial_count;
 		if($count > 0) {
 			return $count;
+			$this->saveLastProcessed($insert_data);
 		} else {
 			return false;
 		}
