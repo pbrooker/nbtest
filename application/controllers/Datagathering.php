@@ -9,11 +9,11 @@ class Datagathering extends CI_Controller {
 		$this->load->model('Datagathering_model', 'nbdata');
 	}
 
-/**
- * Function to gather zip files. Currently hard coded to button post, but each button can be linked to a different URL,
- * or input could be adjusted to a function call with a url input
- *
- */
+	/**
+	 * Function to gather zip files. Currently hard coded to button post, but each button can be linked to a
+	 * different URL, or input could be adjusted to a function call with a url input
+	 *
+	 */
 	public function downloadZipFile()
 	{
 		$url = $this->input->post('url');
