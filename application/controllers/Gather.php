@@ -36,3 +36,4 @@ class Gather extends CI_Controller {
 		}
 	}
 }
+
