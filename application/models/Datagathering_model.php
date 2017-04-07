@@ -57,7 +57,7 @@ class Datagathering_model extends CI_Model
             );
 
 		$query  = $this->db->query( $sql );
-		
+
 
 		$this->db->select('hash_value')
 			->from('nbdata');
