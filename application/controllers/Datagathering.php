@@ -63,15 +63,16 @@ class Datagathering extends CI_Controller {
 				}
 			}
 		}
-
 	}
 
 	/**
 	 * Unzip the source_file in the destination dir
 	 *
 	 * @param   string      The path to the ZIP-file.
-	 * @param   string      The path where the zipfile should be unpacked, if false the directory of the zip-file is used
-	 * @param   boolean     Indicates if the files will be unpacked in a directory with the name of the zip-file (true) or not (false) (only if the destination directory is set to false!)
+	 * @param   string      The path where the zipfile should be unpacked, if false the directory of the zip-file
+	 * is used
+	 * @param   boolean     Indicates if the files will be unpacked in a directory with the name of the zip-file (true)
+	 * or not (false) (only if the destination directory is set to false!)
 	 * @param   boolean     Overwrite existing files (true) or not (false)
 	 *
 	 * @return  boolean     Succesful or not
@@ -249,9 +250,7 @@ class Datagathering extends CI_Controller {
 		fclose($fopen);
 
 		$remove = "\n";
-
 		$split = explode($remove, $fread);
-
 		$array[] = null;
 		$colon = ":";
 
@@ -286,12 +285,6 @@ class Datagathering extends CI_Controller {
 			echo 'Record already exists. Database has been updated with scan date.';
 			return false;
 		}
-
-
-
-
 	}
-
-
-
 }
+
