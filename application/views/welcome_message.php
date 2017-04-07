@@ -73,13 +73,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<div id="body">
         <?php echo form_open('Datagathering/downloadZipFile') ;?>
 		<p>Click to initiate the Curl call</p>
-        <?php $url = 'http://www20.statcan.gc.ca/tables-tableaux/cansim/csv/02820002-eng.zip' ;?>
-
-        <input hidden value="<?=$url;?>" name="url" id="url">
 
 		<?php echo form_submit('Datagathering', 'Get that data!');?>
         <?php echo form_close();?>
-		<p>Data will be gathered from the targeted resource</p>
+
+		<p>Data will be gathered from the targeted resources</p>
 		<p>If you want to do something else, sorry, that is all this page is for right now. :-)</p>
 	</div>
 
