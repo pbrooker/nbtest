@@ -114,6 +114,25 @@ CREATE TABLE `02820129` (
   KEY `hash_value` (`hash_value`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE `nbdata_sources` (
+  `id` int(6) unsigned NOT NULL AUTO_INCREMENT,
+  `url` VARCHAR(255) DEFAULT NULL,
+  `name` VARCHAR(50) DEFAULT NULL,
+  `current_version` VARCHAR(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `nbdata_sources` (`url`, `name`, `current_version`)
+VALUES
+  ('http://www20.statcan.gc.ca/tables-tableaux/cansim/csv/02820087-eng.zip', '02820087', NULL),
+  ('http://www20.statcan.gc.ca/tables-tableaux/cansim/csv/02820002-eng.zip', '02820002', NULL),
+  ('http://www20.statcan.gc.ca/tables-tableaux/cansim/csv/02820088-eng.zip', '02820088', NULL),
+  ('http://www20.statcan.gc.ca/tables-tableaux/cansim/csv/02820008-eng.zip', '02820008', NULL),
+  ('http://www20.statcan.gc.ca/tables-tableaux/cansim/csv/02820122-eng.zip', '02820122', NULL),
+  ('http://www20.statcan.gc.ca/tables-tableaux/cansim/csv/02820123-eng.zip', '02820123', NULL),
+  ('http://www20.statcan.gc.ca/tables-tableaux/cansim/csv/02820128-eng.zip', '02820128', NULL),
+  ('http://www20.statcan.gc.ca/tables-tableaux/cansim/csv/02820129-eng.zip', '02820129', NULL);
+
 CREATE TABLE `nbdata_last_update` (
   `id` int(6) unsigned NOT NULL AUTO_INCREMENT,
   `scan_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
