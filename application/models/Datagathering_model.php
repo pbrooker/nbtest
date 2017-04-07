@@ -53,7 +53,8 @@ class Datagathering_model extends CI_Model
             ENCLOSED BY \'"\' 
             LINES TERMINATED BY  \'\n\' 
             IGNORE 1 LINES
-            (`ref_date`, `geography`, `characteristics`, `sex`,`agegroup`,`vector`, `coordinate`, `value`, `hash_value`)'
+            (`ref_date`, `geography`, `characteristics`, `sex`,`agegroup`,`vector`, 
+            `coordinate`, `value`, `hash_value`)'
             );
 
 		$query  = $this->db->query( $sql );
