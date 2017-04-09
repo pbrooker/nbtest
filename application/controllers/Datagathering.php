@@ -73,7 +73,7 @@ class Datagathering extends CI_Controller {
 						if($processed_csv) {
 							$result = $this->nbdata->processZipFile($file_data);
 							if($result) {
-								echo $result . 'records saved for file ' . $value->name;
+								echo $result . ' records saved for file ' . $value->name .' ';
 							} else {
 								echo 'Error processing csv ' . $value->name;
 							}
@@ -142,7 +142,7 @@ class Datagathering extends CI_Controller {
 							file_put_contents($file_name, $fstream );
 							// Set the rights
 							chmod($file_name, 0777);
-							echo "save: ".$file_name."<br />";
+							//echo "save: ".$file_name."<br />";
 						}
 
 						// Close the entry
@@ -231,7 +231,7 @@ class Datagathering extends CI_Controller {
 			$output = fopen('./uploads/' . $csv_pack['name'] .'-eng/' . $csv_pack['name'] . '.csv', 'w');
 			// get the first row, which contains the column-titles (if necessary)
 			$header = fgetcsv($handle);
-			array_push($header, "," . 'hash_value');
+			array_push($header,   'hash_value');
 			fputcsv($output, $header);
 
 			while (!$csv->eof()) {
@@ -243,6 +243,7 @@ class Datagathering extends CI_Controller {
 					//verify within year range
 					if (!($year <= $cutoffYear)) {
 						$data = $line;
+						$data = convert_accented_characters($data);
 						$hash = hash('md5', implode($line));
 						array_push($data, $hash);
 						fputcsv($output, $data);
@@ -303,7 +304,8 @@ class Datagathering extends CI_Controller {
 		$file_data = array (
 			'last_modified' => $header_hash,
 			'source_id' => $header_data['source_id'],
-			'file_path' => './uploads/' . $header_data['name'] .'-eng/' . $header_data['name'] . '.csv'
+			'file_path' => './uploads/' . $header_data['name'] .'-eng/' . $header_data['name'] . '.csv',
+			'name' => $header_data['name']
 		);
 
 		//check for existing hash

@@ -12,7 +12,7 @@ CREATE TABLE `02820087` (
   `hash_value` varchar(255) NOT NULL,
   PRIMARY KEY (`hash_value`),
   KEY `hash_value` (`hash_value`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `02820002` (
   `ref_date` varchar(10) DEFAULT NULL,
@@ -26,7 +26,7 @@ CREATE TABLE `02820002` (
   `hash_value` varchar(255) NOT NULL,
   PRIMARY KEY (`hash_value`),
   KEY `hash_value` (`hash_value`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `02820008` (
   `ref_date` varchar(10) DEFAULT NULL,
@@ -41,7 +41,7 @@ CREATE TABLE `02820008` (
   `hash_value` varchar(255) NOT NULL,
   PRIMARY KEY (`hash_value`),
   KEY `hash_value` (`hash_value`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `02820088` (
   `ref_date` varchar(10) DEFAULT NULL,
@@ -55,7 +55,7 @@ CREATE TABLE `02820088` (
   `hash_value` varchar(255) NOT NULL,
   PRIMARY KEY (`hash_value`),
   KEY `hash_value` (`hash_value`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `02820122` (
   `ref_date` varchar(10) DEFAULT NULL,
@@ -69,7 +69,7 @@ CREATE TABLE `02820122` (
   `hash_value` varchar(255) NOT NULL,
   PRIMARY KEY (`hash_value`),
   KEY `hash_value` (`hash_value`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `02820123` (
   `ref_date` varchar(10) DEFAULT NULL,
@@ -82,7 +82,7 @@ CREATE TABLE `02820123` (
   `hash_value` varchar(255) NOT NULL,
   PRIMARY KEY (`hash_value`),
   KEY `hash_value` (`hash_value`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `02820128` (
   `ref_date` varchar(10) DEFAULT NULL,
@@ -97,7 +97,7 @@ CREATE TABLE `02820128` (
   `hash_value` varchar(255) NOT NULL,
   PRIMARY KEY (`hash_value`),
   KEY `hash_value` (`hash_value`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `02820129` (
   `ref_date` varchar(10) DEFAULT NULL,
@@ -112,7 +112,7 @@ CREATE TABLE `02820129` (
   `hash_value` varchar(255) NOT NULL,
   PRIMARY KEY (`hash_value`),
   KEY `hash_value` (`hash_value`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `nbdata_sources` (
   `id` int(6) unsigned NOT NULL AUTO_INCREMENT,
@@ -120,7 +120,7 @@ CREATE TABLE `nbdata_sources` (
   `name` VARCHAR(50) DEFAULT NULL,
   `current_version` VARCHAR(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `nbdata_sources` (`url`, `name`, `current_version`)
 VALUES
@@ -139,4 +139,4 @@ CREATE TABLE `nbdata_last_update` (
   `last_modified` varchar(255) DEFAULT NULL,
   `source_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;
