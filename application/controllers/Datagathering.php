@@ -16,7 +16,7 @@ class Datagathering extends CI_Controller {
 	 */
 	public function downloadZipFile()
 	{
-
+		set_time_limit(2400);
 		$urls = $this->nbdata->getDataUrls();
 
 		if(isset($urls) && $urls != null) {
@@ -90,10 +90,6 @@ class Datagathering extends CI_Controller {
 						echo 'Error: ' . $value->name . ' contains no data';
 
 					}
-				} else {
-
-					echo 'Error processing header data for ' . $value->name . ' download';
-
 				}
 			}
 		} else {
@@ -172,10 +168,18 @@ class Datagathering extends CI_Controller {
 				}
 				// Close the zip-file
 				zip_close($zip);
+			} else {
+
+				$data = array (
+					'heading' => 'Zip Error',
+					'message' => 'There was an error with the Zip file, please try again'
+				);
+				redirect(base_url('Gather/error'), $data);
+
 			}
 		}
-		else
-		{
+		else {
+
 			$data = array (
 				'heading' => 'Zip Error',
 				'message' => 'There was an error with the Zip file, please try again'
@@ -194,6 +198,9 @@ class Datagathering extends CI_Controller {
 			if($processed_csv) {
 				return true;
 			}
+		} else {
+
+			return false;
 		}
 
 	}
@@ -319,6 +326,7 @@ class Datagathering extends CI_Controller {
 			switch ($value[0]) {
 				case "Last-Modified":
 					$save_data .=  $value[1] . ',';
+					$last_modified = $value[1];
 					break;
 				case "Content-Length":
 					$save_data .=  $value[1];
@@ -341,7 +349,7 @@ class Datagathering extends CI_Controller {
 		} else {
 			$exists_data = array ('last_modified' => null, 'source_id' => $header_data['source_id']);
 			$this->nbdata->saveLastProcessed($exists_data);
-			echo 'Record already exists. Database has been updated with scan date.';
+			echo 'A current record already exists for ' . $header_data['name'] . '. Last modified on ' . $last_modified . '. The database has been updated with scan date.' . "\r\n";
 			return false;
 		}
 	}

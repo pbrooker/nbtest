@@ -25,9 +25,9 @@ class Datagathering_model extends CI_Model
 	 */
 	public function getLastProcessed($header_hash) {
 
-		$this->db->select('last_modified')
-			     ->from('nbdata_last_update')
-				 ->where('last_modified =', $header_hash);
+		$this->db->select('current_version')
+			     ->from('nbdata_sources')
+				 ->where('current_version =', $header_hash);
 		$query = $this->db->get()->row();
 
 		return $query;
@@ -136,7 +136,7 @@ class Datagathering_model extends CI_Model
 			return $count;
 
 		} elseif ($count == null || $count == 0) {
-			
+
 			return $count;
 		}
 	}
