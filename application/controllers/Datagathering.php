@@ -17,7 +17,6 @@ class Datagathering extends CI_Controller {
 	public function downloadZipFile()
 	{
 
-		$last_updated = $this->nbdata->getCurrentHashCodes();
 		$urls = $this->nbdata->getDataUrls();
 
 		if(isset($urls) && $urls != null) {
@@ -72,19 +71,36 @@ class Datagathering extends CI_Controller {
 						$processed_csv = $this->processZipFile($data);
 						if($processed_csv) {
 							$result = $this->nbdata->processZipFile($file_data);
-							if($result) {
+							if($result > 0) {
+
 								echo $result . ' records saved for file ' . $value->name .' ';
+
 							} else {
-								echo 'Error processing csv ' . $value->name;
+
+								echo 'File current. 0 new records processed for ' . $value->name;
 							}
+
+						} else {
+
+							echo 'Error processing ' . $value->name . ' csv';
+
 						}
+					} else {
+
+						echo 'Error: ' . $value->name . ' contains no data';
+
 					}
+				} else {
+
+					echo 'Error processing header data for ' . $value->name . ' download';
+
 				}
 			}
+		} else {
+
+			echo 'Error retrieving URLs';
+
 		}
-
-
-
 
 	}
 
@@ -103,6 +119,7 @@ class Datagathering extends CI_Controller {
 	function processZipFile($data, $dest_dir=false, $create_zip_name_dir=true, $overwrite=true) {
 
 		ini_set('memory_limit','2000M');
+
 		if ($zip = zip_open($data['filepath']))
 		{
 			if (is_resource($zip))
@@ -139,7 +156,10 @@ class Datagathering extends CI_Controller {
 							// Get the content of the zip entry
 							$fstream = zip_entry_read($zip_entry, zip_entry_filesize($zip_entry));
 
-							file_put_contents($file_name, $fstream );
+							// Convert to UTF-8 for further processing
+							$cleaned = mb_convert_encoding($fstream, 'UTF-8',  'ISO-8859-1');
+
+							file_put_contents($file_name, $cleaned);
 							// Set the rights
 							chmod($file_name, 0777);
 							//echo "save: ".$file_name."<br />";
@@ -213,9 +233,11 @@ class Datagathering extends CI_Controller {
 
 	function processCsv($csv_pack, $age = 10)
 	{
-		set_time_limit(900);
+		set_time_limit(600);
 		$cutoffYear = (int)date('Y') - $age;
 		$outfile = './uploads/' . $csv_pack['name'] . '-eng/' . $csv_pack['name'] . '.csv';
+
+
 		if (file_exists($outfile)) {
 			chmod($outfile, 0766);
 			//flock($outfile, LOCK_UN);
@@ -224,15 +246,19 @@ class Datagathering extends CI_Controller {
 
 		if(($handle = fopen($csv_pack['csv'], 'r')) !== false) {
 
+
 			$csv = new SplFileObject($csv_pack['csv']);
 			$csv->setFlags(SplFileObject::READ_CSV);
 			$start = 0;
 			$batch = 2000000;
+
+
 			$output = fopen('./uploads/' . $csv_pack['name'] .'-eng/' . $csv_pack['name'] . '.csv', 'w');
 			// get the first row, which contains the column-titles (if necessary)
 			$header = fgetcsv($handle);
 			array_push($header,   'hash_value');
 			fputcsv($output, $header);
+
 
 			while (!$csv->eof()) {
 				foreach (new LimitIterator($csv, $start, $batch) as $line) {
@@ -243,7 +269,6 @@ class Datagathering extends CI_Controller {
 					//verify within year range
 					if (!($year <= $cutoffYear)) {
 						$data = $line;
-						$data = convert_accented_characters($data);
 						$hash = hash('md5', implode($line));
 						array_push($data, $hash);
 						fputcsv($output, $data);
@@ -313,11 +338,12 @@ class Datagathering extends CI_Controller {
 		if($last_processed == null ) {
 			return $file_data;
 		} else {
-			$exists_data = array ('last_modified' => null);
+			$exists_data = array ('last_modified' => null, 'source_id' => $header_data['source_id']);
 			$this->nbdata->saveLastProcessed($exists_data);
 			echo 'Record already exists. Database has been updated with scan date.';
 			return false;
 		}
 	}
+	
 }
 

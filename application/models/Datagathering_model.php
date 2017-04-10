@@ -98,7 +98,7 @@ class Datagathering_model extends CI_Model
 		$sql    = (
 			'LOAD DATA LOCAL INFILE "'. $file_path . '" 
             IGNORE INTO TABLE `' . $file_data['name'] .'`
-            CHARACTER SET \'utf8mb4\'
+            CHARACTER SET \'utf8\'
             FIELDS TERMINATED by \',\'
             ENCLOSED BY \'"\' 
             LINES TERMINATED BY  \'\n\' 
@@ -124,15 +124,20 @@ class Datagathering_model extends CI_Model
 			'table' => $file_data['name']
 		);
 
-		if($count >= 0 && $count != null) {
+		$log_data = array (
+			'last_modified' => $file_data['last_modified'],
+			'source_id' => $file_data['source_id']
+		);
+
+		if($count > 0) {
 
 			$this->updateCsvVersion($update_data);
 			$this->saveLastProcessed($insert_data);
 			return $count;
 
-		} else {
-
-			return false;
+		} elseif ($count == null || $count == 0) {
+			
+			return $count;
 		}
 	}
 }

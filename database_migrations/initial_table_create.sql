@@ -1,118 +1,118 @@
 CREATE TABLE `02820087` (
-  `ref_date` varchar(10) DEFAULT NULL,
-  `geography` varchar(50) DEFAULT NULL,
-  `characteristics` varchar(30) DEFAULT NULL,
-  `sex` varchar(15) DEFAULT NULL,
-  `agegroup` varchar(30) DEFAULT NULL,
-  `statistics` varchar(50) DEFAULT NULL,
-  `datatype` varchar(50) DEFAULT NULL,
-  `vector` varchar(10) DEFAULT NULL,
-  `coordinate` varchar(10) DEFAULT NULL,
-  `value` varchar(30) DEFAULT NULL,
+  `ref_date` varchar(20) DEFAULT NULL,
+  `geography` varchar(255) DEFAULT NULL,
+  `characteristics` varchar(255) DEFAULT NULL,
+  `sex` varchar(255) DEFAULT NULL,
+  `agegroup` varchar(255) DEFAULT NULL,
+  `statistics` varchar(255) DEFAULT NULL,
+  `datatype` varchar(255) DEFAULT NULL,
+  `vector` varchar(50) DEFAULT NULL,
+  `coordinate` varchar(50) DEFAULT NULL,
+  `value` varchar(50) DEFAULT NULL,
   `hash_value` varchar(255) NOT NULL,
   PRIMARY KEY (`hash_value`),
   KEY `hash_value` (`hash_value`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `02820002` (
-  `ref_date` varchar(10) DEFAULT NULL,
-  `geography` varchar(50) DEFAULT NULL,
-  `characteristics` varchar(30) DEFAULT NULL,
-  `sex` varchar(15) DEFAULT NULL,
-  `agegroup` varchar(30) DEFAULT NULL,
-  `vector` varchar(10) DEFAULT NULL,
-  `coordinate` varchar(10) DEFAULT NULL,
-  `value` varchar(30) DEFAULT NULL,
+  `ref_date` varchar(20) DEFAULT NULL,
+  `geography` varchar(255) DEFAULT NULL,
+  `characteristics` varchar(255) DEFAULT NULL,
+  `sex` varchar(255) DEFAULT NULL,
+  `agegroup` varchar(255) DEFAULT NULL,
+  `vector` varchar(50) DEFAULT NULL,
+  `coordinate` varchar(50) DEFAULT NULL,
+  `value` varchar(50) DEFAULT NULL,
   `hash_value` varchar(255) NOT NULL,
   PRIMARY KEY (`hash_value`),
   KEY `hash_value` (`hash_value`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `02820008` (
-  `ref_date` varchar(10) DEFAULT NULL,
-  `geography` varchar(50) DEFAULT NULL,
-  `characteristics` varchar(30) DEFAULT NULL,
-  `industry` varchar(50) DEFAULT NULL,
-  `sex` varchar(15) DEFAULT NULL,
-  `age` varchar(30) DEFAULT NULL,
-  `vector` varchar(10) DEFAULT NULL,
-  `coordinate` varchar(10) DEFAULT NULL,
-  `value` varchar(30) DEFAULT NULL,
+  `ref_date` varchar(20) DEFAULT NULL,
+  `geography` varchar(255) DEFAULT NULL,
+  `characteristics` varchar(255) DEFAULT NULL,
+  `industry` varchar(255) DEFAULT NULL,
+  `sex` varchar(255) DEFAULT NULL,
+  `age` varchar(255) DEFAULT NULL,
+  `vector` varchar(50) DEFAULT NULL,
+  `coordinate` varchar(50) DEFAULT NULL,
+  `value` varchar(50) DEFAULT NULL,
   `hash_value` varchar(255) NOT NULL,
   PRIMARY KEY (`hash_value`),
   KEY `hash_value` (`hash_value`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `02820088` (
-  `ref_date` varchar(10) DEFAULT NULL,
-  `geography` varchar(50) DEFAULT NULL,
-  `industry` varchar(50) DEFAULT NULL,
-  `statistics` varchar(50) DEFAULT NULL,
-  `datatype` varchar(50) DEFAULT NULL,
-  `vector` varchar(10) DEFAULT NULL,
-  `coordinate` varchar(10) DEFAULT NULL,
-  `value` varchar(30) DEFAULT NULL,
+  `ref_date` varchar(20) DEFAULT NULL,
+  `geography` varchar(255) DEFAULT NULL,
+  `industry` varchar(255) DEFAULT NULL,
+  `statistics` varchar(255) DEFAULT NULL,
+  `datatype` varchar(255) DEFAULT NULL,
+  `vector` varchar(50) DEFAULT NULL,
+  `coordinate` varchar(50) DEFAULT NULL,
+  `value` varchar(50) DEFAULT NULL,
   `hash_value` varchar(255) NOT NULL,
   PRIMARY KEY (`hash_value`),
   KEY `hash_value` (`hash_value`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `02820122` (
-  `ref_date` varchar(10) DEFAULT NULL,
-  `geo` varchar(50) DEFAULT NULL,
-  `geographical_classification` varchar(50) DEFAULT NULL,
-  `characteristics` varchar(50) DEFAULT NULL,
-  `statistics` varchar(50) DEFAULT NULL,
-  `vector` varchar(10) DEFAULT NULL,
-  `coordinate` varchar(10) DEFAULT NULL,
-  `value` varchar(30) DEFAULT NULL,
+  `ref_date` varchar(20) DEFAULT NULL,
+  `geo` varchar(255) DEFAULT NULL,
+  `geographical_classification` varchar(255) DEFAULT NULL,
+  `characteristics` varchar(255) DEFAULT NULL,
+  `statistics` varchar(255) DEFAULT NULL,
+  `vector` varchar(50) DEFAULT NULL,
+  `coordinate` varchar(50) DEFAULT NULL,
+  `value` varchar(50) DEFAULT NULL,
   `hash_value` varchar(255) NOT NULL,
   PRIMARY KEY (`hash_value`),
   KEY `hash_value` (`hash_value`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `02820123` (
-  `ref_date` varchar(10) DEFAULT NULL,
-  `geo` varchar(50) DEFAULT NULL,
-  `geographical_classification` varchar(50) DEFAULT NULL,
-  `characteristics` varchar(50) DEFAULT NULL,
-  `vector` varchar(10) DEFAULT NULL,
-  `coordinate` varchar(10) DEFAULT NULL,
-  `value` varchar(30) DEFAULT NULL,
+  `ref_date` varchar(20) DEFAULT NULL,
+  `geo` varchar(255) DEFAULT NULL,
+  `geographical_classification` varchar(255) DEFAULT NULL,
+  `characteristics` varchar(255) DEFAULT NULL,
+  `vector` varchar(50) DEFAULT NULL,
+  `coordinate` varchar(50) DEFAULT NULL,
+  `value` varchar(50) DEFAULT NULL,
   `hash_value` varchar(255) NOT NULL,
   PRIMARY KEY (`hash_value`),
   KEY `hash_value` (`hash_value`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `02820128` (
-  `ref_date` varchar(10) DEFAULT NULL,
-  `geo` varchar(50) DEFAULT NULL,
-  `geographical_classification` varchar(50) DEFAULT NULL,
-  `characteristics` varchar(50) DEFAULT NULL,
-  `sex` varchar(50) DEFAULT NULL,
-  `agegroup` varchar(50) DEFAULT NULL,
-  `vector` varchar(10) DEFAULT NULL,
-  `coordinate` varchar(10) DEFAULT NULL,
-  `value` varchar(30) DEFAULT NULL,
+  `ref_date` varchar(20) DEFAULT NULL,
+  `geo` varchar(255) DEFAULT NULL,
+  `geographical_classification` varchar(255) DEFAULT NULL,
+  `characteristics` varchar(255) DEFAULT NULL,
+  `sex` varchar(255) DEFAULT NULL,
+  `agegroup` varchar(255) DEFAULT NULL,
+  `vector` varchar(50) DEFAULT NULL,
+  `coordinate` varchar(50) DEFAULT NULL,
+  `value` varchar(50) DEFAULT NULL,
   `hash_value` varchar(255) NOT NULL,
   PRIMARY KEY (`hash_value`),
   KEY `hash_value` (`hash_value`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `02820129` (
-  `ref_date` varchar(10) DEFAULT NULL,
-  `geo` varchar(50) DEFAULT NULL,
-  `geographical_classification` varchar(50) DEFAULT NULL,
-  `characteristics` varchar(50) DEFAULT NULL,
-  `sex` varchar(50) DEFAULT NULL,
-  `agegroup` varchar(50) DEFAULT NULL,
-  `vector` varchar(10) DEFAULT NULL,
-  `coordinate` varchar(10) DEFAULT NULL,
-  `value` varchar(30) DEFAULT NULL,
+  `ref_date` varchar(20) DEFAULT NULL,
+  `geo` varchar(255) DEFAULT NULL,
+  `geographical_classification` varchar(255) DEFAULT NULL,
+  `characteristics` varchar(255) DEFAULT NULL,
+  `sex` varchar(255) DEFAULT NULL,
+  `agegroup` varchar(255) DEFAULT NULL,
+  `vector` varchar(50) DEFAULT NULL,
+  `coordinate` varchar(50) DEFAULT NULL,
+  `value` varchar(50) DEFAULT NULL,
   `hash_value` varchar(255) NOT NULL,
   PRIMARY KEY (`hash_value`),
   KEY `hash_value` (`hash_value`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `nbdata_sources` (
   `id` int(6) unsigned NOT NULL AUTO_INCREMENT,
@@ -120,7 +120,7 @@ CREATE TABLE `nbdata_sources` (
   `name` VARCHAR(50) DEFAULT NULL,
   `current_version` VARCHAR(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO `nbdata_sources` (`url`, `name`, `current_version`)
 VALUES
@@ -139,4 +139,4 @@ CREATE TABLE `nbdata_last_update` (
   `last_modified` varchar(255) DEFAULT NULL,
   `source_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
