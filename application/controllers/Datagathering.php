@@ -119,6 +119,7 @@ class Datagathering extends CI_Controller {
 	function processZipFile($data, $dest_dir=false, $create_zip_name_dir=true, $overwrite=true) {
 
 		ini_set('memory_limit','2000M');
+		set_time_limit(600);
 
 		if ($zip = zip_open($data['filepath']))
 		{
@@ -344,6 +345,6 @@ class Datagathering extends CI_Controller {
 			return false;
 		}
 	}
-	
+
 }
 
