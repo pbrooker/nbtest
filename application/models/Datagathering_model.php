@@ -10,6 +10,15 @@ class Datagathering_model extends CI_Model
 
 	}
 
+	/**
+	 * Inserts new entry into table for sourcing reports
+	 * @param $data
+	 */
+	public function saveDataUrls($data) {
+
+		$this->db->insert('nbdata_sources', $data);
+	}
+
 	public function updateCsvVersion($data) {
 		$update = array (
 			'current_version' => $data['last_modified']
@@ -35,12 +44,17 @@ class Datagathering_model extends CI_Model
 
 	/**
 	 * Get urls for processing
-	 *
+	 * @param $name optional to get a single record id
 	 */
-	public function getDataUrls() {
-
-		$this->db->select('*')
+	public function getDataUrls($name = null) {
+		if($name = null) {
+			$this->db->select('*')
 				 ->from('nbdata_sources');
+		} else {
+			$this->db->select('id')
+					 ->from('nbdata_sources')
+				     ->where('name =', $name);
+		}
 		$query = $this->db->get();
 
 		return $query;
