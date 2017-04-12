@@ -10,15 +10,6 @@ class Datagathering_model extends CI_Model
 
 	}
 
-	/**
-	 * Inserts new entry into table for sourcing reports
-	 * @param $data
-	 */
-	public function saveDataUrls($data) {
-
-		$this->db->insert('nbdata_sources', $data);
-	}
-
 	public function updateCsvVersion($data) {
 		$update = array (
 			'current_version' => $data['last_modified']

@@ -28,7 +28,7 @@ class Datagathering extends CI_Controller {
 					//flock($filename, LOCK_UN);
 					unlink($filename);
 				}
-
+				//$filepath = './uploads/02820002-eng.zip';
 				$fp_header = './uploads/' . $value->name . '-header_data.txt';
 
 				$ch = curl_init($value->url);
@@ -352,76 +352,6 @@ class Datagathering extends CI_Controller {
 			echo 'A current record already exists for ' . $header_data['name'] . '. Last modified on ' . $last_modified . '. The database has been updated with scan date.' . "\r\n";
 			return false;
 		}
-	}
-
-	public function addDataSources() {
-
-		$urls = $this->nbdata->getDataUrls();
-
-		$this->form_validation->set_rules('url', 'URL', 'required|min_length[5]');
-		$this->form_validation->set_rules('name', 'Name', 'required|min_length[5]');
-
-		if ($this->form_validation->run() == FALSE)
-		{
-			$this->load->view('Gather','index');
-		}
-		else
-		{
-			$url = $this->input->post('url');
-			$name =  $this->input->post('name');
-			$data = array( 'url' =>  $url, 'name' => $name );
-
-			if(in_array($url, $urls) || in_array($name, $urls )) {
-
-				echo 'Error: That URL already exists';
-				
-			} else {
-
-				$filename = './uploads/' . $name . '-eng.zip';
-				if (file_exists($filename)) {
-					chmod($filename, 0777);
-					//flock($filename, LOCK_UN);
-					unlink($filename);
-				}
-
-				$fp_header = './uploads/' . $name . '-header_data.txt';
-
-				$ch = curl_init($url);
-				curl_setopt($ch, CURLOPT_HEADER, 1);
-				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-				curl_setopt($ch, CURLOPT_BINARYTRANSFER, 1);
-				curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 0);
-
-				$raw_file_data = curl_exec($ch);
-
-				//get header data to compare for last update
-				$header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
-				$header = substr($raw_file_data, 0, $header_size);
-				$body = substr($raw_file_data, $header_size);
-
-				if(curl_errno($ch)){
-					echo 'error:' . curl_error($ch);
-				}
-				curl_close($ch);
-				file_put_contents($filename, $body);
-				file_put_contents($fp_header, $header);
-				$this->nbdata->saveDataUrls($data);
-
-				$url_record = $this->nbdata->getDataUrls($name);
-
-
-				$header_data = array (
-					'header' => $fp_header,
-					'source_id' => $url_record,
-					'name' => $name
-				);
-				$file_data = $this->processHeaderText($header_data);
-			}
-
-		}
-
-
-
 	}
 
 }

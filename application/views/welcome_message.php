@@ -78,17 +78,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <?php echo form_close();?>
 
 		<p>Data will be gathered from the targeted resources</p>
-        <br>
-
-        <h2>To add another data source, complete the fields below and click submit.</h2>
-        <p>The record will be read and a table created. Data will be collected at the next scheduled run time.</p>
-        <?php echo form_open('Datagathering/addDataSources') ;?>
-        <label for="url">URL of File</label><br>
-        <input name="url" id="url" type="text" placeholder="The exact url for downloading the file" size="100"><br>
-        <label for="name">Name of File</label><br>
-        <input name="name" id="name" type="text" placeholder="The name of the file ex: 02820002" size="50"><br><br>
-		<?php echo form_submit('add_url', 'Add that URL!');?>
-		<?php echo form_close();?>
+		<p>If you want to do something else, sorry, that is all this page is for right now. :-)</p>
 	</div>
 
 	<p class="footer">Page rendered in <strong>{elapsed_time}</strong> seconds. <?php echo  (ENVIRONMENT === 'development') ?  'CodeIgniter Version <strong>' . CI_VERSION . '</strong>' : '' ?></p>
