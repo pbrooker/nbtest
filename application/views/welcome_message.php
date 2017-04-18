@@ -78,7 +78,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <?php echo form_close();?>
 
 		<p>Data will be gathered from the targeted resources</p>
-		<p>If you want to do something else, sorry, that is all this page is for right now. :-)</p>
+		<p>If you want to do something else, why not try a chart? :-)</p>
+        <a href="<?= base_url('Charts/selectChart/');?>" class="btn btn-success">Charts</a>
 	</div>
 
 	<p class="footer">Page rendered in <strong>{elapsed_time}</strong> seconds. <?php echo  (ENVIRONMENT === 'development') ?  'CodeIgniter Version <strong>' . CI_VERSION . '</strong>' : '' ?></p>
