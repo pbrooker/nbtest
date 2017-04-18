@@ -47,7 +47,7 @@ class Datagathering_model extends CI_Model
 	 * @param $name optional to get a single record id
 	 */
 	public function getDataUrls($name = null) {
-		if($name = null) {
+		if($name == null) {
 			$this->db->select('*')
 				 ->from('nbdata_sources');
 		} else {
