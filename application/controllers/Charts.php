@@ -16,7 +16,18 @@ class Charts extends CI_Controller {
 
 	public function participation()
 	{
-		$this->load->view('participation');
+		$this->form_validation->set_rules('date', 'Date', 'required|min_length[7]|max_length[7]');
+
+
+		if ($this->form_validation->run() == TRUE)
+		{
+			$date = $this->input->post('date');
+			$data['participation'] = $this->nbdata->getParticipationRate($date);
+		}
+		if(isset($data)) {
+
+			$this->load->view('participation', $data);
+		}
 	}
 
 }

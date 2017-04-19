@@ -145,4 +145,21 @@ class Datagathering_model extends CI_Model
 			return $count;
 		}
 	}
+
+
+	public function getParticipationRate($date)
+	{
+		$this->db->select('geography, value')
+			->from("`" . '02820087' . "`")
+			->where('ref_date =', $date)
+			->where('`characteristics` = "Participation rate (percent)"')
+			->where('`agegroup` = "15 years and over"')
+			->where('`sex` = "Both sexes"')
+			->where('`statistics` = "Estimate"')
+			->where('`datatype` = "Seasonally adjusted"');
+
+		$query = $this->db->get();
+
+		return $query;
+	}
 }

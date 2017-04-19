@@ -72,7 +72,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	<div id="body">
 		<?php echo form_open('Charts/participation') ;?>
-		<p>Click to Charts</p>
+		<p>Click to get Charts</p>
+        <label for="date">Enter date in Year/Month format (eg. 2017/01)</label>
+        <input id="date" name="date" type="text" size="15">
 
 		<?php echo form_submit('Charts', 'Get Participation Chart!');?>
 		<?php echo form_close();?>

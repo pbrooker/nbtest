@@ -1,46 +1,42 @@
 <html>
 <head>
-	<!--Load the AJAX API-->
-	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-	<script type="text/javascript">
-
-        // Load the Visualization API and the corechart package.
-        google.charts.load('current', {'packages':['corechart']});
-
-        // Set a callback to run when the Google Visualization API is loaded.
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load("current", {packages:['corechart']});
         google.charts.setOnLoadCallback(drawChart);
-
-        // Callback that creates and populates a data table,
-        // instantiates the pie chart, passes in the data and
-        // draws it.
         function drawChart() {
 
-            // Create the data table.
             var data = new google.visualization.DataTable();
-            data.addColumn('string', 'Topping');
-            data.addColumn('number', 'Slices');
-            data.addRows([
-                ['Mushrooms', 3],
-                ['Onions', 1],
-                ['Olives', 1],
-                ['Zucchini', 1],
-                ['Pepperoni', 2]
-            ]);
 
-            // Set chart options
-            var options = {'title':'How Much Pizza I Ate Last Night',
-                'width':500,
-                'height':300};
+                data.addColumn('string', 'Region');
+                data.addColumn({type: 'number', role: 'interval'});
+                data.addColumn( {type: 'string', role: 'style'});
 
-            // Instantiate and draw our chart, passing in some options.
-            var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
+				<?php foreach ($participation->result() as $key => $value):?>
+				<?php if ($key > 0):?>
+
+                data.addRow(['<?= $value->geography ;?>', parseFloat(<?= $value->value ;?>), "color: #8A62A0"]);
+				<?php endif;?>
+
+				<?php endforeach;?>
+
+
+            var options = {
+                title: "Participation Rate",
+                width: 1200,
+                height: 400,
+                bar: {groupWidth: "95%"},
+                legend: { position: "none" }
+            };
+            var chart = new google.visualization.ColumnChart(document.getElementById("columnchart_values"));
             chart.draw(data, options);
         }
-	</script>
+    </script>
+
 </head>
 
 <body>
 <!--Div that will hold the pie chart-->
-<div id="chart_div"></div>
+<div id="columnchart_values" style="width: 900px; height: 300px;"></div>
 </body>
 </html>
