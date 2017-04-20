@@ -15,21 +15,6 @@
         google.setOnLoadCallback(drawChart);
 
         function drawChart() {
-//
-//            var data = new google.visualization.DataTable();
-//
-//            data.addColumn({type: 'string', label: ""});
-//            data.addColumn({type: 'number', role: 'interval', label: ""});
-//            data.addColumn( {type: 'string', role: 'style'});
-//
-//	        <?php //foreach ($participation->result() as $key => $value):?>
-<!--	        --><?php //if ($key > 0):?>
-//
-//            data.addRow(['<?//= $value->geography ;?>//', parseFloat(<?//= $value->value ;?>//), "color: #8A62A0"]);
-//	        <?php //endif;?>
-<!---->
-<!--	        --><?php //endforeach;?>
-            <?php echo $participation ;?>
 
             var data = new google.visualization.DataTable(<?= $participation ;?>);
 
@@ -41,7 +26,33 @@
                 legend: { position: "none" }
             };
             // Instantiate and draw our chart, passing in some options.
-            var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+            var chart = new google.visualization.ColumnChart(document.getElementById('chart_divP'));
+            chart.draw(data, options);
+        }
+
+    </script>
+
+    <script type="text/javascript">
+
+        // Load the Visualization API and the piechart package.
+        google.load('visualization', '1', {'packages':['corechart']});
+
+        // Set a callback to run when the Google Visualization API is loaded.
+        google.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+
+            var data = new google.visualization.DataTable(<?= $participation_mm ;?>);
+
+            var options = {
+                title: "Participation Rate M-M",
+                width: 1200,
+                height: 400,
+                bar: {groupWidth: "95%"},
+                legend: { position: "none" }
+            };
+            // Instantiate and draw our chart, passing in some options.
+            var chart = new google.visualization.ColumnChart(document.getElementById('chart_divMM'));
             chart.draw(data, options);
         }
 
@@ -51,7 +62,10 @@
 
 <body>
 <!--Div that will hold the pie chart-->
-<div id="chart_div"></div>
+<div id="chart_divP"></div>
+<br>
+<br>
+<div id="chart_divMM"></div>
 
 
 </body>

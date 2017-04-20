@@ -23,6 +23,7 @@ class Charts extends CI_Controller {
 		{
 			$date = $this->input->post('date');
 			$data['participation'] = $this->nbdata->getParticipationRate($date);
+			$data['participation_mm'] = $this->nbdata->getParticipationRateMM($date);
 		}
 		if(isset($data)) {
 

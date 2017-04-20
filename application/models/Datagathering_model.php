@@ -164,15 +164,48 @@ class Datagathering_model extends CI_Model
 		$table = array();
 		$table['cols'] = array(
 
-			// Labels for your chart, these represent the column titles
-			// Note that one column is in "string" format and another one is in "number" format as pie chart only required "numbers" for calculating percentage and string will be used for column title
 			array('label' => 'Region', 'type' => 'string'),
 			array('label' => 'Percentage', 'type' => 'number')
 
 		);
 		$rows = array();
 
+		foreach($query->result() as $key => $value) {
+			if($key > 0) {
+				$temp = array();
+				// the following line will be used to slice the Pie chart
+				$temp[] = array('v' => (string) $value->geography);
+				$temp[] = array('v' => floatval($value->value) );
+				$rows[] = array('c' => $temp);
+			}
+		}
+		$table['rows'] = $rows;
+		$jsonTable = json_encode($table);
 
+		return $jsonTable;
+	}
+
+	public function getParticipationRateMM($date)
+	{
+		$this->db->select('geography, value')
+			->from("`" . '02820087' . "`")
+			->where('ref_date =', $date)
+			->where('`characteristics` = "Participation rate (percent)"')
+			->where('`agegroup` = "15 years and over"')
+			->where('`sex` = "Both sexes"')
+			->where('`statistics` = "Standard error of month-to-month change"')
+			->where('`datatype` = "Seasonally adjusted"');
+
+		$query = $this->db->get();
+
+		$table = array();
+		$table['cols'] = array(
+
+			array('label' => 'Region', 'type' => 'string'),
+			array('label' => 'Percentage', 'type' => 'number')
+
+		);
+		$rows = array();
 
 		foreach($query->result() as $key => $value) {
 			if($key > 0) {
