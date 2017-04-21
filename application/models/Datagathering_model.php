@@ -74,17 +74,16 @@ class Datagathering_model extends CI_Model
 	 */
 	public function processZipFile($file_data) {
 
-		ini_set('memory_limit','2000M');
+		ini_set('memory_limit','4000M');
+		set_time_limit(1800);
 		//hardcoded temporarily for testing
 		$file_path = 'https://qimple.s3.amazonaws.com/NBData_Temp/' . $file_data['name'] . '.csv';
 		//$file_path = $file_data['file_path'];
 		//$new_name = str_replace("\\","/",$file_path);
 
-		$this->db->select('hash_value')
-				 ->from("`" .$file_data['name'] . "`");
-		$result1 = $this->db->get();
+		$initial_count = $this->db->count_all("`" . $file_data['name'] . "`");
 
-		$initial_count = $result1->num_rows();
+
 		if($initial_count == null) {
 			$initial_count = 0;
 		}
@@ -115,10 +114,10 @@ class Datagathering_model extends CI_Model
 		$query  = $this->db->query( $sql );
 
 
-		$this->db->select('hash_value')
-			->from("`" .$file_data['name'] . "`");
-		$result2  = $this->db->get();
-		$final_count = $result2->num_rows();
+//		$this->db->select('hash_value')
+//			->from("`" .$file_data['name'] . "`");
+//		$result2  = $this->db->get();
+		$final_count = $this->db->count_all("`" . $file_data['name'] . "`");
 		$count = $final_count - $initial_count;
 		$insert_data = array (
 			'last_modified' => $file_data['last_modified'],
@@ -130,10 +129,6 @@ class Datagathering_model extends CI_Model
 			'table' => $file_data['name']
 		);
 
-		$log_data = array (
-			'last_modified' => $file_data['last_modified'],
-			'source_id' => $file_data['source_id']
-		);
 
 		if($count > 0) {
 
@@ -143,6 +138,7 @@ class Datagathering_model extends CI_Model
 
 		} elseif ($count == null || $count == 0) {
 
+			$this->saveLastProcessed($insert_data);
 			return $count;
 		}
 	}

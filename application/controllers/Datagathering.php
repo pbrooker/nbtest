@@ -241,7 +241,7 @@ class Datagathering extends CI_Controller {
 
 	function processCsv($csv_pack, $age = 10)
 	{
-		set_time_limit(600);
+		set_time_limit(1200);
 		$cutoffYear = (int)date('Y') - $age;
 		$outfile = './uploads/' . $csv_pack['name'] . '-eng/' . $csv_pack['name'] . '.csv';
 
@@ -277,6 +277,7 @@ class Datagathering extends CI_Controller {
 					//verify within year range
 					if (!($year <= $cutoffYear)) {
 						$data = $line;
+						//create unique record for each line
 						$hash = hash('md5', implode($line));
 						array_push($data, $hash);
 						fputcsv($output, $data);
