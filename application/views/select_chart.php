@@ -79,6 +79,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<?php echo form_submit('Charts', 'Get Participation Chart!');?>
 		<?php echo form_close();?>
 
+        <br><br>
+		<?php echo form_open('Charts/participationMM') ;?>
+        <p>Click to get Charts</p>
+        <label for="startdate">Enter date in Year/Month format (eg. 2017/01)</label>
+        <input id="startdate" name="startdate" type="text" size="15"><br>
+        <input id="enddate" name="enddate" type="text" size="15">
+
+		<?php echo form_submit('Charts', 'Get Participation Chart!');?>
+		<?php echo form_close();?>
+
 	</div>
 
 	<p class="footer">Page rendered in <strong>{elapsed_time}</strong> seconds. <?php echo  (ENVIRONMENT === 'development') ?  'CodeIgniter Version <strong>' . CI_VERSION . '</strong>' : '' ?></p>

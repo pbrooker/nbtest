@@ -84,10 +84,6 @@ class Datagathering_model extends CI_Model
 		$initial_count = $this->db->count_all("`" . $file_data['name'] . "`");
 
 
-		if($initial_count == null) {
-			$initial_count = 0;
-		}
-
 		//get header for column names
 		$handle = fopen($file_data['file_path'], 'r');
 		$header = fgetcsv($handle);
@@ -114,9 +110,6 @@ class Datagathering_model extends CI_Model
 		$query  = $this->db->query( $sql );
 
 
-//		$this->db->select('hash_value')
-//			->from("`" .$file_data['name'] . "`");
-//		$result2  = $this->db->get();
 		$final_count = $this->db->count_all("`" . $file_data['name'] . "`");
 		$count = $final_count - $initial_count;
 		$insert_data = array (
@@ -181,18 +174,51 @@ class Datagathering_model extends CI_Model
 		return $jsonTable;
 	}
 
-	public function getParticipationRateMM($date)
+	public function getParticipationRateMM($dates)
 	{
-		$this->db->select('geography, value')
+		$startdate = $dates['startdate'];
+		$enddate = $dates['enddate'];
+
+
+		$this->db->select('geography, value,')
 			->from("`" . '02820087' . "`")
-			->where('ref_date =', $date)
+			->where('ref_date =', $startdate)
 			->where('`characteristics` = "Participation rate (percent)"')
 			->where('`agegroup` = "15 years and over"')
 			->where('`sex` = "Both sexes"')
-			->where('`statistics` = "Standard error of month-to-month change"')
+			->where('`statistics` = "Estimate"')
 			->where('`datatype` = "Seasonally adjusted"');
 
-		$query = $this->db->get();
+		$start = $this->db->get()->result();
+
+		$this->db->select('geography, value')
+			->from("`" . '02820087' . "`")
+			->where('ref_date =', $enddate)
+			->where('`characteristics` = "Participation rate (percent)"')
+			->where('`agegroup` = "15 years and over"')
+			->where('`sex` = "Both sexes"')
+			->where('`statistics` = "Estimate"')
+			->where('`datatype` = "Seasonally adjusted"');
+
+		$end = $this->db->get()->result();
+
+		$result = array();
+		foreach($start as $key => $value) {
+			$name = $value->geography;
+			$val = $value->value;
+			foreach($end as $innerKey => $innerValue) {
+				if($innerValue->geography == $name) {
+					$diff = $innerValue->value - $val;
+					$temp = array(
+						'geography' => $name,
+						'value' => $diff
+					);
+					array_push($result, $temp);
+				}
+			}
+		}
+
+
 
 		$table = array();
 		$table['cols'] = array(
@@ -203,14 +229,14 @@ class Datagathering_model extends CI_Model
 		);
 		$rows = array();
 
-		foreach($query->result() as $key => $value) {
-			if($key > 0) {
+		foreach($result as $key => $value) {
+
 				$temp = array();
 				// the following line will be used to slice the Pie chart
-				$temp[] = array('v' => (string) $value->geography);
-				$temp[] = array('v' => floatval($value->value) );
+				$temp[] = array('v' => $value['geography']);
+				$temp[] = array('v' => floatval($value['value']) );
 				$rows[] = array('c' => $temp);
-			}
+
 		}
 		$table['rows'] = $rows;
 		$jsonTable = json_encode($table);

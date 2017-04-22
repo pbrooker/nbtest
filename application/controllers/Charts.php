@@ -31,4 +31,25 @@ class Charts extends CI_Controller {
 		}
 	}
 
+	public function participationMM()
+	{
+		$this->form_validation->set_rules('startdate', 'Start Date', 'required|min_length[7]|max_length[7]');
+		$this->form_validation->set_rules('enddate', 'End Date', 'required|min_length[7]|max_length[7]');
+
+		if ($this->form_validation->run() == TRUE)
+		{
+			$startdate = $this->input->post('startdate');
+			$enddate = $this->input->post('enddate');
+			$dates = array (
+				'startdate' => $startdate,
+				'enddate' => $enddate
+			);
+			$data['participation_mm'] = $this->nbdata->getParticipationRateMM($dates);
+		}
+		if(isset($data)) {
+
+			$this->load->view('participation', $data);
+		}
+	}
+
 }
