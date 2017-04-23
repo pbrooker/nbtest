@@ -71,25 +71,48 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<h1>Charts</h1>
 
 	<div id="body">
-		<?php echo form_open('Charts/participation') ;?>
-		<p>Click to get Charts</p>
-        <label for="date">Enter date in Year/Month format (eg. 2017/01)</label>
-        <input id="date" name="date" type="text" size="15">
-
-		<?php echo form_submit('Charts', 'Get Participation Chart!');?>
-		<?php echo form_close();?>
+<!--		--><?php //echo form_open('Charts/participation') ;?>
+<!--		<p>Click to get Charts</p>-->
+<!--        <label for="date">Enter date in Year/Month format (eg. 2017/01)</label>-->
+<!--        <input id="date" name="date" type="text" size="15">-->
+<!---->
+<!--		--><?php //echo form_submit('Charts', 'Get Participation Chart!');?>
+<!--		--><?php //echo form_close();?>
+<!---->
+<!--        <br><br>-->
+<!--		--><?php //echo form_open('Charts/participationMM') ;?>
+<!--        <p>Get Participation M-M Chart</p>-->
+<!--        <label for="startdate">Enter Start date in Year/Month format (eg. 2017/01)</label>-->
+<!--        <input id="startdate" name="startdate" type="text" size="15"><br>-->
+<!--        <label for="enddate">Enter End date in Year/Month format (eg. 2017/01)</label>-->
+<!--        <input id="enddate" name="enddate" type="text" size="15"><br>-->
+<!---->
+<!--		--><?php //echo form_submit('Charts', 'Get Participation Chart!');?>
+<!--		--><?php //echo form_close();?>
+<!---->
+<!--        <br><br>-->
+<!--		--><?php //echo form_open('Charts/participationYY') ;?>
+<!--        <p>Get Participation Y-Y  Chart</p>-->
+<!--        <label for="startyear">Enter the start year (eg. 2016)</label>-->
+<!--        <input id="startyear" name="startyear" type="text" size="15"><br>-->
+<!--        <label for="startmonth">Enter the start month in numberic format (eg. 12 for December)</label>-->
+<!--        <input id="startmonth" name="startmonth" type="text" size="15"><br>-->
+<!---->
+<!--		--><?php //echo form_submit('Charts', 'Get Participation Chart!');?>
+<!--		--><?php //echo form_close();?>
 
         <br><br>
-		<?php echo form_open('Charts/participationMM') ;?>
-        <p>Click to get Charts</p>
-        <label for="startdate">Enter date in Year/Month format (eg. 2017/01)</label>
-        <input id="startdate" name="startdate" type="text" size="15"><br>
-        <input id="enddate" name="enddate" type="text" size="15">
+		<?php echo form_open('Charts/getAllParticipationCharts') ;?>
+        <p>Get All Participation Charts</p>
+        <label for="startyear">Enter the year for reports (eg. 2016)</label>
+        <input id="startyear" name="startyear" type="text" size="15"><br>
+        <label for="startmonth">Enter the month in numberic format for reports (eg. 12 for December)</label>
+        <input id="startmonth" name="startmonth" type="text" size="15"><br>
 
 		<?php echo form_submit('Charts', 'Get Participation Chart!');?>
 		<?php echo form_close();?>
 
-	</div>
+    </div>
 
 	<p class="footer">Page rendered in <strong>{elapsed_time}</strong> seconds. <?php echo  (ENVIRONMENT === 'development') ?  'CodeIgniter Version <strong>' . CI_VERSION . '</strong>' : '' ?></p>
 </div>

@@ -139,14 +139,18 @@ class Datagathering_model extends CI_Model
 
 	public function getParticipationRate($date)
 	{
-		$this->db->select('geography, value')
+		$this->db->select("geography, value, CASE geography WHEN 'Canada' THEN 1 WHEN 'Newfoundland and Labrador' THEN
+		2 WHEN 'Prince Edward Island' THEN 3 WHEN 'Nova Scotia' THEN 4 WHEN 'New Brunswick' THEN 5 WHEN 'Quebec' THEN 6 
+		WHEN 'Ontario' THEN 7 WHEN 'Manitoba' THEN 8 WHEN 'Saskatchewan' THEN 9 WHEN 'Alberta' THEN 10 WHEN 
+		'British Columbia' THEN 11 END AS order_prov", FALSE)
 			->from("`" . '02820087' . "`")
 			->where('ref_date =', $date)
 			->where('`characteristics` = "Participation rate (percent)"')
 			->where('`agegroup` = "15 years and over"')
 			->where('`sex` = "Both sexes"')
 			->where('`statistics` = "Estimate"')
-			->where('`datatype` = "Seasonally adjusted"');
+			->where('`datatype` = "Seasonally adjusted"')
+			->order_by('order_prov', 'ASC');
 
 		$query = $this->db->get();
 
@@ -154,20 +158,31 @@ class Datagathering_model extends CI_Model
 		$table['cols'] = array(
 
 			array('label' => 'Region', 'type' => 'string'),
-			array('label' => 'Percentage', 'type' => 'number')
+			array('label' => 'Percentage', 'type' => 'number'),
+			array('role' => 'annotation', 'type' => 'string'),
+			array('role' => 'annotation', 'type' => 'string'),
+			array('role' => 'style', 'type' => 'string')
+
 
 		);
 		$rows = array();
 
 		foreach($query->result() as $key => $value) {
-			if($key > 0) {
 				$temp = array();
+				$shortName = $this->_provinceNames($value->geography);
 				// the following line will be used to slice the Pie chart
-				$temp[] = array('v' => (string) $value->geography);
+				$temp[] = array('v' => $shortName);
 				$temp[] = array('v' => floatval($value->value) );
+				$temp[] = array('v' => (string)$value->value . '%');
+				$temp[] = array('v' => $shortName);
+				if($shortName == 'NB') {
+					$temp[] = array('v' => '#FF5F18');
+				} else {
+					$temp[] = array('v' => '#8A62A0');
+				}
 				$rows[] = array('c' => $temp);
-			}
-		}
+
+		};
 		$table['rows'] = $rows;
 		$jsonTable = json_encode($table);
 
@@ -180,25 +195,33 @@ class Datagathering_model extends CI_Model
 		$enddate = $dates['enddate'];
 
 
-		$this->db->select('geography, value,')
+		$this->db->select("geography, value, CASE geography WHEN 'Canada' THEN 1 WHEN 'Newfoundland and Labrador' THEN
+		2 WHEN 'Prince Edward Island' THEN 3 WHEN 'Nova Scotia' THEN 4 WHEN 'New Brunswick' THEN 5 WHEN 'Quebec' THEN 6 
+		WHEN 'Ontario' THEN 7 WHEN 'Manitoba' THEN 8 WHEN 'Saskatchewan' THEN 9 WHEN 'Alberta' THEN 10 WHEN 
+		'British Columbia' THEN 11 END AS order_prov", FALSE)
 			->from("`" . '02820087' . "`")
 			->where('ref_date =', $startdate)
 			->where('`characteristics` = "Participation rate (percent)"')
 			->where('`agegroup` = "15 years and over"')
 			->where('`sex` = "Both sexes"')
 			->where('`statistics` = "Estimate"')
-			->where('`datatype` = "Seasonally adjusted"');
+			->where('`datatype` = "Seasonally adjusted"')
+			->order_by('order_prov', 'ASC');
 
 		$start = $this->db->get()->result();
 
-		$this->db->select('geography, value')
+		$this->db->select("geography, value, CASE geography WHEN 'Canada' THEN 1 WHEN 'Newfoundland and Labrador' THEN
+		2 WHEN 'Prince Edward Island' THEN 3 WHEN 'Nova Scotia' THEN 4 WHEN 'New Brunswick' THEN 5 WHEN 'Quebec' THEN 6 
+		WHEN 'Ontario' THEN 7 WHEN 'Manitoba' THEN 8 WHEN 'Saskatchewan' THEN 9 WHEN 'Alberta' THEN 10 WHEN 
+		'British Columbia' THEN 11 END AS order_prov", FALSE)
 			->from("`" . '02820087' . "`")
 			->where('ref_date =', $enddate)
 			->where('`characteristics` = "Participation rate (percent)"')
 			->where('`agegroup` = "15 years and over"')
 			->where('`sex` = "Both sexes"')
 			->where('`statistics` = "Estimate"')
-			->where('`datatype` = "Seasonally adjusted"');
+			->where('`datatype` = "Seasonally adjusted"')
+			->order_by('order_prov', 'ASC');
 
 		$end = $this->db->get()->result();
 
@@ -208,9 +231,10 @@ class Datagathering_model extends CI_Model
 			$val = $value->value;
 			foreach($end as $innerKey => $innerValue) {
 				if($innerValue->geography == $name) {
-					$diff = $innerValue->value - $val;
+					$diff =  $innerValue->value - $val;
+					$shortName = $this->_provinceNames($name);
 					$temp = array(
-						'geography' => $name,
+						'geography' => $shortName,
 						'value' => $diff
 					);
 					array_push($result, $temp);
@@ -218,13 +242,14 @@ class Datagathering_model extends CI_Model
 			}
 		}
 
-
-
 		$table = array();
 		$table['cols'] = array(
 
-			array('label' => 'Region', 'type' => 'string'),
-			array('label' => 'Percentage', 'type' => 'number')
+			array('label' => 'Region', 'type' => 'string', ),
+			array('label' => 'Percentage', 'type' => 'number'),
+		    array('role' => 'annotation', 'type' => 'string'),
+			array('role' => 'annotation', 'type' => 'string'),
+			array('role' => 'style', 'type' => 'string')
 
 		);
 		$rows = array();
@@ -234,7 +259,14 @@ class Datagathering_model extends CI_Model
 				$temp = array();
 				// the following line will be used to slice the Pie chart
 				$temp[] = array('v' => $value['geography']);
-				$temp[] = array('v' => floatval($value['value']) );
+				$temp[] = array('v' => $value['value']);
+				$temp[] = array('v' => (string)$value['value'] . '(pp)');
+				$temp[] = array('v' => $value['geography']);
+				if($value['geography'] == 'NB') {
+					$temp[] = array('v' => '#FF5F18');
+				} else {
+					$temp[] = array('v' => '#8A62A0');
+				}
 				$rows[] = array('c' => $temp);
 
 		}
@@ -242,5 +274,148 @@ class Datagathering_model extends CI_Model
 		$jsonTable = json_encode($table);
 
 		return $jsonTable;
+	}
+
+	public function getParticipationRateYY($dates)
+	{
+		$result = $this->getParticipationRateMM($dates);
+
+		return $result;
+	}
+
+	public function getEmploymentRate($dates)
+	{
+		$startdate = $dates['startdate'];
+		$enddate = $dates['enddate'];
+
+
+		$this->db->select("geo, value, CASE geo WHEN 'Canada' THEN 1 WHEN 'Newfoundland and Labrador' THEN
+		2 WHEN 'Prince Edward Island' THEN 3 WHEN 'Nova Scotia' THEN 4 WHEN 'New Brunswick' THEN 5 WHEN 'Quebec' THEN 6 
+		WHEN 'Ontario' THEN 7 WHEN 'Manitoba' THEN 8 WHEN 'Saskatchewan' THEN 9 WHEN 'Alberta' THEN 10 WHEN 
+		'British Columbia' THEN 11 END AS order_prov", FALSE)
+			->from("`" . '02820122' . "`")
+			->where('ref_date =', $startdate)
+			->where('`characteristics` = "Employment rate (percent)"')
+			->where_in('geo', array('Canada', 'Newfoundland and Labrador', 'Prince Edward Island', 'Nova Scotia',
+				'New Brunswick', 'Quebec', 'Ontario', 'Manitoba', 'Saskatchewan', 'Alberta', 'British Columbia'))
+			//->where('`agegroup` = "15 years and over"')
+			//->where('`sex` = "Both sexes"')
+			->where('`statistics` = "Estimate"')
+			//->where('`datatype` = "Seasonally adjusted"')
+			->order_by('order_prov', 'ASC');
+
+		$start = $this->db->get()->result();
+		$query = $this->db->last_query();
+
+		$this->db->select("geo, value, CASE geo WHEN 'Canada' THEN 1 WHEN 'Newfoundland and Labrador' THEN
+		2 WHEN 'Prince Edward Island' THEN 3 WHEN 'Nova Scotia' THEN 4 WHEN 'New Brunswick' THEN 5 WHEN 'Quebec' THEN 6 
+		WHEN 'Ontario' THEN 7 WHEN 'Manitoba' THEN 8 WHEN 'Saskatchewan' THEN 9 WHEN 'Alberta' THEN 10 WHEN 
+		'British Columbia' THEN 11 END AS order_prov", FALSE)
+			->from("`" . '02820122' . "`")
+			->where('ref_date =', $enddate)
+			->where('`characteristics` = "Employment rate (percent)"')
+			->where_in('geo', array('Canada', 'Newfoundland and Labrador', 'Prince Edward Island', 'Nova Scotia',
+				'New Brunswick', 'Quebec', 'Ontario', 'Manitoba', 'Saskatchewan', 'Alberta', 'British Columbia'))
+			//->where('`agegroup` = "15 years and over"')
+			//->where('`sex` = "Both sexes"')
+			->where('`statistics` = "Estimate"')
+			//->where('`datatype` = "Seasonally adjusted"')
+			->order_by('order_prov', 'ASC');
+
+		$end = $this->db->get()->result();
+
+		$result = array();
+		foreach($start as $key => $value) {
+			$name = $value->geo;
+			$val = $value->value;
+			foreach($end as $innerKey => $innerValue) {
+				if($innerValue->geo == $name) {
+					$diff =  $innerValue->value - $val;
+					$shortName = $this->_provinceNames($name);
+					$temp = array(
+						'geography' => $shortName,
+						'value' => $diff
+					);
+					array_push($result, $temp);
+				}
+			}
+		}
+
+		$table = array();
+		$table['cols'] = array(
+
+			array('label' => 'Region', 'type' => 'string', ),
+			array('label' => 'Percentage', 'type' => 'number'),
+			array('role' => 'annotation', 'type' => 'string'),
+			array('role' => 'annotation', 'type' => 'string'),
+			array('role' => 'style', 'type' => 'string')
+
+		);
+		$rows = array();
+
+		foreach($result as $key => $value) {
+
+			$temp = array();
+			// the following line will be used to slice the Pie chart
+			$temp[] = array('v' => $value['geography']);
+			$temp[] = array('v' => $value['value']);
+			$temp[] = array('v' => (string)$value['value'] . '%');
+			$temp[] = array('v' => $value['geography']);
+			if($value['geography'] == 'NB') {
+				$temp[] = array('v' => '#FF5F18');
+			} else {
+				$temp[] = array('v' => '#8A62A0');
+			}
+			$rows[] = array('c' => $temp);
+
+		}
+		$table['rows'] = $rows;
+		$jsonTable = json_encode($table);
+
+		return $jsonTable;
+	}
+
+	private function _provinceNames($name)
+	{
+
+		switch ($name) {
+			case 'Ontario':
+				$returnName = 'ON';
+				break;
+			case 'Quebec':
+				$returnName = 'QC';
+				break;
+			case 'New Brunswick':
+				$returnName = 'NB';
+				break;
+			case 'Nova Scotia':
+				$returnName = 'NS';
+				break;
+			case 'Prince Edward Island':
+				$returnName = 'PE';
+				break;
+			case 'Manitoba':
+				$returnName = 'MB';
+				break;
+			case 'Alberta':
+				$returnName = 'AB';
+				break;
+			case 'British Columbia':
+				$returnName = 'BC';
+				break;
+			case 'Saskatchewan':
+				$returnName = 'SK';
+				break;
+			case 'Newfoundland and Labrador':
+				$returnName = 'NL';
+				break;
+			case 'Canada':
+				$returnName = 'Canada';
+				break;
+			default:
+				$returnName = $name;
+		}
+
+		return $returnName;
 	}
 }
