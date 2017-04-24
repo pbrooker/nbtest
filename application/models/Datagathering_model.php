@@ -122,18 +122,10 @@ class Datagathering_model extends CI_Model
 			'table' => $file_data['name']
 		);
 
-
-		if($count > 0) {
-
 			$this->updateCsvVersion($update_data);
 			$this->saveLastProcessed($insert_data);
 			return $count;
 
-		} elseif ($count == null || $count == 0) {
-
-			$this->saveLastProcessed($insert_data);
-			return $count;
-		}
 	}
 
 
