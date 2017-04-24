@@ -94,6 +94,8 @@ class Charts extends CI_Controller {
 				'startdate' => $startdate,
 				'enddate' => $enddate
 			);
+
+			// alternative dates for Employment Rate
 			$erDates = array (
 				'startdate' => $enddate,
 				'enddate' => $startdate
@@ -117,7 +119,17 @@ class Charts extends CI_Controller {
 				);
 			}
 
-			//dates for Employment Rate m-m
+			// dates for 10 year growth
+			$endyear = ((int)$startyear - 10) . '/' . $startmonth;
+			$dataGrowth = array(
+
+				'startdate' => $startdate,
+				'enddate' => $endyear,
+				'characteristics' => 'Employment rate (percent)'
+			);
+
+
+			//alternative dates for Employment Rate m-m - Trying to find what data is being pulled
 			if($startmonth <= 12 && $startmonth > 1) {
 				$mo = $startmonth - 1;
 
@@ -135,15 +147,34 @@ class Charts extends CI_Controller {
 				);
 			}
 
+			$dataParticipation = array (
+				'date' => $startdate,
+				'characteristics' => 'Participation rate (percent)'
+			);
+			$dataUnemployment = array (
+				'date' => $startdate,
+				'characteristics' => 'Unemployment rate (percent)'
+			);
+
+			$dataUR_MM = $mmDates;
+			$dataUR_MM['characteristics'] ='Unemployment rate (percent)';
+
+			$dataUR_YY = $erDates;
+			$dataUR_YY['characteristics'] ='Unemployment rate (percent)';
+
 
 
 
 
 			$data['participation_yy'] = $this->nbdata->getParticipationRateYY($dates);
-			$data['participation'] = $this->nbdata->getParticipationRate($startdate);
+			$data['participation'] = $this->nbdata->getBarChart($dataParticipation);
 			$data['participation_mm'] = $this->nbdata->getParticipationRateMM($mmDates);
 			$data['employment_mm'] = $this->nbdata->getEmploymentRate($erMMDates);
 			$data['employment_yy'] = $this->nbdata->getEmploymentRate($erDates);
+			$data['employment_ur'] = $this->nbdata->getBarChart($dataUnemployment);
+			$data['employment_urMM'] = $this->nbdata->getComparisonBarChart($dataUR_MM);
+			$data['employment_urYY'] = $this->nbdata->getComparisonBarChart($dataUR_YY);
+			$data['growth_10yr'] = $this->nbdata->getComparisonBarChart($dataGrowth);
 		}
 		if(isset($data)) {
 
