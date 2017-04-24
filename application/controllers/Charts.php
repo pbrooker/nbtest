@@ -80,7 +80,8 @@ class Charts extends CI_Controller {
 	public function getAllParticipationCharts()
 	{
 		$this->form_validation->set_rules('startyear', 'Start Year', 'required|min_length[4]|max_length[4]');
-		$this->form_validation->set_rules('startmonth', 'Start Month', 'required|min_length[2]|max_length[2]|callback_monthCheck');
+		$this->form_validation->set_rules('startmonth', 'Start Month',
+			'required|min_length[2]|max_length[2]|callback_monthCheck');
 
 		if ($this->form_validation->run() == TRUE)
 		{
@@ -120,7 +121,7 @@ class Charts extends CI_Controller {
 			}
 
 			// dates for 10 year growth
-			$endyear = ((int)$startyear - 10) . '/' . $startmonth;
+			$endyear = ((int)$startyear - 9) . '/' . $startmonth;
 			$dataGrowth = array(
 
 				'startdate' => $startdate,
@@ -157,18 +158,22 @@ class Charts extends CI_Controller {
 			);
 
 			$dataUR_MM = $mmDates;
-			$dataUR_MM['characteristics'] ='Unemployment rate (percent)';
+			$dataUR_MM['characteristics'] = 'Unemployment rate (percent)';
 
 			$dataUR_YY = $erDates;
-			$dataUR_YY['characteristics'] ='Unemployment rate (percent)';
+			$dataUR_YY['characteristics'] = 'Unemployment rate (percent)';
+
+			$dataPR_MM = $mmDates;
+			$dataPR_MM['characteristics'] = 'Participation rate (percent)';
+
+			$dataPR_YY = $dates;
+			$dataPR_YY['characteristics'] = 'Participation rate (percent)';
 
 
 
-
-
-			$data['participation_yy'] = $this->nbdata->getParticipationRateYY($dates);
+			$data['participation_yy'] = $this->nbdata->getComparisonBarChart($dataPR_YY);
 			$data['participation'] = $this->nbdata->getBarChart($dataParticipation);
-			$data['participation_mm'] = $this->nbdata->getParticipationRateMM($mmDates);
+			$data['participation_mm'] = $this->nbdata->getComparisonBarChart($dataPR_MM);
 			$data['employment_mm'] = $this->nbdata->getEmploymentRate($erMMDates);
 			$data['employment_yy'] = $this->nbdata->getEmploymentRate($erDates);
 			$data['employment_ur'] = $this->nbdata->getBarChart($dataUnemployment);
@@ -181,6 +186,21 @@ class Charts extends CI_Controller {
 			$this->load->view('participation', $data);
 		}
 
+	}
+
+	public function getLabourForceCharts()
+	{
+		$this->form_validation->set_rules('startyear', 'Start Year', 'required|min_length[4]|max_length[4]');
+		$this->form_validation->set_rules('startmonth', 'Start Month',
+			'required|min_length[2]|max_length[2]|callback_monthCheck');
+
+		if ($this->form_validation->run() == TRUE) {
+
+			$startyear = $this->input->post('startyear');
+			$startmonth = $this->input->post('startmonth');
+
+
+		}
 	}
 
 	function monthCheck($num)

@@ -239,7 +239,7 @@ class Datagathering extends CI_Controller {
 	 * @return bool
 	 */
 
-	function processCsv($csv_pack, $age = 10)
+	function processCsv($csv_pack, $age = 11)
 	{
 		set_time_limit(1200);
 		$cutoffYear = (int)date('Y') - $age;
@@ -258,7 +258,7 @@ class Datagathering extends CI_Controller {
 			$csv = new SplFileObject($csv_pack['csv']);
 			$csv->setFlags(SplFileObject::READ_CSV);
 			$start = 0;
-			$batch = 2000000;
+			$batch = 1000000;
 
 
 			$output = fopen('./uploads/' . $csv_pack['name'] .'-eng/' . $csv_pack['name'] . '.csv', 'w');
