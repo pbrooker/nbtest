@@ -24,7 +24,8 @@
                 hAxis: { title: 'Month',
                         showTextEvery: 1,
                         slantedText: 'true',
-                        slantedTextAngle: 45
+                        slantedTextAngle: 45,
+                        gridlines: {count: 12}
                 },
                 vAxis: { title: 'Labour Force'},
                 legend:"none",
@@ -34,7 +35,7 @@
             var chart = new google.visualization.LineChart(document.getElementById('chart_divLF_MM'));
 
             google.visualization.events.addListener(chart, 'ready', function () {
-                document.getElementById('get_chart_LF_MM').innerHTML = '<img src="' + chart.getImageURI() + '">';
+                document.getElementById('get_chart_LF_MM').innerHTML = '<a href="' + chart.getImageURI() + '">Get Image</a>';
             });
             chart.draw(data, options);
         }
@@ -59,7 +60,8 @@
                 hAxis: { title: 'Month',
                     showTextEvery: 1,
                     slantedText: 'true',
-                    slantedTextAngle: 45
+                    slantedTextAngle: 45,
+                    gridlines: {count: 12}
                 },
                 vAxis: { title: 'Labour Force'},
                 legend:"none",
@@ -69,7 +71,7 @@
             var chart = new google.visualization.LineChart(document.getElementById('chart_divLF_YY'));
 
             google.visualization.events.addListener(chart, 'ready', function () {
-                document.getElementById('get_chart_LF_YY').innerHTML = '<img src="' + chart.getImageURI() + '">';
+                document.getElementById('get_chart_LF_YY').innerHTML = '<a  href="' + chart.getImageURI() + '">Get Image</a>';
             });
             chart.draw(data, options);
         }
@@ -81,11 +83,11 @@
 <body>
 <!--Div that will hold the chart-->
 <div class="row">
-    <div id="chart_divLF_MM" style="width: 40%"></div>
-    <div id="get_chart_LF_MM"></div>
+    <div id="chart_divLF_MM" style="width: 90%"></div>
+    <div style="margin-left: 50px"><button id="get_chart_LF_MM"></button></div>
 
-    <div id="chart_divLF_YY" style="width: 40%"></div>
-    <div id="get_chart_LF_YY"></div>
+    <div id="chart_divLF_YY" style="width: 90%"></div>
+    <div style="margin-left: 50px"><button id="get_chart_LF_YY"></button></div>
 </div>
 
 </body>

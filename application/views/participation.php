@@ -33,6 +33,9 @@
             };
             // Instantiate and draw our chart, passing in some options.
             var chart = new google.visualization.ColumnChart(document.getElementById('chart_divP'));
+            google.visualization.events.addListener(chart, 'ready', function () {
+                document.getElementById('get_chart_divP').innerHTML = '<a  href="' + chart.getImageURI() + '">Get Image</a>';
+            });
             chart.draw(data, options);
         }
 
@@ -66,6 +69,9 @@
             };
             // Instantiate and draw our chart, passing in some options.
             var chart = new google.visualization.ColumnChart(document.getElementById('chart_divMM'));
+            google.visualization.events.addListener(chart, 'ready', function () {
+                document.getElementById('get_chart_divMM').innerHTML = '<a  href="' + chart.getImageURI() + '">Get Image</a>';
+            });
             chart.draw(data, options);
         }
 
@@ -99,6 +105,9 @@
             };
             // Instantiate and draw our chart, passing in some options.
             var chart = new google.visualization.ColumnChart(document.getElementById('chart_divYY'));
+            google.visualization.events.addListener(chart, 'ready', function () {
+                document.getElementById('get_chart_divYY').innerHTML = '<a  href="' + chart.getImageURI() + '">Get Image</a>';
+            });
             chart.draw(data, options);
         }
 
@@ -132,6 +141,9 @@
             };
             // Instantiate and draw our chart, passing in some options.
             var chart = new google.visualization.ColumnChart(document.getElementById('chart_divERMM'));
+            google.visualization.events.addListener(chart, 'ready', function () {
+                document.getElementById('get_chart_divERMM').innerHTML = '<a  href="' + chart.getImageURI() + '">Get Image</a>';
+            });
             chart.draw(data, options);
         }
 
@@ -165,6 +177,9 @@
             };
             // Instantiate and draw our chart, passing in some options.
             var chart = new google.visualization.ColumnChart(document.getElementById('chart_divERYY'));
+            google.visualization.events.addListener(chart, 'ready', function () {
+                document.getElementById('get_chart_divERYY').innerHTML = '<a  href="' + chart.getImageURI() + '">Get Image</a>';
+            });
             chart.draw(data, options);
         }
 
@@ -198,6 +213,9 @@
             };
             // Instantiate and draw our chart, passing in some options.
             var chart = new google.visualization.ColumnChart(document.getElementById('chart_divUR'));
+            google.visualization.events.addListener(chart, 'ready', function () {
+                document.getElementById('get_chart_divUR').innerHTML = '<a  href="' + chart.getImageURI() + '">Get Image</a>';
+            });
             chart.draw(data, options);
         }
 
@@ -231,6 +249,9 @@
             };
             // Instantiate and draw our chart, passing in some options.
             var chart = new google.visualization.ColumnChart(document.getElementById('chart_divUR_MM'));
+            google.visualization.events.addListener(chart, 'ready', function () {
+                document.getElementById('get_chart_divUR_MM').innerHTML = '<a  href="' + chart.getImageURI() + '">Get Image</a>';
+            });
             chart.draw(data, options);
         }
 
@@ -265,6 +286,9 @@
             };
             // Instantiate and draw our chart, passing in some options.
             var chart = new google.visualization.ColumnChart(document.getElementById('chart_divGrowth_10'));
+            google.visualization.events.addListener(chart, 'ready', function () {
+                document.getElementById('get_chart_divGrowth_10').innerHTML = '<a  href="' + chart.getImageURI() + '">Get Image</a>';
+            });
             chart.draw(data, options);
         }
 
@@ -274,39 +298,48 @@
 <body>
 <!--Div that will hold the chart-->
 <div id="chart_divP" style="width: 90%"></div>
+<div style="margin-left: 100px"><button id="get_chart_divP"></button></div>
 <br>
 <br>
 <div id="chart_divMM" style="width: 90%"></div>
+<div style="margin-left: 100px"><button id="get_chart_divMM"></button></div>
 <br>
 <br>
 <div id="chart_divYY" style="width: 90%"></div>
+<div style="margin-left: 100px"><button id="get_chart_divYY"></button></div>
 <br>
 <br>
 <div style="width: 100%; background-color: #1f1d1d; height: 5px"></div>
 <br>
 <br>
 <div id="chart_divERMM" style="width: 90%"></div>
+<div style="margin-left: 100px"><button id="get_chart_divERMM"></button></div>
 <br>
 <br>
 <div id="chart_divERYY" style="width: 90%"></div>
+<div style="margin-left: 100px"><button id="get_chart_divERYY"></button></div>
 <br>
 <br>
 <div style="width: 100%; background-color: #1f1d1d; height: 5px"></div>
 <br>
 <br>
 <div id="chart_divUR" style="width: 90%"></div>
+<div style="margin-left: 100px"><button id="get_chart_divUR"></button></div>
 <br>
 <br>
 <div id="chart_divUR_MM" style="width: 90%"></div>
+<div style="margin-left: 100px"><button id="get_chart_divUR_MM"></button></div>
 <br>
 <br>
 <div id="chart_divUR_YY" style="width: 90%"></div>
+<div style="margin-left: 100px"><button id="get_chart_divUR_YY"></button></div>
 <br>
 <br>
 <div style="width: 100%; background-color: #1f1d1d; height: 5px"></div>
 <br>
 <br>
 <div id="chart_divGrowth_10" style="width: 90%"></div>
+<div style="margin-left: 100px"><button id="get_chart_divGrowth_10"></button></div>
 
 </body>
 </html>
