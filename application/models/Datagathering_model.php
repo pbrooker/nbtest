@@ -372,6 +372,70 @@ class Datagathering_model extends CI_Model
 		return $jsonTable;
 	}
 
+	public function getLabourForceData($data)
+	{
+		$startmonth = $data['startmonth'];
+		$startyear = $data['startyear'];
+
+		$year = array();
+		if ($startmonth <= 12 && $startmonth >= 1) {
+			$month = $startmonth;
+			$yr = $startyear;
+			for ($i = 0; $i <= 12; $i++) {
+				if ($month > 0) {
+					$mo_padded = sprintf('%02d', $month);
+					$year[$i] = $yr . '/' . $mo_padded;
+					$month--;
+				} else {
+					$month = 12;
+					$yr--;
+				}
+			}
+		}
+
+
+		$this->db->select('value, ref_date')
+				 ->from("`" . '02820087' . "`")
+				 ->where_in('ref_date', $year)
+				 ->where('`agegroup` = "15 years and over"')
+				 ->where('`sex` = "Both sexes"')
+				 ->where('`statistics` = "Estimate"')
+				 ->where('`datatype` = "Unadjusted"')
+				 ->where('`characteristics` = "Labour force (x 1,000)"')
+				 ->where('`geography` = "New Brunswick"');
+
+		$result = $this->db->get()->result();
+		$query = $this->db->last_query();
+
+		$table = array();
+		$table['cols'] = array(
+
+			array('id' =>'','label' => 'Date', 'type' => 'date' ),
+			array('label' => 'Value', 'type' => 'number')
+
+
+		);
+		$rows = array();
+
+		foreach($result as $key => $value) {
+
+			$temp = array();
+			$dates = explode('/', $value->ref_date);
+			$temp[] = array('v' => 'Date(' . $dates['0'] . ',' . $dates['1'] . ',01' .')');
+			$temp[] = array('v' => (int)$value->value);
+
+
+			$rows[] = array('c' => $temp);
+
+		}
+
+
+
+		$table['rows'] = $rows;
+		$jsonTable = json_encode($table);
+
+		return $jsonTable;
+	}
 
 
 	private function _provinceNames($name)

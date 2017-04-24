@@ -194,12 +194,23 @@ class Charts extends CI_Controller {
 		$this->form_validation->set_rules('startmonth', 'Start Month',
 			'required|min_length[2]|max_length[2]|callback_monthCheck');
 
+
 		if ($this->form_validation->run() == TRUE) {
 
 			$startyear = $this->input->post('startyear');
 			$startmonth = $this->input->post('startmonth');
 
+			$dataLF_MM = array(
+				'startyear' => $startyear,
+				'startmonth' => $startmonth
+			);
 
+			$data['labour_force_mm'] = $this->nbdata->getLabourForceData($dataLF_MM);
+
+			if (isset($data)) {
+
+				$this->load->view('labour_force', $data);
+			}
 		}
 	}
 
