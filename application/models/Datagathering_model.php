@@ -229,6 +229,11 @@ class Datagathering_model extends CI_Model
 		return $jsonTable;
 	}
 
+	/**
+	 * Query returns data based on the selected characteristics and date.
+	 * @param $data
+	 * @return string
+	 */
 	public function getBarChart($data)
 	{
 		$date = $data['date'];
@@ -284,6 +289,12 @@ class Datagathering_model extends CI_Model
 		return $jsonTable;
 	}
 
+	/**
+	 *  Data includes start date, end date, and characteristic definition, allow comparison between the results of
+	 * two queries
+	 * @param $data
+	 * @return string
+	 */
 	public function getComparisonBarChart($data)
 	{
 		$startdate = $data['startdate'];
@@ -374,29 +385,10 @@ class Datagathering_model extends CI_Model
 
 	public function getLabourForceData($data)
 	{
-		$startmonth = $data['startmonth'];
-		$startyear = $data['startyear'];
-
-		$year = array();
-		if ($startmonth <= 12 && $startmonth >= 1) {
-			$month = $startmonth;
-			$yr = $startyear;
-			for ($i = 0; $i <= 12; $i++) {
-				if ($month > 0) {
-					$mo_padded = sprintf('%02d', $month);
-					$year[$i] = $yr . '/' . $mo_padded;
-					$month--;
-				} else {
-					$month = 12;
-					$yr--;
-				}
-			}
-		}
-
 
 		$this->db->select('value, ref_date')
 				 ->from("`" . '02820087' . "`")
-				 ->where_in('ref_date', $year)
+				 ->where_in('ref_date', $data)
 				 ->where('`agegroup` = "15 years and over"')
 				 ->where('`sex` = "Both sexes"')
 				 ->where('`statistics` = "Estimate"')
@@ -411,7 +403,7 @@ class Datagathering_model extends CI_Model
 		$table['cols'] = array(
 
 			array('id' =>'','label' => 'Date', 'type' => 'date' ),
-			array('label' => 'Value', 'type' => 'number')
+			array('id' =>'', 'label' => 'Value', 'type' => 'number')
 
 
 		);
@@ -421,15 +413,13 @@ class Datagathering_model extends CI_Model
 
 			$temp = array();
 			$dates = explode('/', $value->ref_date);
-			$temp[] = array('v' => 'Date(' . $dates['0'] . ',' . $dates['1'] . ',01' .')');
+			$temp[] = array('v' => 'Date(' . $dates['0'] . ',' . ($dates['1'] - 1) . ',01' .')');
 			$temp[] = array('v' => (int)$value->value);
 
 
 			$rows[] = array('c' => $temp);
 
 		}
-
-
 
 		$table['rows'] = $rows;
 		$jsonTable = json_encode($table);

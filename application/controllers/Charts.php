@@ -200,17 +200,44 @@ class Charts extends CI_Controller {
 			$startyear = $this->input->post('startyear');
 			$startmonth = $this->input->post('startmonth');
 
-			$dataLF_MM = array(
-				'startyear' => $startyear,
-				'startmonth' => $startmonth
-			);
+			$MM = array();
+			// for Month to Month trends
+			if ($startmonth <= 12 && $startmonth >= 1) {
+				$month = $startmonth;
+				$yr = $startyear;
+				for ($i = 0; $i <= 12; $i++) {
+					if ($month > 0) {
+						$mo_padded = sprintf('%02d', $month);
+						$MM[$i] = $yr . '/' . $mo_padded;
+						$month--;
+					} else {
+						$month = 12;
+						$yr--;
+					}
+				}
+			}
+			$YY = array();
+			// for Year to Year trends
+			if ($startmonth <= 12 && $startmonth >= 1) {
+				$month = $startmonth;
+				$yr = $startyear;
+				for ($i = 0; $i <= 12; $i++) {
+					$mo_padded = sprintf('%02d', $month);
+					$YY[$i] = $yr . '/' . $mo_padded;
+					$yr--;
+				}
+			}
+
+			$dataLF_MM = $MM;
+			$dataLF_YY = $YY;
 
 			$data['labour_force_mm'] = $this->nbdata->getLabourForceData($dataLF_MM);
+			$data['labour_force_yy'] = $this->nbdata->getLabourForceData($dataLF_YY);
+		}
 
-			if (isset($data)) {
+		if (isset($data)) {
 
-				$this->load->view('labour_force', $data);
-			}
+			$this->load->view('labour_force', $data);
 		}
 	}
 

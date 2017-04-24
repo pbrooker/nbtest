@@ -21,13 +21,56 @@
             var options = {
                 title: "Labour Force M-M Trends",
                 height: 400,
-                hAxis: { title: 'Month'},
+                hAxis: { title: 'Month',
+                        showTextEvery: 1,
+                        slantedText: 'true',
+                        slantedTextAngle: 45
+                },
                 vAxis: { title: 'Labour Force'},
-                legend: { position: "none" },
+                legend:"none",
                 trendlines: { 0: {} }
             };
             // Instantiate and draw our chart, passing in some options.
             var chart = new google.visualization.LineChart(document.getElementById('chart_divLF_MM'));
+
+            google.visualization.events.addListener(chart, 'ready', function () {
+                document.getElementById('get_chart_LF_MM').innerHTML = '<img src="' + chart.getImageURI() + '">';
+            });
+            chart.draw(data, options);
+        }
+
+    </script>
+
+    <script type="text/javascript">
+
+        // Load the Visualization API and the piechart package.
+        google.load('visualization', '1', {'packages':['corechart']});
+
+        // Set a callback to run when the Google Visualization API is loaded.
+        google.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+
+            var data = new google.visualization.DataTable(<?= $labour_force_yy ;?>);
+
+            var options = {
+                title: "Labour Force Y-Y Trends",
+                height: 400,
+                hAxis: { title: 'Month',
+                    showTextEvery: 1,
+                    slantedText: 'true',
+                    slantedTextAngle: 45
+                },
+                vAxis: { title: 'Labour Force'},
+                legend:"none",
+                trendlines: { 0: {} }
+            };
+            // Instantiate and draw our chart, passing in some options.
+            var chart = new google.visualization.LineChart(document.getElementById('chart_divLF_YY'));
+
+            google.visualization.events.addListener(chart, 'ready', function () {
+                document.getElementById('get_chart_LF_YY').innerHTML = '<img src="' + chart.getImageURI() + '">';
+            });
             chart.draw(data, options);
         }
 
@@ -37,9 +80,13 @@
 
 <body>
 <!--Div that will hold the chart-->
-<div id="chart_divLF_MM" style="width: 90%"></div>
-<br>
-<br>
+<div class="row">
+    <div id="chart_divLF_MM" style="width: 40%"></div>
+    <div id="get_chart_LF_MM"></div>
+
+    <div id="chart_divLF_YY" style="width: 40%"></div>
+    <div id="get_chart_LF_YY"></div>
+</div>
 
 </body>
 </html>

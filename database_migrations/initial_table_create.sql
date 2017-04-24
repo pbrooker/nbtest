@@ -93,7 +93,7 @@ CREATE TABLE `02820122` (
   KEY `hash_value` (`hash_value`),
   KEY `ref_date` (`ref_date`),
   KEY `character` (`characteristics`),
-  KEY `geo` (`geographical_classification`),
+  KEY `geo` (`geo`),
   KEY `stats` (`statistics`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -110,7 +110,7 @@ CREATE TABLE `02820123` (
   KEY `hash_value` (`hash_value`),
   KEY `ref_date` (`ref_date`),
   KEY `character` (`characteristics`),
-  KEY `geo` (`geographical_classification`)
+  KEY `geo` (`geo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `02820128` (
@@ -125,7 +125,10 @@ CREATE TABLE `02820128` (
   `value` DECIMAL (10,1) DEFAULT NULL,
   `hash_value` varchar(255) NOT NULL,
   PRIMARY KEY (`hash_value`),
-  KEY `hash_value` (`hash_value`)
+  KEY `hash_value` (`hash_value`),
+  KEY `ref_date` (`ref_date`),
+  KEY `character` (`characteristics`),
+  KEY `geo` (`geo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `02820129` (
@@ -143,7 +146,7 @@ CREATE TABLE `02820129` (
   KEY `hash_value` (`hash_value`),
   KEY `ref_date` (`ref_date`),
   KEY `character` (`characteristics`),
-  KEY `geo` (`geographical_classification`),
+  KEY `geo` (`geo`),
   KEY `sex` (`sex`),
   KEY `age` (`agegroup`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
