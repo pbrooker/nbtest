@@ -206,7 +206,7 @@ class Charts extends CI_Controller {
 			if ($startmonth <= 12 && $startmonth >= 1) {
 				$month = $startmonth;
 				$yr = $startyear;
-				for ($i = 0; $i <= 12; $i++) {
+				for ($i = 0; $i <= 13; $i++) {
 					if ($month > 0) {
 						$mo_padded = sprintf('%02d', $month);
 						$MM[$i] = $yr . '/' . $mo_padded;
@@ -223,7 +223,7 @@ class Charts extends CI_Controller {
 			if ($startmonth <= 12 && $startmonth >= 1) {
 				$month = $startmonth;
 				$yr = $startyear;
-				for ($i = 0; $i <= 12; $i++) {
+				for ($i = 0; $i <= 9; $i++) {
 					$mo_padded = sprintf('%02d', $month);
 					$YY[$i] = $yr . '/' . $mo_padded;
 					$yr--;

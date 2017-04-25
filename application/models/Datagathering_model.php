@@ -386,7 +386,7 @@ class Datagathering_model extends CI_Model
 				 ->where('`agegroup` = "15 years and over"')
 				 ->where('`sex` = "Both sexes"')
 				 ->where('`statistics` = "Estimate"')
-				 ->where('`datatype` = "Unadjusted"')
+				 ->where('`datatype` = "Seasonally adjusted"')
 				 ->where('`characteristics` =', $characteristics)
 				 ->where('`geography` = "New Brunswick"');
 
@@ -440,7 +440,7 @@ class Datagathering_model extends CI_Model
 			->where('`agegroup` = "15 years and over"')
 			->where('`sex` = "Both sexes"')
 			->where('`statistics` = "Estimate"')
-			->where('`datatype` = "Unadjusted"')
+			->where('`datatype` = "Seasonally adjusted"')
 			->where('`geography` = "New Brunswick"')
 			->order_by('ord_results', 'ASC');
 
@@ -457,7 +457,7 @@ class Datagathering_model extends CI_Model
 			->where('`agegroup` = "15 years and over"')
 			->where('`sex` = "Both sexes"')
 			->where('`statistics` = "Estimate"')
-			->where('`datatype` = "Unadjusted"')
+			->where('`datatype` = "Seasonally adjusted"')
 			->where('`geography` = "New Brunswick"')
 			->order_by('ord_results', 'ASC');
 
@@ -474,7 +474,7 @@ class Datagathering_model extends CI_Model
 			->where('`agegroup` = "15 years and over"')
 			->where('`sex` = "Both sexes"')
 			->where('`statistics` = "Estimate"')
-			->where('`datatype` = "Unadjusted"')
+			->where('`datatype` = "Seasonally adjusted"')
 			->where('`geography` = "New Brunswick"')
 			->order_by('ord_results', 'ASC');
 
