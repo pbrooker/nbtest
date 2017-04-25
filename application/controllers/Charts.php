@@ -200,8 +200,9 @@ class Charts extends CI_Controller {
 			$startyear = $this->input->post('startyear');
 			$startmonth = $this->input->post('startmonth');
 
-			$MM = array();
+
 			// for Month to Month trends
+			$MM = array();
 			if ($startmonth <= 12 && $startmonth >= 1) {
 				$month = $startmonth;
 				$yr = $startyear;
@@ -216,8 +217,9 @@ class Charts extends CI_Controller {
 					}
 				}
 			}
-			$YY = array();
+
 			// for Year to Year trends
+			$YY = array();
 			if ($startmonth <= 12 && $startmonth >= 1) {
 				$month = $startmonth;
 				$yr = $startyear;
@@ -227,6 +229,34 @@ class Charts extends CI_Controller {
 					$yr--;
 				}
 			}
+
+			// for Year over year and last month to current month data table
+			$mo = $startmonth - 1;
+			if($mo == 0) {
+				$mo = 12;
+			}
+			if($startmonth == 1) {
+				$prevMonthYear = $startyear -1;
+			} else {
+				$prevMonthYear = $startyear;
+			}
+			$mo_pad = sprintf('%02d', $startmonth);
+			$dataTable = array (
+
+				'startyear' => $startyear . '/' . $mo_pad,
+				'prevyear' => ($startyear - 1) . '/' . $mo_pad,
+				'prevmonth' =>  $prevMonthYear . '/' . sprintf( '%02d', $mo),
+				'characteristics' => array (
+					'Population (x 1,000)', 'Labour force (x 1,000)', 'Employment (x 1,000)',
+					'Employment full-time (x 1,000)', 'Employment part-time (x 1,000)', 'Unemployment (x 1,000)',
+					'Participation rate (percent)', 'Employment rate (percent)', 'Unemployment rate (percent)'
+				),
+				'math_array' => array (
+					'Population (x 1,000)', 'Labour force (x 1,000)', 'Employment (x 1,000)',
+					'Employment full-time (x 1,000)', 'Employment part-time (x 1,000)', 'Unemployment (x 1,000)'
+				)
+
+			);
 
 			$dataLF_MM = array (
 				'where_in' => $MM,
@@ -253,6 +283,12 @@ class Charts extends CI_Controller {
 				'characteristics' => 'Unemployment (x 1,000)'
 			);
 
+			$dateObj   = DateTime::createFromFormat('!m', $startmonth);
+			$monthName = $dateObj->format('F');
+
+			$data['labour_force_statistics'] = array(
+				'data' => $this->nbdata->getLabourForceStatistics($dataTable),
+				'date' => $monthName . ' ' . $startyear);
 			$data['labour_force_mm'] = $this->nbdata->getLabourForceData($dataLF_MM);
 			$data['labour_force_yy'] = $this->nbdata->getLabourForceData($dataLF_YY);
 			$data['employment_mm'] = $this->nbdata->getLabourForceData($dataEM_MM);

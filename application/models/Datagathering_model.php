@@ -391,7 +391,7 @@ class Datagathering_model extends CI_Model
 				 ->where('`geography` = "New Brunswick"');
 
 		$result = $this->db->get()->result();
-		$query = $this->db->last_query();
+		//$query = $this->db->last_query();
 
 		$table = array();
 		$table['cols'] = array(
@@ -415,6 +415,136 @@ class Datagathering_model extends CI_Model
 
 		}
 
+		$table['rows'] = $rows;
+		$jsonTable = json_encode($table);
+
+		return $jsonTable;
+	}
+
+	public function getLabourForceStatistics($data)
+	{
+		$startyear = $data['startyear'];
+		$prevyear = $data['prevyear'];
+		$prevmonth = $data['prevmonth'];
+		$where_in = $data['characteristics'];
+		$math_array = $data['math_array'];
+
+		$this->db->select('value, ref_date, characteristics')
+			->from("`" . '02820087' . "`")
+			->where('`ref_date` =' , $startyear)
+			->where_in('characteristics', $where_in)
+			->where('`agegroup` = "15 years and over"')
+			->where('`sex` = "Both sexes"')
+			->where('`statistics` = "Estimate"')
+			->where('`datatype` = "Unadjusted"')
+			->where('`geography` = "New Brunswick"');
+
+		$start_result = $this->db->get()->result();
+
+		$this->db->select('value, ref_date, characteristics')
+			->from("`" . '02820087' . "`")
+			->where('`ref_date` =' , $prevyear)
+			->where_in('characteristics', $where_in)
+			->where('`agegroup` = "15 years and over"')
+			->where('`sex` = "Both sexes"')
+			->where('`statistics` = "Estimate"')
+			->where('`datatype` = "Unadjusted"')
+			->where('`geography` = "New Brunswick"');
+
+		$prev_result = $this->db->get()->result();
+
+		$this->db->select('value, ref_date, characteristics')
+			->from("`" . '02820087' . "`")
+			->where('`ref_date` =' , $prevmonth)
+			->where_in('characteristics', $where_in)
+			->where('`agegroup` = "15 years and over"')
+			->where('`sex` = "Both sexes"')
+			->where('`statistics` = "Estimate"')
+			->where('`datatype` = "Unadjusted"')
+			->where('`geography` = "New Brunswick"');
+
+		$prev_month_result = $this->db->get()->result();
+
+
+		//getting comparisons for year over year and month to last month
+		$result = array();
+		$temp = array();
+		foreach($start_result as $key => $value) {
+			$characteristic = $value->characteristics;
+			$ref_date = $value->ref_date;
+			$val = $value->value;
+			foreach($prev_result as $innerKey => $innerValue) {
+				if($innerValue->characteristics == $characteristic) {
+					$inVal = $innerValue->value;
+					$diff = $val - $inVal;
+					$temp['characteristics'] = $value->characteristics;
+					$temp['curr_year'] = $ref_date;
+					$temp['prev_year'] = $innerValue->ref_date;
+					if(in_array($innerValue->characteristics, $math_array)) {
+						$perc_diff = sprintf('%.01f', (($diff / $val) * 100));
+						$temp['perc_diff'] = $perc_diff . '%';
+						$temp['curr_yr_val'] = $value->value * 1000;
+						$temp['prev_yr_val'] = $innerValue->value * 1000;
+						$temp['yr_diff'] = $diff * 1000;
+					} else {
+						$temp['curr_yr_val'] = $value->value;
+						$temp['prev_yr_val'] = $innerValue->value;
+						$temp['yr_diff'] = $diff . '(pp)';
+					}
+
+				}
+				foreach($prev_month_result as $prevMonth => $preVal) {
+					if($preVal->characteristics == $characteristic) {
+						$lastMoVal = $preVal->value;
+						$modiff = $val - $lastMoVal;
+						$temp['prev_month'] = $preVal->ref_date;
+						if(in_array($preVal->characteristics, $math_array)) {
+							$month_perc_diff = sprintf('%.01f', (($modiff / $val) * 100));
+							$temp['mo_per_diff'] = $month_perc_diff . '%';
+							$temp['prev_mo_val'] = $lastMoVal * 1000;
+							$temp['mo_diff'] = $modiff * 1000;
+						} else {
+							$temp['prev_mo_val'] = $lastMoVal;
+							$temp['mo_diff'] = $modiff . '(pp)';
+						}
+
+					}
+				}
+			}
+			array_push($result, $temp);
+		}
+
+		$table = array();
+		$table['cols'] = array(
+
+			array('label' => 'Characteristics', 'type' => 'string', ),
+			array('label' => $value['prev_year'], 'type' => 'number'),
+			array('label' => $value['prev_month'], 'type' => 'number'),
+			array('label' => $value['curr_year'], 'type' => 'number'),
+			array('label' => 'M-M Change', 'type' => 'number'),
+			array('label' =>'', 'type' => 'string'),
+			array('label' => 'Y-Y Change', 'type' => 'number'),
+			array('label' => '', 'type' => 'string')
+
+		);
+		$rows = array();
+
+		foreach($result as $key => $value) {
+
+			$temp = array();
+			// the following line will be used to slice the Pie chart
+			$temp[] = array('v' => $this->_fieldNames($value['characteristics']));
+			$temp[] = array('v' => $value['prev_yr_val']);
+			$temp[] = array('v' => $value['prev_mo_val']);
+			$temp[] = array('v' => $value['curr_yr_val']);
+			$temp[] = array('v' => $value['mo_diff']);
+			$temp[] = array('v' => $value['mo_per_diff']);
+			$temp[] = array('v' => $value['yr_diff']);
+			$temp[] = array('v' => $value['perc_diff']);
+			
+			$rows[] = array('c' => $temp);
+
+		}
 		$table['rows'] = $rows;
 		$jsonTable = json_encode($table);
 
@@ -458,6 +588,43 @@ class Datagathering_model extends CI_Model
 				break;
 			case 'Canada':
 				$returnName = 'Canada';
+				break;
+			default:
+				$returnName = $name;
+		}
+
+		return $returnName;
+	}
+
+	private function _fieldNames($name)
+	{
+		switch ($name) {
+			case 'Population (x 1,000)':
+				$returnName = 'Population';
+				break;
+			case 'Labour force (x 1,000)':
+				$returnName = 'Labour Force';
+				break;
+			case 'Employment (x 1,000)':
+				$returnName = 'Employment';
+				break;
+			case 'Employment full-time (x 1,000)':
+				$returnName = 'FT Employment';
+				break;
+			case 'Employment part-time (x 1,000)':
+				$returnName = 'PT Employment';
+				break;
+			case 'Unemployment (x 1,000)':
+				$returnName = 'Unemployment';
+				break;
+			case 'Participation rate (percent)':
+				$returnName = 'Participation rate (%)';
+				break;
+			case 'Employment rate (percent)':
+				$returnName = 'Employment rate (%)';
+				break;
+			case 'Unemployment rate (percent)':
+				$returnName = 'Unemployment rate (%)';
 				break;
 			default:
 				$returnName = $name;
