@@ -377,15 +377,17 @@ class Datagathering_model extends CI_Model
 
 	public function getLabourForceData($data)
 	{
+		$where_in = $data['where_in'];
+		$characteristics = $data['characteristics'];
 
 		$this->db->select('value, ref_date')
 				 ->from("`" . '02820087' . "`")
-				 ->where_in('ref_date', $data)
+				 ->where_in('ref_date', $where_in)
 				 ->where('`agegroup` = "15 years and over"')
 				 ->where('`sex` = "Both sexes"')
 				 ->where('`statistics` = "Estimate"')
 				 ->where('`datatype` = "Unadjusted"')
-				 ->where('`characteristics` = "Labour force (x 1,000)"')
+				 ->where('`characteristics` =', $characteristics)
 				 ->where('`geography` = "New Brunswick"');
 
 		$result = $this->db->get()->result();

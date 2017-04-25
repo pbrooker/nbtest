@@ -228,11 +228,37 @@ class Charts extends CI_Controller {
 				}
 			}
 
-			$dataLF_MM = $MM;
-			$dataLF_YY = $YY;
+			$dataLF_MM = array (
+				'where_in' => $MM,
+				'characteristics' => 'Labour force (x 1,000)' )
+			;
+			$dataLF_YY = array (
+				'where_in' => $YY,
+				'characteristics' => 'Labour force (x 1,000)'
+			);
+			$dataEM_MM = array (
+				'where_in' => $MM,
+				'characteristics' => 'Employment (x 1,000)'
+			);
+			$dataEM_YY = array (
+				'where_in' => $YY,
+				'characteristics' => 'Employment (x 1,000)'
+			);
+			$dataUM_MM = array (
+				'where_in' => $MM,
+				'characteristics' => 'Unemployment (x 1,000)'
+			);
+			$dataUM_YY = array (
+				'where_in' => $YY,
+				'characteristics' => 'Unemployment (x 1,000)'
+			);
 
 			$data['labour_force_mm'] = $this->nbdata->getLabourForceData($dataLF_MM);
 			$data['labour_force_yy'] = $this->nbdata->getLabourForceData($dataLF_YY);
+			$data['employment_mm'] = $this->nbdata->getLabourForceData($dataEM_MM);
+			$data['employment_yy'] = $this->nbdata->getLabourForceData($dataEM_YY);
+			$data['unemployment_mm'] = $this->nbdata->getLabourForceData($dataUM_MM);
+			$data['unemployment_yy'] = $this->nbdata->getLabourForceData($dataUM_YY);
 		}
 
 		if (isset($data)) {

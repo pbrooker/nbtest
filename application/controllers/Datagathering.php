@@ -239,7 +239,7 @@ class Datagathering extends CI_Controller {
 	 * @return bool
 	 */
 
-	function processCsv($csv_pack, $age = 11)
+	function processCsv($csv_pack, $age = 12)
 	{
 		set_time_limit(1200);
 		$cutoffYear = (int)date('Y') - $age;
