@@ -497,14 +497,14 @@ class Datagathering_model extends CI_Model
 					$temp['prev_year'] = $innerValue->ref_date;
 					if(in_array($innerValue->characteristics, $math_array)) {
 						$perc_diff = sprintf('%.01f', (($diff / $val) * 100));
-						$temp['perc_diff'] = $perc_diff . '%';
+						$temp['perc_diff'] = $perc_diff;
 						$temp['curr_yr_val'] = $value->value * 1000;
 						$temp['prev_yr_val'] = $innerValue->value * 1000;
 						$temp['yr_diff'] = $diff * 1000;
 					} else {
 						$temp['curr_yr_val'] = $value->value;
 						$temp['prev_yr_val'] = $innerValue->value;
-						$temp['yr_diff'] = $diff . '(pp)';
+						$temp['yr_diff'] = $diff;
 						$temp['perc_diff'] = "";
 					}
 
@@ -517,12 +517,12 @@ class Datagathering_model extends CI_Model
 					$temp['prev_month'] = $preVal->ref_date;
 					if(in_array($preVal->characteristics, $math_array)) {
 						$month_perc_diff = sprintf('%.01f', (($modiff / $val) * 100));
-						$temp['mo_per_diff'] = $month_perc_diff . '%';
+						$temp['mo_per_diff'] = $month_perc_diff;
 						$temp['prev_mo_val'] = $lastMoVal * 1000;
 						$temp['mo_diff'] = $modiff * 1000;
 					} else {
 						$temp['prev_mo_val'] = $lastMoVal;
-						$temp['mo_diff'] = $modiff . '(pp)';
+						$temp['mo_diff'] = $modiff;
 						$temp['mo_per_diff'] = "";
 					}
 
@@ -541,22 +541,22 @@ class Datagathering_model extends CI_Model
 				array('label' => $value['prev_year'], 'type' => 'number'),
 				array('label' => $value['prev_month'], 'type' => 'number'),
 				array('label' => $value['curr_year'], 'type' => 'number'),
-				array('label' => 'M-M Change', 'type' => 'string'),
-				array('label' =>'', 'type' => 'string'),
-				array('label' => 'Y-Y Change', 'type' => 'string'),
-				array('label' => '', 'type' => 'string')
+				array('label' => 'M-M Change', 'type' => 'number'),
+				array('label' =>'', 'type' => 'number'),
+				array('label' => 'Y-Y Change', 'type' => 'number'),
+				array('label' => '', 'type' => 'number')
 
 			);
 		}
 		$rows = array();
 
 		foreach($result1 as $key => $value) {
-			if(isset($value['mo_per_diff'])) {
+			if(is_numeric($value['mo_per_diff'])) {
 				$mo_diff = $value['mo_per_diff'];
 			} else {
 				$mo_diff = null;
 			}
-			if(isset($value['perc_diff'])) {
+			if(is_numeric($value['perc_diff'])) {
 				$yr_diff = $value['perc_diff'];
 			} else {
 				$yr_diff = null;

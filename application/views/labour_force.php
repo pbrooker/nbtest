@@ -32,17 +32,27 @@
 
             var data = new google.visualization.DataTable(<?= $labour_force_statistics['data'] ;?>);
 
+
             var options = {
                 title: "Labour Force Statistics: " + "<?= $labour_force_statistics['date'] ;?>",
                 height: 400,
-                width: 1200
+                width: 1200,
+                interpolateNulls: false
             };
             // Instantiate and draw our chart, passing in some options.
             var table = new google.visualization.Table(document.getElementById('table_divLF_main'));
 
-//            google.visualization.events.addListener(table, 'ready', function () {
-//                document.getElementById('get_table_LF_main').innerHTML = '<a href="' + table.getImageURI() + '">Get Image</a>';
-//            });
+            var formatter = new google.visualization.ArrowFormat();
+            formatter.format(data, 4);
+            formatter.format(data, 5);
+            formatter.format(data, 6);
+            formatter.format(data, 7);
+
+            var row7 = data.getRowProperties(6);
+            var row8 = data.getRowProperties(7);
+            var row9 = data.getRowProperties(8);
+
+
             table.draw(data, options);
         }
 
@@ -266,9 +276,11 @@
 </head>
 
 <body>
+<br>
+<br>
+
 <div class="col-md-12" style="width: 100%">
     <div id="table_divLF_main" style="width: 100%"></div>
-    <div style="margin-left: 50px"><button id="get_table_LF_main"></button></div>
 </div>
 
 <div class="col-md-12">
