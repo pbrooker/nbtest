@@ -1,6 +1,10 @@
 <html>
 
 <head>
+    <script
+            src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous"></script>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
@@ -9,6 +13,8 @@
 
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
 
 	<!--Load the AJAX API-->
 	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
@@ -27,15 +33,16 @@
             var data = new google.visualization.DataTable(<?= $labour_force_statistics['data'] ;?>);
 
             var options = {
-                title: "Labour Force Statistics: " + <?= $labour_force_statistics['date'] ;?>,
+                title: "Labour Force Statistics: " + "<?= $labour_force_statistics['date'] ;?>",
                 height: 400,
+                width: 1200
             };
             // Instantiate and draw our chart, passing in some options.
             var table = new google.visualization.Table(document.getElementById('table_divLF_main'));
 
-            google.visualization.events.addListener(table, 'ready', function () {
-                document.getElementById('get_table_LF_main').innerHTML = '<a href="' + chart.getImageURI() + '">Get Image</a>';
-            });
+//            google.visualization.events.addListener(table, 'ready', function () {
+//                document.getElementById('get_table_LF_main').innerHTML = '<a href="' + table.getImageURI() + '">Get Image</a>';
+//            });
             table.draw(data, options);
         }
 
@@ -259,7 +266,7 @@
 </head>
 
 <body>
-<div class="col-md-12">
+<div class="col-md-12" style="width: 100%">
     <div id="table_divLF_main" style="width: 100%"></div>
     <div style="margin-left: 50px"><button id="get_table_LF_main"></button></div>
 </div>

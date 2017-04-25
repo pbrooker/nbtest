@@ -429,7 +429,11 @@ class Datagathering_model extends CI_Model
 		$where_in = $data['characteristics'];
 		$math_array = $data['math_array'];
 
-		$this->db->select('value, ref_date, characteristics')
+		$this->db->select("value, ref_date, characteristics, CASE `characteristics` WHEN 'Population (x 1,000)' THEN 1 
+		WHEN 'Labour force (x 1,000)' THEN 2 WHEN 'Employment (x 1,000)' THEN 3 WHEN 'Employment full-time (x 1,000)' 
+		THEN 4 WHEN 'Employment part-time (x 1,000)' THEN 5 WHEN 'Unemployment (x 1,000)' THEN 6 WHEN 
+		'Participation rate (percent)' THEN 7 WHEN 'Employment rate (percent)' THEN 8 WHEN 'Unemployment rate (percent)'
+		THEN 9 END AS ord_results")
 			->from("`" . '02820087' . "`")
 			->where('`ref_date` =' , $startyear)
 			->where_in('characteristics', $where_in)
@@ -437,11 +441,16 @@ class Datagathering_model extends CI_Model
 			->where('`sex` = "Both sexes"')
 			->where('`statistics` = "Estimate"')
 			->where('`datatype` = "Unadjusted"')
-			->where('`geography` = "New Brunswick"');
+			->where('`geography` = "New Brunswick"')
+			->order_by('ord_results', 'ASC');
 
 		$start_result = $this->db->get()->result();
 
-		$this->db->select('value, ref_date, characteristics')
+		$this->db->select("value, ref_date, characteristics, CASE `characteristics` WHEN 'Population (x 1,000)' THEN 1 
+		WHEN 'Labour force (x 1,000)' THEN 2 WHEN 'Employment (x 1,000)' THEN 3 WHEN 'Employment full-time (x 1,000)' 
+		THEN 4 WHEN 'Employment part-time (x 1,000)' THEN 5 WHEN 'Unemployment (x 1,000)' THEN 6 WHEN 
+		'Participation rate (percent)' THEN 7 WHEN 'Employment rate (percent)' THEN 8 WHEN 'Unemployment rate (percent)'
+		THEN 9 END AS ord_results")
 			->from("`" . '02820087' . "`")
 			->where('`ref_date` =' , $prevyear)
 			->where_in('characteristics', $where_in)
@@ -449,11 +458,16 @@ class Datagathering_model extends CI_Model
 			->where('`sex` = "Both sexes"')
 			->where('`statistics` = "Estimate"')
 			->where('`datatype` = "Unadjusted"')
-			->where('`geography` = "New Brunswick"');
+			->where('`geography` = "New Brunswick"')
+			->order_by('ord_results', 'ASC');
 
 		$prev_result = $this->db->get()->result();
 
-		$this->db->select('value, ref_date, characteristics')
+		$this->db->select("value, ref_date, characteristics, CASE `characteristics` WHEN 'Population (x 1,000)' THEN 1 
+		WHEN 'Labour force (x 1,000)' THEN 2 WHEN 'Employment (x 1,000)' THEN 3 WHEN 'Employment full-time (x 1,000)' 
+		THEN 4 WHEN 'Employment part-time (x 1,000)' THEN 5 WHEN 'Unemployment (x 1,000)' THEN 6 WHEN 
+		'Participation rate (percent)' THEN 7 WHEN 'Employment rate (percent)' THEN 8 WHEN 'Unemployment rate (percent)'
+		THEN 9 END AS ord_results")
 			->from("`" . '02820087' . "`")
 			->where('`ref_date` =' , $prevmonth)
 			->where_in('characteristics', $where_in)
@@ -461,13 +475,14 @@ class Datagathering_model extends CI_Model
 			->where('`sex` = "Both sexes"')
 			->where('`statistics` = "Estimate"')
 			->where('`datatype` = "Unadjusted"')
-			->where('`geography` = "New Brunswick"');
+			->where('`geography` = "New Brunswick"')
+			->order_by('ord_results', 'ASC');
 
 		$prev_month_result = $this->db->get()->result();
 
 
 		//getting comparisons for year over year and month to last month
-		$result = array();
+		$result[] = array();
 		$temp = array();
 		foreach($start_result as $key => $value) {
 			$characteristic = $value->characteristics;
@@ -490,46 +505,62 @@ class Datagathering_model extends CI_Model
 						$temp['curr_yr_val'] = $value->value;
 						$temp['prev_yr_val'] = $innerValue->value;
 						$temp['yr_diff'] = $diff . '(pp)';
+						$temp['perc_diff'] = "";
 					}
 
 				}
-				foreach($prev_month_result as $prevMonth => $preVal) {
-					if($preVal->characteristics == $characteristic) {
-						$lastMoVal = $preVal->value;
-						$modiff = $val - $lastMoVal;
-						$temp['prev_month'] = $preVal->ref_date;
-						if(in_array($preVal->characteristics, $math_array)) {
-							$month_perc_diff = sprintf('%.01f', (($modiff / $val) * 100));
-							$temp['mo_per_diff'] = $month_perc_diff . '%';
-							$temp['prev_mo_val'] = $lastMoVal * 1000;
-							$temp['mo_diff'] = $modiff * 1000;
-						} else {
-							$temp['prev_mo_val'] = $lastMoVal;
-							$temp['mo_diff'] = $modiff . '(pp)';
-						}
-
+			}
+			foreach($prev_month_result as $prevMonth => $preVal) {
+				if($preVal->characteristics == $characteristic) {
+					$lastMoVal = $preVal->value;
+					$modiff = $val - $lastMoVal;
+					$temp['prev_month'] = $preVal->ref_date;
+					if(in_array($preVal->characteristics, $math_array)) {
+						$month_perc_diff = sprintf('%.01f', (($modiff / $val) * 100));
+						$temp['mo_per_diff'] = $month_perc_diff . '%';
+						$temp['prev_mo_val'] = $lastMoVal * 1000;
+						$temp['mo_diff'] = $modiff * 1000;
+					} else {
+						$temp['prev_mo_val'] = $lastMoVal;
+						$temp['mo_diff'] = $modiff . '(pp)';
+						$temp['mo_per_diff'] = "";
 					}
+
 				}
 			}
 			array_push($result, $temp);
 		}
+		$result1 = array_filter($result);
 
-		$table = array();
-		$table['cols'] = array(
+		foreach($result1 as $key => $value) {
 
-			array('label' => 'Characteristics', 'type' => 'string', ),
-			array('label' => $value['prev_year'], 'type' => 'number'),
-			array('label' => $value['prev_month'], 'type' => 'number'),
-			array('label' => $value['curr_year'], 'type' => 'number'),
-			array('label' => 'M-M Change', 'type' => 'number'),
-			array('label' =>'', 'type' => 'string'),
-			array('label' => 'Y-Y Change', 'type' => 'number'),
-			array('label' => '', 'type' => 'string')
+			$table = array();
+			$table['cols'] = array(
 
-		);
+				array('label' => 'Characteristics', 'type' => 'string', ),
+				array('label' => $value['prev_year'], 'type' => 'number'),
+				array('label' => $value['prev_month'], 'type' => 'number'),
+				array('label' => $value['curr_year'], 'type' => 'number'),
+				array('label' => 'M-M Change', 'type' => 'string'),
+				array('label' =>'', 'type' => 'string'),
+				array('label' => 'Y-Y Change', 'type' => 'string'),
+				array('label' => '', 'type' => 'string')
+
+			);
+		}
 		$rows = array();
 
-		foreach($result as $key => $value) {
+		foreach($result1 as $key => $value) {
+			if(isset($value['mo_per_diff'])) {
+				$mo_diff = $value['mo_per_diff'];
+			} else {
+				$mo_diff = null;
+			}
+			if(isset($value['perc_diff'])) {
+				$yr_diff = $value['perc_diff'];
+			} else {
+				$yr_diff = null;
+			}
 
 			$temp = array();
 			// the following line will be used to slice the Pie chart
@@ -538,10 +569,10 @@ class Datagathering_model extends CI_Model
 			$temp[] = array('v' => $value['prev_mo_val']);
 			$temp[] = array('v' => $value['curr_yr_val']);
 			$temp[] = array('v' => $value['mo_diff']);
-			$temp[] = array('v' => $value['mo_per_diff']);
+			$temp[] = array('v' => $mo_diff);
 			$temp[] = array('v' => $value['yr_diff']);
-			$temp[] = array('v' => $value['perc_diff']);
-			
+			$temp[] = array('v' => $yr_diff);
+
 			$rows[] = array('c' => $temp);
 
 		}
