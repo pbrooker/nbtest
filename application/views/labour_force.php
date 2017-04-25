@@ -73,6 +73,7 @@
             var options = {
                 title: "Labour Force M-M Trends",
                 height: 400,
+                width: 600,
                 hAxis: { title: 'Month',
                         showTextEvery: 1,
                         slantedText: 'true',
@@ -109,6 +110,7 @@
             var options = {
                 title: "Labour Force Y-Y Trends",
                 height: 400,
+                width: 600,
                 hAxis: { title: 'Month',
                     showTextEvery: 1,
                     slantedText: 'true',
@@ -145,6 +147,7 @@
             var options = {
                 title: "Employment M-M Trends",
                 height: 400,
+                width: 600,
                 hAxis: { title: 'Month',
                     showTextEvery: 1,
                     slantedText: 'true',
@@ -181,6 +184,7 @@
             var options = {
                 title: "Employment Y-Y Trends",
                 height: 400,
+                width: 600,
                 hAxis: { title: 'Month',
                     showTextEvery: 1,
                     slantedText: 'true',
@@ -212,11 +216,12 @@
 
         function drawChart() {
 
-            var data = new google.visualization.DataTable(<?= $unemployment_yy ;?>);
+            var data = new google.visualization.DataTable(<?= $unemployment_mm ;?>);
 
             var options = {
                 title: "Unemployment M-M Trends",
                 height: 400,
+                width: 600,
                 hAxis: { title: 'Month',
                     showTextEvery: 1,
                     slantedText: 'true',
@@ -253,6 +258,7 @@
             var options = {
                 title: "Unemployment Y-Y Trends",
                 height: 400,
+                width: 600,
                 hAxis: { title: 'Month',
                     showTextEvery: 1,
                     slantedText: 'true',

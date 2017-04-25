@@ -380,7 +380,7 @@ class Datagathering_model extends CI_Model
 		$where_in = $data['where_in'];
 		$characteristics = $data['characteristics'];
 
-		$this->db->select('value, ref_date')
+		$this->db->select('value, ref_date, characteristics')
 				 ->from("`" . '02820087' . "`")
 				 ->where_in('ref_date', $where_in)
 				 ->where('`agegroup` = "15 years and over"')
@@ -408,7 +408,11 @@ class Datagathering_model extends CI_Model
 			$temp = array();
 			$dates = explode('/', $value->ref_date);
 			$temp[] = array('v' => 'Date(' . $dates['0'] . ',' . ($dates['1'] - 1) . ',01' .')');
-			$temp[] = array('v' => (int)$value->value);
+			if($value->characteristics == 'Employment (x 1,000)' || $value->characteristics == 'Labour force (x 1,000)') {
+				$temp[] = array('v' => ((int)$value->value) * 1000);
+			} else {
+				$temp[] = array('v' => ($value->value));
+			}
 
 
 			$rows[] = array('c' => $temp);

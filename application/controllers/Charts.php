@@ -276,11 +276,11 @@ class Charts extends CI_Controller {
 			);
 			$dataUM_MM = array (
 				'where_in' => $MM,
-				'characteristics' => 'Unemployment (x 1,000)'
+				'characteristics' => 'Unemployment rate (percent)'
 			);
 			$dataUM_YY = array (
 				'where_in' => $YY,
-				'characteristics' => 'Unemployment (x 1,000)'
+				'characteristics' => 'Unemployment rate (percent)'
 			);
 
 			$dateObj   = DateTime::createFromFormat('!m', $startmonth);
