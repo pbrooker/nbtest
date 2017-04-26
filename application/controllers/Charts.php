@@ -92,49 +92,17 @@ class Charts extends CI_Controller {
 			$startdate = $startyear . '/' .$startmonth;
 			$enddate = ((int)$startyear - 1) . '/' . $startmonth;
 			$dates = array (
-				'startdate' => $startdate,
-				'enddate' => $enddate
-			);
-
-			// alternative dates for Employment Rate
-			$erDates = array (
 				'startdate' => $enddate,
 				'enddate' => $startdate
 			);
+
+
 
 			// dates for m-m
 			if($startmonth <= 12 && $startmonth > 1) {
 				$mo = $startmonth - 1;
 
 				$mmDates = array(
-					'startdate' => $startyear . '/' . $mo,
-					'enddate' => $startyear . '/' . $startmonth
-				);
-			} elseif($startmonth == 1) {
-				$mo = 12;
-				$yr = $startyear - 1;
-
-				$mmDates = array(
-					'startdate' => $yr . '/' . $mo,
-					'enddate' => $startyear . '/' . $startmonth
-				);
-			}
-
-			// dates for 10 year growth
-			$endyear = ((int)$startyear - 9) . '/' . $startmonth;
-			$dataGrowth = array(
-
-				'startdate' => $startdate,
-				'enddate' => $endyear,
-				'characteristics' => 'Employment rate (percent)'
-			);
-
-
-			//alternative dates for Employment Rate m-m - Trying to find what data is being pulled
-			if($startmonth <= 12 && $startmonth > 1) {
-				$mo = $startmonth - 1;
-
-				$erMMDates = array(
 					'startdate' => $startyear . '/' . $startmonth,
 					'enddate' => $startyear . '/' . $mo
 				);
@@ -142,11 +110,70 @@ class Charts extends CI_Controller {
 				$mo = 12;
 				$yr = $startyear - 1;
 
-				$erMMDates = array(
+				$mmDates = array(
 					'startdate' => $startyear . '/' . $startmonth,
 					'enddate' => $yr . '/' . $mo
 				);
 			}
+
+			// dates for Unemployment m-m
+			if($startmonth <= 12 && $startmonth > 1) {
+				$mo = $startmonth - 1;
+
+				$urMmDates = array(
+					'startdate' => $startyear . '/' . $mo,
+					'enddate' => $startyear . '/' . $startmonth
+				);
+			} elseif($startmonth == 1) {
+				$mo = 12;
+				$yr = $startyear - 1;
+
+				$urMmDates = array(
+					'startdate' => $yr . '/' . $mo,
+					'enddate' => $startyear . '/' . $startmonth
+				);
+			}
+
+			// alternative dates for Employment Rate
+			$erDates = array (
+				'startdate' => $startdate,
+				'enddate' => $enddate,
+				'characteristics' => 'Employment (x 1,000)',
+				'datatype' => 'Seasonally adjusted'
+			);
+
+			//alternative dates for Employment Rate m-m - Trying to find what data is being pulled
+			if($startmonth <= 12 && $startmonth > 1) {
+				$mo = $startmonth - 1;
+
+				$erMMDates = array(
+					'startdate' => $startyear . '/' . $startmonth,
+					'enddate' => $startyear . '/' . $mo,
+					'characteristics' => 'Employment (x 1,000)',
+					'datatype' => 'Seasonally adjusted'
+				);
+			} elseif($startmonth == 1) {
+				$mo = 12;
+				$yr = $startyear - 1;
+
+				$erMMDates = array(
+					'startdate' => $startyear . '/' . $startmonth,
+					'enddate' => $yr . '/' . $mo,
+					'characteristics' => 'Employment (x 1,000)',
+					'datatype' => 'Seasonally adjusted'
+				);
+			}
+
+			// dates for 10 year growth
+			$endyear = ((int)$startyear - 10) . '/' . $startmonth;
+			$dataGrowth = array(
+
+				'startdate' => $startdate,
+				'enddate' => $endyear,
+				'characteristics' => 'Employment (x 1,000)',
+				'datatype' => 'Seasonally adjusted'
+			);
+
 
 			$dataParticipation = array (
 				'date' => $startdate,
@@ -157,19 +184,36 @@ class Charts extends CI_Controller {
 				'characteristics' => 'Unemployment rate (percent)'
 			);
 
-			$dataUR_MM = $mmDates;
+			$dataUR_MM = $urMmDates;
 			$dataUR_MM['characteristics'] = 'Unemployment rate (percent)';
+			$dataUR_MM['datatype'] = 'Seasonally adjusted';
 
-			$dataUR_YY = $erDates;
+			$dataUR_YY = $dates;
 			$dataUR_YY['characteristics'] = 'Unemployment rate (percent)';
+			$dataUR_YY['datatype'] = 'Seasonally adjusted';
 
 			$dataPR_MM = $mmDates;
 			$dataPR_MM['characteristics'] = 'Participation rate (percent)';
+			$dataPR_MM['datatype'] = 'Seasonally adjusted';
 
 			$dataPR_YY = $dates;
 			$dataPR_YY['characteristics'] = 'Participation rate (percent)';
+			$dataPR_YY['datatype'] = 'Seasonally adjusted';
 
 
+			// Common to all queries
+			$common_settings = array ('agegroup' => '15 years and over', 'sex' => 'Both sexes', 'statistics' => 'Estimate' );
+
+			foreach($common_settings as $key => $value) {
+
+				$erDates[$key] = $value;
+				$dataGrowth[$key] = $value;
+				$erMMDates[$key] = $value;
+				$dataUR_MM[$key] = $value;
+				$dataUR_YY[$key] = $value;
+				$dataPR_MM[$key] = $value;
+				$dataPR_YY[$key] = $value;
+			}
 
 			$data['participation_yy'] = $this->nbdata->getComparisonBarChart($dataPR_YY);
 			$data['participation'] = $this->nbdata->getBarChart($dataParticipation);
@@ -179,7 +223,7 @@ class Charts extends CI_Controller {
 			$data['employment_ur'] = $this->nbdata->getBarChart($dataUnemployment);
 			$data['employment_urMM'] = $this->nbdata->getComparisonBarChart($dataUR_MM);
 			$data['employment_urYY'] = $this->nbdata->getComparisonBarChart($dataUR_YY);
-			$data['growth_10yr'] = $this->nbdata->getComparisonBarChart($dataGrowth);
+			$data['growth_10yr'] = $this->nbdata->getEmploymentRate($dataGrowth);
 		}
 		if(isset($data)) {
 
