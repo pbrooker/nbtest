@@ -581,6 +581,29 @@ class Datagathering_model extends CI_Model
 		return $jsonTable;
 	}
 
+	public function getCharacteristics($data)
+	{
+		$this->db->select('c.' . $data['characteristic'])
+			     ->from('characteristics c')
+				 ->join('table_characteristics tc', 'tc.characteristic_id = c.id')
+				 ->join('tables t', 't.id = tc.table_id')
+				 ->where('t.table =',  $data['table']);
+
+		$query = $this->db->get();
+
+		return $query;
+	}
+
+	public function getGeography($lang)
+	{
+		$this->db->select('name')
+				 ->from('geography_prov')
+				 ->where('lang =', $lang);
+
+		$query = $this->db->get();
+
+		return $query;
+	}
 
 	private function _provinceNames($name)
 	{
@@ -663,3 +686,4 @@ class Datagathering_model extends CI_Model
 		return $returnName;
 	}
 }
+

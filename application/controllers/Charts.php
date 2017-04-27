@@ -341,10 +341,39 @@ class Charts extends CI_Controller {
 			$data['unemployment_yy'] = $this->nbdata->getLabourForceData($dataUM_YY);
 		}
 
+
 		if (isset($data)) {
 
 			$this->load->view('labour_force', $data);
 		}
+	}
+
+	public function customLabourForceChartBuild($lang = 'EN')
+	{
+		$this->form_validation->set_rules('startyear', 'Start Year', 'required|min_length[4]|max_length[4]');
+		$this->form_validation->set_rules('startmonth', 'Start Month',
+			'required|min_length[2]|max_length[2]|callback_monthCheck');
+		$this->form_validation->set_rules('language', 'Language', 'required');
+
+		if($lang == 'EN') {
+			$characteristics = 'characteristics';
+		} else {
+			$characteristics = 'characteristics_fr';
+		}
+		$data['agegroups'] = $this->_arrays('agegroups');
+		$data['sex'] = $this->_arrays('sex');
+		$data['stats'] = $this->_arrays('stat_02820087');
+		$data['datatype'] = $this->_arrays('dt_02820087');
+		$data['geography'] = $this->nb->getGeography($lang);
+		$data['characteristics'] = $this->nb->getCharacteristics($characteristics);
+
+		if ($this->form_validation->run() == TRUE) {
+
+			
+
+		}
+
+
 	}
 
 	function monthCheck($num)
@@ -362,5 +391,35 @@ class Charts extends CI_Controller {
 		}
 
 	}
+
+	private function _arrays($name)
+	{
+		$agegroups = array ('15 years and over', '15 to 64 years','15 to 24 years', '15 to 19 years', '20 to 24 years',
+		'25 years and over', '25 to 54 years','55 years and over', '55 to 64 years');
+		$sex = array ('Both sexes', 'Males', 'Females');
+
+		$stat_02820087 = array ('Estimate', 'Standard error of estimate', 'Standard error of month-to-month change',
+'Standard error of year-over-year change');
+
+		$dt_02820087 = array ('Seasonally adjusted', 'Unadjusted', 'Trend-cycle');
+
+		switch ($name) {
+			case 'agegroups':
+				return $agegroups;
+				break;
+			case 'sex':
+				return $sex;
+				break;
+			case 'statistics_02820087':
+				return $stat_02820087;
+				break;
+			case 'datatype_02820087':
+				return $dt_02820087;
+				break;
+		}
+	}
+
+
+
 
 }

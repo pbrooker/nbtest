@@ -19,7 +19,7 @@ CREATE TABLE `02820087` (
   KEY `age` (`agegroup`),
   KEY `stats` (`statistics`),
   KEY `datatype` (`datatype`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `02820002` (
   `ref_date` varchar(20) DEFAULT NULL,
@@ -38,7 +38,7 @@ CREATE TABLE `02820002` (
   KEY `geo` (`geography`),
   KEY `sex` (`sex`),
   KEY `age` (`agegroup`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `02820008` (
   `ref_date` varchar(20) DEFAULT NULL,
@@ -59,7 +59,7 @@ CREATE TABLE `02820008` (
   KEY `sex` (`sex`),
   KEY `age` (`age`),
   KEY `industry` (`industry`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `02820088` (
   `ref_date` varchar(20) DEFAULT NULL,
@@ -77,7 +77,7 @@ CREATE TABLE `02820088` (
   KEY `geo` (`geography`),
   KEY `stats` (`statistics`),
   KEY `datatype` (`datatype`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `02820122` (
   `ref_date` varchar(20) DEFAULT NULL,
@@ -95,7 +95,7 @@ CREATE TABLE `02820122` (
   KEY `character` (`characteristics`),
   KEY `geo` (`geo`),
   KEY `stats` (`statistics`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `02820123` (
   `ref_date` varchar(20) DEFAULT NULL,
@@ -111,7 +111,7 @@ CREATE TABLE `02820123` (
   KEY `ref_date` (`ref_date`),
   KEY `character` (`characteristics`),
   KEY `geo` (`geo`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `02820128` (
   `ref_date` varchar(20) DEFAULT NULL,
@@ -129,7 +129,7 @@ CREATE TABLE `02820128` (
   KEY `ref_date` (`ref_date`),
   KEY `character` (`characteristics`),
   KEY `geo` (`geo`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `02820129` (
   `ref_date` varchar(20) DEFAULT NULL,
@@ -149,7 +149,7 @@ CREATE TABLE `02820129` (
   KEY `geo` (`geo`),
   KEY `sex` (`sex`),
   KEY `age` (`agegroup`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `nbdata_sources` (
   `id` int(6) unsigned NOT NULL AUTO_INCREMENT,
@@ -157,7 +157,7 @@ CREATE TABLE `nbdata_sources` (
   `name` VARCHAR(50) DEFAULT NULL,
   `current_version` VARCHAR(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 INSERT INTO `nbdata_sources` (`url`, `name`, `current_version`)
 VALUES
@@ -176,4 +176,4 @@ CREATE TABLE `nbdata_last_update` (
   `last_modified` varchar(255) DEFAULT NULL,
   `source_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
