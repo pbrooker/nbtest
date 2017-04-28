@@ -350,29 +350,77 @@ class Charts extends CI_Controller {
 
 	public function customLabourForceChartBuild($lang = 'EN')
 	{
-		$this->form_validation->set_rules('startyear', 'Start Year', 'required|min_length[4]|max_length[4]');
-		$this->form_validation->set_rules('startmonth', 'Start Month',
-			'required|min_length[2]|max_length[2]|callback_monthCheck');
-		$this->form_validation->set_rules('language', 'Language', 'required');
+
 
 		if($lang == 'EN') {
-			$characteristics = 'characteristics';
+			$characteristics = array('language' => 'EN', 'table' => '02820087');
 		} else {
-			$characteristics = 'characteristics_fr';
+			$characteristics = array('language' => 'FR', 'table' => '02820087');
 		}
+		$geo = $this->nbdata->getGeography($lang)->result();
+		$geography = array();
+		foreach($geo as $key => $value) {
+			$geography[$value->name] = $value->name;
+		}
+		$char = $this->nbdata->getCharacteristics($characteristics)->result();
+		$characteristics = array();
+		foreach($char as $key => $value) {
+			$characteristics[$value->characteristic] = $value->characteristic;
+		}
+
 		$data['agegroups'] = $this->_arrays('agegroups');
 		$data['sex'] = $this->_arrays('sex');
 		$data['stats'] = $this->_arrays('stat_02820087');
 		$data['datatype'] = $this->_arrays('dt_02820087');
-		$data['geography'] = $this->nb->getGeography($lang);
-		$data['characteristics'] = $this->nb->getCharacteristics($characteristics);
+		$data['geography'] = $geography;
+		$data['characteristics'] = $characteristics;
 
-		if ($this->form_validation->run() == TRUE) {
 
-			
+		if (isset($data)) {
 
+			$this->load->view('forms/labour_force_custom', $data);
 		}
 
+
+	}
+
+	public function generateCustomChart()
+	{
+		$this->form_validation->set_rules('startyear', 'Start Year', 'required|min_length[4]|max_length[4]');
+		$this->form_validation->set_rules('startmonth', 'Start Month',
+			'required|min_length[2]|max_length[2]|callback_monthCheck');
+//		$this->form_validation->set_rules('agegroup', 'Agegroup', 'required');
+//		$this->form_validation->set_rules('sex', 'Sex', 'required');
+//		$this->form_validation->set_rules('stats', 'Statistics', 'required');
+//		$this->form_validation->set_rules('geography', 'Geography', 'required');
+//		$this->form_validation->set_rules('characteristics', 'Characteristics', 'required');
+
+		if ($this->form_validation->run() == TRUE) {
+			$data = array();
+			$startyear = $this->input->post('startyear');
+			$startmonth = $this->input->post('startmonth');
+
+			$data['startdate'] = ($startyear - 1) . '/' . $startmonth;
+			$data['enddate'] = $startyear . '/' . $startmonth;
+			$data['agegroup'] = $this->input->post('agegroup');
+			$data['sex'] = $this->input->post('sex');
+			$data['datatype'] = $this->input->post('datatype');
+			$data['geography'] = $this->input->post('geography');
+			$data['statistics'] = $this->input->post('stats');
+			$data['characteristics'] = $this->input->post('characteristics');
+
+			$chart['data'] = $this->nbdata->getComparisonBarChart($data);
+
+			$chart['title'] = 'Custom Labour Force Chart';
+
+
+			$this->template->write('custom_title', 'Custom Chart');
+			$this->template->write_view('head', 'chart_views/bar_chart', $chart);
+			$this->template->write_view('content', 'chart_views/view');
+
+			$this->template->render();
+
+		}
 
 	}
 
@@ -394,14 +442,12 @@ class Charts extends CI_Controller {
 
 	private function _arrays($name)
 	{
-		$agegroups = array ('15 years and over', '15 to 64 years','15 to 24 years', '15 to 19 years', '20 to 24 years',
-		'25 years and over', '25 to 54 years','55 years and over', '55 to 64 years');
-		$sex = array ('Both sexes', 'Males', 'Females');
+		$agegroups = array ('15 years and over' => '15 years and over', '15 to 64 years' => '15 to 64 years','15 to 24 years' => '15 to 24 years', '15 to 19 years' =>'15 to 19 years', '20 to 24 years' => '20 to 24 years','25 years and over' => '25 years and over', '25 to 54 years' => '25 to 54 years', '55 years and over' => '55 years and over', '55 to 64 years' => '55 to 64 years');
+		$sex = array ( 'Both sexes' => 'Both sexes', 'Males' => 'Males', 'Females' => 'Females');
 
-		$stat_02820087 = array ('Estimate', 'Standard error of estimate', 'Standard error of month-to-month change',
-'Standard error of year-over-year change');
+		$stat_02820087 = array ('Estimate' => 'Estimate', 'Standard error of estimate' => 'Standard error of estimate', 'Standard error of month-to-month change' => 'Standard error of month-to-month change', 'Standard error of year-over-year change' => 'Standard error of year-over-year change');
 
-		$dt_02820087 = array ('Seasonally adjusted', 'Unadjusted', 'Trend-cycle');
+		$dt_02820087 = array ('Seasonally adjusted' => 'Seasonally adjusted','Unadjusted' => 'Unadjusted', 'Trend-cycle' => 'Trend-cycle');
 
 		switch ($name) {
 			case 'agegroups':
@@ -410,10 +456,10 @@ class Charts extends CI_Controller {
 			case 'sex':
 				return $sex;
 				break;
-			case 'statistics_02820087':
+			case 'stat_02820087':
 				return $stat_02820087;
 				break;
-			case 'datatype_02820087':
+			case 'dt_02820087':
 				return $dt_02820087;
 				break;
 		}

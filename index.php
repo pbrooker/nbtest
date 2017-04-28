@@ -305,6 +305,10 @@ switch (ENVIRONMENT)
 
 	define('VIEWPATH', $view_folder.DIRECTORY_SEPARATOR);
 
+	// The PHP file extension
+	// this global constant is deprecated.
+	define('EXT', '.php');
+
 /*
  * --------------------------------------------------------------------
  * LOAD THE BOOTSTRAP FILE

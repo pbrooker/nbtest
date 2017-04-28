@@ -1,0 +1,29 @@
+{
+  "name": "NBData",
+  "version": "1.0.0",
+  "homepage": "https://github.com/pbrooker/nbtest",
+  "authors": [
+    "Paul Brooker <paul@alongside.com>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components"
+  ],
+  "devDependencies": {
+    "bootstrap": "twbs/bootstrap#3.3.1",
+    "bootstrap-sass-official": "3.3.1",
+    "jquery": "1.11.1",
+    "jquery-ui": "1.10.3",
+    "jquery.validate": "1.13.0",
+    "minimalect": "*",
+    "jquery-autocomplete": "devbridge/jquery-autocomplete#1.2.9",
+    "jquery-placeholder": "2.0.8",
+    "jquery-file-upload": "9.8.0",
+    "css3pie": "*",
+    "datatables": "1.10.8",
+    "font-awesome": "4.7.0"
+  }
+}

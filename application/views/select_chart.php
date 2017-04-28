@@ -115,7 +115,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <br><br>
 
 		<?php echo form_open('Charts/getLabourForceCharts') ;?>
-        <p>Get All Participation Charts</p>
+        <p>Get All Labour Force Charts</p>
         <label for="startyear">Enter the year for reports (eg. 2016)</label>
         <input id="startyear" name="startyear" type="text" size="15"><br>
         <label for="startmonth">Enter the month in numberic format for reports (eg. 12 for December)</label>

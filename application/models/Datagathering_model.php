@@ -583,11 +583,12 @@ class Datagathering_model extends CI_Model
 
 	public function getCharacteristics($data)
 	{
-		$this->db->select('c.' . $data['characteristic'])
-			     ->from('characteristics c')
-				 ->join('table_characteristics tc', 'tc.characteristic_id = c.id')
-				 ->join('tables t', 't.id = tc.table_id')
-				 ->where('t.table =',  $data['table']);
+		$this->db->select('c.characteristic')
+			     ->from('characteristics AS c')
+				 ->join('table_characteristics AS tc', 'tc.characteristic_id = c.id')
+				 ->join('tables AS t', 't.id = tc.table_id')
+				 ->where('t.table =',  $data['table'])
+				 ->where('c.language =', $data['language']);
 
 		$query = $this->db->get();
 
