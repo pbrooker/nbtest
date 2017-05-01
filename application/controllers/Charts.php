@@ -62,14 +62,14 @@ class Charts extends CI_Controller {
 			$startyear = $this->input->post('startyear');
 			$startmonth = $this->input->post('startmonth');
 
+			// dates for y-y
 			$startdate = $startyear . '/' .$startmonth;
-
-			$enddate = ((int)$startyear + 1) . '/' . $startmonth;
+			$enddate = ((int)$startyear - 1) . '/' . $startmonth;
 			$dates = array (
-				'startdate' => $startdate,
-				'enddate' => $enddate
+				'startdate' => $enddate,
+				'enddate' => $startdate
 			);
-			$data['participation_yy'] = $this->nbdata->getParticipationRateYY($dates);
+			$data['participation_yy'] = $this->nbdata->getComparisonBarChart($dates);
 		}
 		if(isset($data)) {
 
@@ -298,17 +298,376 @@ class Charts extends CI_Controller {
 				'math_array' => array (
 					'Population (x 1,000)', 'Labour force (x 1,000)', 'Employment (x 1,000)',
 					'Employment full-time (x 1,000)', 'Employment part-time (x 1,000)', 'Unemployment (x 1,000)'
-				)
+				),
+				'order' => 'CASE `characteristics` WHEN "Population (x 1,000)" THEN 1 
+		WHEN "Labour force (x 1,000)" THEN 2 WHEN "Employment (x 1,000)" THEN 3 WHEN "Full-time employment (x 1,000)" 
+		THEN 4 WHEN "Employment part-time (x 1,000)" THEN 5 WHEN "Unemployment (x 1,000)" THEN 6 WHEN 
+		"Participation rate (percent)" THEN 7 WHEN "Employment rate (percent)" THEN 8 WHEN "Unemployment rate (percent)"
+		THEN 9 END AS ord_results'
 
 			);
+			$regionDataTable = array (
+
+				'startyear' => $startyear . '/' . $mo_pad,
+				'prevyear' => ($startyear - 1) . '/' . $mo_pad,
+				'prevmonth' =>  $prevMonthYear . '/' . sprintf( '%02d', $mo),
+				'characteristics' => array (
+					'Population (x 1,000)', 'Labour force (x 1,000)', 'Employment (x 1,000)',
+					'Full-time employment (x 1,000)', 'Part-time employment (x 1,000)', 'Unemployment (x 1,000)',
+					'Participation rate (percent)', 'Employment rate (percent)', 'Unemployment rate (percent)',
+				),
+				'math_array' => array (
+					'Population (x 1,000)', 'Labour force (x 1,000)', 'Employment (x 1,000)',
+					'Full-time employment (x 1,000)', 'Part-time employment (x 1,000)', 'Unemployment (x 1,000)'
+				),
+				'order' => 'CASE `characteristics` WHEN "Population (x 1,000)" THEN 1 
+		WHEN "Labour force (x 1,000)" THEN 2 WHEN "Employment (x 1,000)" THEN 3 WHEN "Employment full-time (x 1,000)" 
+		THEN 4 WHEN "Part-time employment (x 1,000)" THEN 5 WHEN "Unemployment (x 1,000)" THEN 6 WHEN 
+		"Participation rate (percent)" THEN 7 WHEN "Employment rate (percent)" THEN 8 WHEN "Unemployment rate (percent)"
+		THEN 9 END AS ord_results'
+			);
+
+
+			$dateObj   = DateTime::createFromFormat('!m', $startmonth);
+			$monthName = $dateObj->format('F');
+			$data['labour_force_statistics'] = array(
+				'data' => $this->nbdata->getLabourForceStatistics($regionDataTable),
+				'date' => $monthName . ' ' . $startyear);
+
+			$region_array = array('Southeast Region' => 'Moncton-Richibucto, New Brunswick', 'Southwest Region' =>
+				'Saint John-St. Stephen, New Brunswick', 'Central Region' => 'Fredericton-Oromocto, New Brunswick',
+				'Northwest Region' => 'Edmundston-Woodstock, New Brunswick', 'Northeast Region' =>
+					'Campbellton-Miramichi, New Brunswick', 'Youth' => 'New Brunswick');
+
+			foreach ($region_array as $key => $value) {
+				$regionDataTable['table'] = '02820122';
+				switch ($key) {
+					case 'Southeast Region':
+						$regionDataTable['geography'] = $value;
+						$data['se_lf_stats'] = array (
+							'data' => $this->nbdata->getLabourForceStatistics($regionDataTable),
+							'date' => $monthName . ' ' . $startyear,
+							'title' => $key
+						);
+						$se_lf_mm = array (
+							'where_in' => $MM,
+							'characteristics' => 'Labour force (x 1,000)',
+							'table' => '02820122',
+							'geography' => $value
+						);
+						$data['se_lf_mm'] = $this->nbdata->getLabourForceData($se_lf_mm);
+						$se_lf_yy = array (
+							'where_in' => $YY,
+							'characteristics' => 'Labour force (x 1,000)',
+							'table' => '02820122',
+							'geography' => $value
+						);
+						$data['se_lf_yy'] = $this->nbdata->getLabourForceData($se_lf_yy);
+						$se_em_mm = array (
+							'where_in' => $MM,
+							'characteristics' => 'Employment (x 1,000)',
+							'table' => '02820122',
+							'geography' => $value
+						);
+						$data['se_em_mm'] = $this->nbdata->getLabourForceData($se_em_mm);
+						$se_em_yy = array (
+							'where_in' => $YY,
+							'characteristics' => 'Employment (x 1,000)',
+							'table' => '02820122',
+							'geography' => $value
+						);
+						$data['se_em_yy'] = $this->nbdata->getLabourForceData($se_em_yy);
+						$se_um_mm = array (
+						'where_in' => $MM,
+						'characteristics' => 'Unemployment rate (percent)',
+						'table' => '02820122',
+						'geography' => $value
+					);
+						$data['se_um_mm'] = $this->nbdata->getLabourForceData($se_um_mm);
+						$se_um_yy = array (
+							'where_in' => $YY,
+							'characteristics' => 'Unemployment rate (percent)',
+							'table' => '02820122',
+							'geography' => $value
+						);
+						$data['se_um_yy'] = $this->nbdata->getLabourForceData($se_um_yy);
+						break;
+
+					case 'Southwest Region':
+						$regionDataTable['geography'] = $value;
+						$data['sw_lf_stats'] = array (
+							'data' => $this->nbdata->getLabourForceStatistics($regionDataTable),
+							'date' => $monthName . ' ' . $startyear,
+							'title' => $key
+						);
+						$sw_lf_mm = array (
+							'where_in' => $MM,
+							'characteristics' => 'Labour force (x 1,000)',
+							'table' => '02820122',
+							'geography' => $value
+						);
+						$data['sw_lf_mm'] = $this->nbdata->getLabourForceData($sw_lf_mm);
+						$sw_lf_yy = array (
+							'where_in' => $YY,
+							'characteristics' => 'Labour force (x 1,000)',
+							'table' => '02820122',
+							'geography' => $value
+						);
+						$data['sw_lf_yy'] = $this->nbdata->getLabourForceData($sw_lf_yy);
+						$sw_em_mm = array (
+							'where_in' => $MM,
+							'characteristics' => 'Employment (x 1,000)',
+							'table' => '02820122',
+							'geography' => $value
+						);
+						$data['sw_em_mm'] = $this->nbdata->getLabourForceData($sw_em_mm);
+						$sw_em_yy = array (
+							'where_in' => $YY,
+							'characteristics' => 'Employment (x 1,000)',
+							'table' => '02820122',
+							'geography' => $value
+						);
+						$data['sw_em_yy'] = $this->nbdata->getLabourForceData($sw_em_yy);
+						$sw_um_mm = array (
+							'where_in' => $MM,
+							'characteristics' => 'Unemployment rate (percent)',
+							'table' => '02820122',
+							'geography' => $value
+						);
+						$data['sw_um_mm'] = $this->nbdata->getLabourForceData($sw_um_mm);
+						$sw_um_yy = array (
+							'where_in' => $YY,
+							'characteristics' => 'Unemployment rate (percent)',
+							'table' => '02820122',
+							'geography' => $value
+						);
+						$data['sw_um_yy'] = $this->nbdata->getLabourForceData($sw_um_yy);
+						break;
+
+					case 'Central Region':
+						$regionDataTable['geography'] = $value;
+						$data['ce_lf_stats'] = array (
+							'data' => $this->nbdata->getLabourForceStatistics($regionDataTable),
+							'date' => $monthName . ' ' . $startyear,
+							'title' => $key
+						);
+						$ce_lf_mm = array (
+							'where_in' => $MM,
+							'characteristics' => 'Labour force (x 1,000)',
+							'table' => '02820122',
+							'geography' => $value
+						);
+						$data['ce_lf_mm'] = $this->nbdata->getLabourForceData($ce_lf_mm);
+						$ce_lf_yy = array (
+							'where_in' => $YY,
+							'characteristics' => 'Labour force (x 1,000)',
+							'table' => '02820122',
+							'geography' => $value
+						);
+						$data['ce_lf_yy'] = $this->nbdata->getLabourForceData($ce_lf_yy);
+						$ce_em_mm = array (
+							'where_in' => $MM,
+							'characteristics' => 'Employment (x 1,000)',
+							'table' => '02820122',
+							'geography' => $value
+						);
+						$data['ce_em_mm'] = $this->nbdata->getLabourForceData($ce_em_mm);
+						$ce_em_yy = array (
+							'where_in' => $YY,
+							'characteristics' => 'Employment (x 1,000)',
+							'table' => '02820122',
+							'geography' => $value
+						);
+						$data['ce_em_yy'] = $this->nbdata->getLabourForceData($ce_em_yy);
+						$ce_um_mm = array (
+							'where_in' => $MM,
+							'characteristics' => 'Unemployment rate (percent)',
+							'table' => '02820122',
+							'geography' => $value
+						);
+						$data['ce_um_mm'] = $this->nbdata->getLabourForceData($ce_um_mm);
+						$ce_um_yy = array (
+							'where_in' => $YY,
+							'characteristics' => 'Unemployment rate (percent)',
+							'table' => '02820122',
+							'geography' => $value
+						);
+						$data['ce_um_yy'] = $this->nbdata->getLabourForceData($ce_um_yy);
+						break;
+
+					case 'Northwest Region':
+						$regionDataTable['geography'] = $value;
+						$data['nw_lf_stats'] = array (
+							'data' => $this->nbdata->getLabourForceStatistics($regionDataTable),
+							'date' => $monthName . ' ' . $startyear,
+							'title' => $key
+						);
+						$nw_lf_mm = array (
+							'where_in' => $MM,
+							'characteristics' => 'Labour force (x 1,000)',
+							'table' => '02820122',
+							'geography' => $value
+						);
+						$data['nw_lf_mm'] = $this->nbdata->getLabourForceData($nw_lf_mm);
+						$nw_lf_yy = array (
+							'where_in' => $YY,
+							'characteristics' => 'Labour force (x 1,000)',
+							'table' => '02820122',
+							'geography' => $value
+						);
+						$data['nw_lf_yy'] = $this->nbdata->getLabourForceData($nw_lf_yy);
+						$nw_em_mm = array (
+							'where_in' => $MM,
+							'characteristics' => 'Employment (x 1,000)',
+							'table' => '02820122',
+							'geography' => $value
+						);
+						$data['nw_em_mm'] = $this->nbdata->getLabourForceData($nw_em_mm);
+						$nw_em_yy = array (
+							'where_in' => $YY,
+							'characteristics' => 'Employment (x 1,000)',
+							'table' => '02820122',
+							'geography' => $value
+						);
+						$data['nw_em_yy'] = $this->nbdata->getLabourForceData($nw_em_yy);
+						$nw_um_mm = array (
+							'where_in' => $MM,
+							'characteristics' => 'Unemployment rate (percent)',
+							'table' => '02820122',
+							'geography' => $value
+						);
+						$data['nw_um_mm'] = $this->nbdata->getLabourForceData($nw_um_mm);
+						$nw_um_yy = array (
+							'where_in' => $YY,
+							'characteristics' => 'Unemployment rate (percent)',
+							'table' => '02820122',
+							'geography' => $value
+						);
+						$data['nw_um_yy'] = $this->nbdata->getLabourForceData($nw_um_yy);
+						break;
+
+					case 'Northeast Region':
+						$regionDataTable['geography'] = $value;
+						$data['ne_lf_stats'] = array (
+							'data' => $this->nbdata->getLabourForceStatistics($regionDataTable),
+							'date' => $monthName . ' ' . $startyear,
+							'title' => $key
+						);
+						$ne_lf_mm = array (
+							'where_in' => $MM,
+							'characteristics' => 'Labour force (x 1,000)',
+							'table' => '02820122',
+							'geography' => $value
+						);
+						$data['ne_lf_mm'] = $this->nbdata->getLabourForceData($ne_lf_mm);
+						$ne_lf_yy = array (
+							'where_in' => $YY,
+							'characteristics' => 'Labour force (x 1,000)',
+							'table' => '02820122',
+							'geography' => $value
+						);
+						$data['ne_lf_yy'] = $this->nbdata->getLabourForceData($ne_lf_yy);
+						$ne_em_mm = array (
+							'where_in' => $MM,
+							'characteristics' => 'Employment (x 1,000)',
+							'table' => '02820122',
+							'geography' => $value
+						);
+						$data['ne_em_mm'] = $this->nbdata->getLabourForceData($ne_em_mm);
+						$ne_em_yy = array (
+							'where_in' => $YY,
+							'characteristics' => 'Employment (x 1,000)',
+							'table' => '02820122',
+							'geography' => $value
+						);
+						$data['ne_em_yy'] = $this->nbdata->getLabourForceData($ne_em_yy);
+						$ne_um_mm = array (
+							'where_in' => $MM,
+							'characteristics' => 'Unemployment rate (percent)',
+							'table' => '02820122',
+							'geography' => $value
+						);
+						$data['ne_um_mm'] = $this->nbdata->getLabourForceData($ne_um_mm);
+						$ne_um_yy = array (
+							'where_in' => $YY,
+							'characteristics' => 'Unemployment rate (percent)',
+							'table' => '02820122',
+							'geography' => $value
+						);
+						$data['ne_um_yy'] = $this->nbdata->getLabourForceData($ne_um_yy);
+						break;
+
+					case 'Youth':
+						$dataTable['agegroup'] = '15 to 24 years';
+						$dataTable['datatype'] = 'Unadjusted';
+						$dataTable['charttype'] = 'Youth';
+						$data['youth_stats'] = array (
+							'data' => $this->nbdata->getLabourForceStatistics($dataTable),
+							'date' => $monthName . ' ' . $startyear,
+							'title' => $key
+						);
+						$yt_lf_mm = array (
+							'where_in' => $MM,
+							'characteristics' => 'Labour force (x 1,000)',
+							'geography' => $value,
+							'agegroup' => '15 to 24 years',
+							'datatype' => 'Unadjusted'
+
+						);
+						$data['yt_lf_mm'] = $this->nbdata->getLabourForceData($yt_lf_mm);
+						$yt_lf_yy = array (
+							'where_in' => $YY,
+							'characteristics' => 'Labour force (x 1,000)',
+							'geography' => $value,
+							'agegroup' => '15 to 24 years',
+							'datatype' => 'Unadjusted'
+						);
+						$data['yt_lf_yy'] = $this->nbdata->getLabourForceData($yt_lf_yy);
+						$yt_em_mm = array (
+							'where_in' => $MM,
+							'characteristics' => 'Employment (x 1,000)',
+							'geography' => $value,
+							'agegroup' => '15 to 24 years',
+							'datatype' => 'Unadjusted'
+						);
+						$data['yt_em_mm'] = $this->nbdata->getLabourForceData($yt_em_mm);
+						$yt_em_yy = array (
+							'where_in' => $YY,
+							'characteristics' => 'Employment (x 1,000)',
+							'geography' => $value,
+							'agegroup' => '15 to 24 years',
+							'datatype' => 'Unadjusted'
+						);
+						$data['yt_em_yy'] = $this->nbdata->getLabourForceData($yt_em_yy);
+						$yt_um_mm = array (
+							'where_in' => $MM,
+							'characteristics' => 'Unemployment rate (percent)',
+							'geography' => $value,
+							'agegroup' => '15 to 24 years',
+							'datatype' => 'Unadjusted'
+						);
+						$data['yt_um_mm'] = $this->nbdata->getLabourForceData($yt_um_mm);
+						$yt_um_yy = array (
+							'where_in' => $YY,
+							'characteristics' => 'Unemployment rate (percent)',
+							'geography' => $value,
+							'agegroup' => '15 to 24 years',
+							'datatype' => 'Unadjusted'
+						);
+						$data['yt_um_yy'] = $this->nbdata->getLabourForceData($yt_um_yy);
+						break;
+
+				}
+			}
+
 
 			$dataLF_MM = array (
 				'where_in' => $MM,
-				'characteristics' => 'Labour force (x 1,000)' )
-			;
+				'characteristics' => 'Labour force (x 1,000)'
+			);
 			$dataLF_YY = array (
 				'where_in' => $YY,
-				'characteristics' => 'Labour force (x 1,000)'
+				'characteristics' => 'Labour force (x 1,000)',
 			);
 			$dataEM_MM = array (
 				'where_in' => $MM,
@@ -327,12 +686,9 @@ class Charts extends CI_Controller {
 				'characteristics' => 'Unemployment rate (percent)'
 			);
 
-			$dateObj   = DateTime::createFromFormat('!m', $startmonth);
-			$monthName = $dateObj->format('F');
 
-			$data['labour_force_statistics'] = array(
-				'data' => $this->nbdata->getLabourForceStatistics($dataTable),
-				'date' => $monthName . ' ' . $startyear);
+
+
 			$data['labour_force_mm'] = $this->nbdata->getLabourForceData($dataLF_MM);
 			$data['labour_force_yy'] = $this->nbdata->getLabourForceData($dataLF_YY);
 			$data['employment_mm'] = $this->nbdata->getLabourForceData($dataEM_MM);
@@ -389,11 +745,6 @@ class Charts extends CI_Controller {
 		$this->form_validation->set_rules('startyear', 'Start Year', 'required|min_length[4]|max_length[4]');
 		$this->form_validation->set_rules('startmonth', 'Start Month',
 			'required|min_length[2]|max_length[2]|callback_monthCheck');
-//		$this->form_validation->set_rules('agegroup', 'Agegroup', 'required');
-//		$this->form_validation->set_rules('sex', 'Sex', 'required');
-//		$this->form_validation->set_rules('stats', 'Statistics', 'required');
-//		$this->form_validation->set_rules('geography', 'Geography', 'required');
-//		$this->form_validation->set_rules('characteristics', 'Characteristics', 'required');
 
 		if ($this->form_validation->run() == TRUE) {
 			$data = array();

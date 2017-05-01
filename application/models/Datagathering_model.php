@@ -374,19 +374,52 @@ class Datagathering_model extends CI_Model
 	{
 		$where_in = $data['where_in'];
 		$characteristics = $data['characteristics'];
+		if(isset($data['table']) && $data['table'] != "") {
+			$table = $data['table'];
+		} else {
+			$table = '02820087';
+		}
 
-		$this->db->select('value, ref_date, characteristics')
-				 ->from("`" . '02820087' . "`")
-				 ->where_in('ref_date', $where_in)
-				 ->where('`agegroup` = "15 years and over"')
-				 ->where('`sex` = "Both sexes"')
-				 ->where('`statistics` = "Estimate"')
-				 ->where('`datatype` = "Seasonally adjusted"')
-				 ->where('`characteristics` =', $characteristics)
-				 ->where('`geography` = "New Brunswick"');
+		if(isset($data['geography']) && $data['geography'] != "") {
+			$geography = $data['geography'];
+		} else {
+			$geography = 'New Brunswick';
+		}
+
+		if(isset($data['agegroup']) && $data['agegroup'] != "") {
+			$agegroup = $data['agegroup'];
+		} else {
+			$agegroup = '15 years and over';
+		}
+
+		if(isset($data['datatype']) && $data['datatype'] != "") {
+			$datatype = $data['datatype'];
+		} else {
+			$datatype = 'Seasonally Adjusted';
+		}
+
+		$this->db->select('value, ref_date, characteristics');
+		$this->db->from("`" . $table . "`");
+		$this->db->where_in('ref_date', $where_in);
+		if($table == '02820087') {
+			$this->db->where('`agegroup` = ', $agegroup);
+		}
+		if($table == '02820087') {
+			$this->db->where('`sex` = "Both sexes"');
+		}
+		$this->db->where('`statistics` = "Estimate"');
+		if($table == '02820087') {
+			$this->db->where('`datatype` = ', $datatype);
+		}
+		$this->db->where('`characteristics` =', $characteristics);
+		if($table == '02820087') {
+			$this->db->where('`geography` =', $geography);
+		} else {
+			$this->db->where('`geo` =', $geography);
+		}
 
 		$result = $this->db->get()->result();
-		//$query = $this->db->last_query();
+		$query = $this->db->last_query();
 
 		$table = array();
 		$table['cols'] = array(
@@ -427,66 +460,233 @@ class Datagathering_model extends CI_Model
 		$prevmonth = $data['prevmonth'];
 		$where_in = $data['characteristics'];
 		$math_array = $data['math_array'];
+		$order =  $data['order'];
 
-		$this->db->select("value, ref_date, characteristics, CASE `characteristics` WHEN 'Population (x 1,000)' THEN 1 
-		WHEN 'Labour force (x 1,000)' THEN 2 WHEN 'Employment (x 1,000)' THEN 3 WHEN 'Employment full-time (x 1,000)' 
-		THEN 4 WHEN 'Employment part-time (x 1,000)' THEN 5 WHEN 'Unemployment (x 1,000)' THEN 6 WHEN 
-		'Participation rate (percent)' THEN 7 WHEN 'Employment rate (percent)' THEN 8 WHEN 'Unemployment rate (percent)'
-		THEN 9 END AS ord_results")
-			->from("`" . '02820087' . "`")
-			->where('`ref_date` =' , $startyear)
-			->where_in('characteristics', $where_in)
-			->where('`agegroup` = "15 years and over"')
-			->where('`sex` = "Both sexes"')
-			->where('`statistics` = "Estimate"')
-			->where('`datatype` = "Seasonally adjusted"')
-			->where('`geography` = "New Brunswick"')
-			->order_by('ord_results', 'ASC');
+
+		if(isset($data['table']) && $data['table'] != "") {
+			$table = $data['table'];
+		} else {
+			$table = '02820087';
+		}
+
+		if(isset($data['agegroup']) && $data['agegroup'] !="") {
+			$agegroup = $data['agegroup'];
+		} else {
+			$agegroup = '15 years and over';
+		}
+
+		if(isset($data['geography']) && $data['geography'] != "") {
+			$geography = $data['geography'];
+		} else {
+			$geography = 'New Brunswick';
+		}
+
+		if(isset($data['datatype']) && $data['datatype'] != "") {
+			$datatype = $data['datatype'];
+		} else {
+			$datatype = 'Seasonally Adjusted';
+		}
+
+		if(isset($data['charttype']) && $data['charttype'] != "") {
+			$charttype = $data['charttype'];
+		} else {
+			$charttype = '';
+		}
+
+		$this->db->select("value, ref_date, characteristics, " . $order);
+		$this->db->from("`" . $table . "`");
+		$this->db->where('`ref_date` =' , $startyear);
+		$this->db->where_in('characteristics', $where_in);
+		if($table == '02820087') {
+			$this->db->where('`agegroup` = ', $agegroup);
+		}
+		if($table == '02820087') {
+			$this->db->where('`sex` = "Both sexes"');
+		}
+		$this->db->where('`statistics` = "Estimate"');
+		if($table == '02820087') {
+			$this->db->where('`datatype` = ', $datatype);
+		}
+		if($table == '02820087') {
+			$this->db->where('`geography` =', $geography);
+		} else {
+			$this->db->where('`geo` =', $geography);
+		}
+		$this->db->order_by('ord_results', 'ASC');
 
 		$start_result = $this->db->get()->result();
 
-		$this->db->select("value, ref_date, characteristics, CASE `characteristics` WHEN 'Population (x 1,000)' THEN 1 
-		WHEN 'Labour force (x 1,000)' THEN 2 WHEN 'Employment (x 1,000)' THEN 3 WHEN 'Employment full-time (x 1,000)' 
-		THEN 4 WHEN 'Employment part-time (x 1,000)' THEN 5 WHEN 'Unemployment (x 1,000)' THEN 6 WHEN 
-		'Participation rate (percent)' THEN 7 WHEN 'Employment rate (percent)' THEN 8 WHEN 'Unemployment rate (percent)'
-		THEN 9 END AS ord_results")
-			->from("`" . '02820087' . "`")
-			->where('`ref_date` =' , $prevyear)
-			->where_in('characteristics', $where_in)
-			->where('`agegroup` = "15 years and over"')
-			->where('`sex` = "Both sexes"')
-			->where('`statistics` = "Estimate"')
-			->where('`datatype` = "Seasonally adjusted"')
-			->where('`geography` = "New Brunswick"')
-			->order_by('ord_results', 'ASC');
+		// add column for Youth chart
+		if($charttype == 'Youth') {
+			$tmp = new stdClass;
+			$tmp->value = '';
+			$tmp->ref_date = $startyear;
+			$tmp->characteristics = 'PT Employment Rate(%)';
+			$tmp->order = 10;
+			$start_result[] = $tmp;
+		}
+
+		$this->db->select('value, ref_date, characteristics, ' . $order
+		);
+		$this->db->from("`" . $table . "`");
+		$this->db->where('`ref_date` =' , $prevyear);
+		$this->db->where_in('characteristics', $where_in);
+		if($table == '02820087') {
+			$this->db->where('`agegroup` = ', $agegroup);
+		}
+		if($table == '02820087') {
+			$this->db->where('`sex` = "Both sexes"');
+		}
+		$this->db->where('`statistics` = "Estimate"');
+		if($table == '02820087') {
+			$this->db->where('`datatype` = ', $datatype);
+		}
+		if($table == '02820087') {
+			$this->db->where('`geography` =', $geography);
+		} else {
+			$this->db->where('`geo` =', $geography);
+		}
+		$this->db->order_by('ord_results', 'ASC');
 
 		$prev_result = $this->db->get()->result();
 
-		$this->db->select("value, ref_date, characteristics, CASE `characteristics` WHEN 'Population (x 1,000)' THEN 1 
-		WHEN 'Labour force (x 1,000)' THEN 2 WHEN 'Employment (x 1,000)' THEN 3 WHEN 'Employment full-time (x 1,000)' 
-		THEN 4 WHEN 'Employment part-time (x 1,000)' THEN 5 WHEN 'Unemployment (x 1,000)' THEN 6 WHEN 
-		'Participation rate (percent)' THEN 7 WHEN 'Employment rate (percent)' THEN 8 WHEN 'Unemployment rate (percent)'
-		THEN 9 END AS ord_results")
-			->from("`" . '02820087' . "`")
-			->where('`ref_date` =' , $prevmonth)
-			->where_in('characteristics', $where_in)
-			->where('`agegroup` = "15 years and over"')
-			->where('`sex` = "Both sexes"')
-			->where('`statistics` = "Estimate"')
-			->where('`datatype` = "Seasonally adjusted"')
-			->where('`geography` = "New Brunswick"')
-			->order_by('ord_results', 'ASC');
+		// add column for Youth chart
+		if($charttype == 'Youth') {
+			$tmp = new stdClass;
+			$tmp->value = '';
+			$tmp->ref_date = $prevyear;
+			$tmp->characteristics = 'PT Employment Rate(%)';
+			$tmp->order = 10;
+			$prev_result[] = $tmp;
+		}
+
+		$this->db->select('value, ref_date, characteristics, ' . $order);
+		$this->db->from("`" . $table . "`");
+		$this->db->where('`ref_date` =' , $prevmonth);
+		$this->db->where_in('characteristics', $where_in);
+		if($table == '02820087') {
+			$this->db->where('`agegroup` = ', $agegroup);
+		}
+		if($table == '02820087') {
+			$this->db->where('`sex` = "Both sexes"');
+		}
+		$this->db->where('`statistics` = "Estimate"');
+		if($table == '02820087') {
+			$this->db->where('`datatype` = ', $datatype);
+		}
+		if($table == '02820087') {
+			$this->db->where('`geography` =', $geography);
+		} else {
+			$this->db->where('`geo` =', $geography);
+		}
+		$this->db->order_by('ord_results', 'ASC');
 
 		$prev_month_result = $this->db->get()->result();
 
+		// add column for Youth chart
+		if($charttype == 'Youth') {
+			$tmp = new stdClass;
+			$tmp->value = '';
+			$tmp->ref_date = $prevmonth;
+			$tmp->characteristics = 'PT Employment Rate(%)';
+			$tmp->order = 10;
+			$prev_month_result[] = $tmp;
+		}
+
+
+		// Calculate Values for Youth Chart
+		if($charttype == 'Youth') {
+
+			foreach ($prev_result as $key => $value) {
+
+				switch ($value->characteristics) {
+					case 'Employment (x 1,000)':
+						$employment = ($value->value * 1000);
+						break;
+
+					case 'Employment part-time (x 1,000)':
+						$part_time = ($value->value * 1000);
+						break;
+				}
+				if (isset($employment) && isset($part_time)) {
+					$new_value = sprintf('%.01f', (($part_time/$employment) * 100));
+				}
+				foreach ($prev_result as $key => $value) {
+					if (isset($new_value)) {
+						if ($value->characteristics == 'PT Employment Rate(%)') {
+
+							$prev_result[$key]->value = $new_value;
+
+						}
+					}
+				}
+
+			}
+
+			foreach ($start_result as $key => $value) {
+
+				switch ($value->characteristics) {
+					case 'Employment (x 1,000)':
+						$employment = ($value->value * 1000);
+						break;
+
+					case 'Employment part-time (x 1,000)':
+						$part_time = ($value->value * 1000);
+						break;
+				}
+				if (isset($employment) && isset($part_time)) {
+					$new_value = sprintf('%.01f', (($part_time/$employment) * 100));
+				}
+				foreach ($start_result as $key => $value) {
+					if (isset($new_value)) {
+						if ($value->characteristics == 'PT Employment Rate(%)') {
+
+							$start_result[$key]->value = $new_value;
+
+						}
+					}
+				}
+
+			}
+
+			foreach ($prev_month_result as $key => $value) {
+
+				switch ($value->characteristics) {
+					case 'Employment (x 1,000)':
+						$employment = ($value->value * 1000);
+						break;
+
+					case 'Employment part-time (x 1,000)':
+						$part_time = ($value->value * 1000);
+						break;
+				}
+				if (isset($employment) && isset($part_time)) {
+					$new_value = sprintf('%.01f', (($part_time/$employment) * 100));
+				}
+				foreach ($prev_month_result as $key => $value) {
+					if (isset($new_value)) {
+						if ($value->characteristics == 'PT Employment Rate(%)') {
+
+							$prev_month_result[$key]->value = $new_value;
+
+						}
+					}
+				}
+
+			}
+
+		}
 
 		//getting comparisons for year over year and month to last month
 		$result[] = array();
 		$temp = array();
+
+
 		foreach($start_result as $key => $value) {
 			$characteristic = $value->characteristics;
 			$ref_date = $value->ref_date;
 			$val = $value->value;
+
 			foreach($prev_result as $innerKey => $innerValue) {
 				if($innerValue->characteristics == $characteristic) {
 					$inVal = $innerValue->value;
@@ -546,6 +746,7 @@ class Datagathering_model extends CI_Model
 				array('label' => '', 'type' => 'number')
 
 			);
+
 		}
 		$rows = array();
 
