@@ -33,10 +33,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
     <p>Create a custom Labour Force Charts</p>
 	<?php echo form_open('Charts/generateCustomChart') ;?>
-	<label for="startyear">Enter the year for reports (eg. 2016)</label>
-	<input id="startyear" name="startyear" type="text" size="15"><br>
-	<label for="startmonth">Enter the month in numberic format for reports (eg. 12 for December)</label>
-	<input id="startmonth" name="startmonth" type="text" size="15"><br>
+	<label for="startYear">Enter the year for reports (eg. 2016)</label>
+	<input id="startYear" name="startYear" type="text" size="15"><br>
+	<label for="startMonth">Enter the month in numberic format for reports (eg. 12 for December)</label>
+	<input id="startMonth" name="startMonth" type="text" size="15"><br>
     <label for="agegroups">Select Agegroup</label>
     <?php echo form_dropdown('agegroup', $agegroups);  ?><br>
     <label for="agegroups">Select Sex</label>

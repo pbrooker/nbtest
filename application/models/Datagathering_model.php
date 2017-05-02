@@ -138,7 +138,7 @@ class Datagathering_model extends CI_Model
 		WHEN 'Ontario' THEN 7 WHEN 'Manitoba' THEN 8 WHEN 'Saskatchewan' THEN 9 WHEN 'Alberta' THEN 10 WHEN 
 		'British Columbia' THEN 11 END AS order_prov", FALSE)
 			->from("`" . '02820087' . "`")
-			->where('ref_date =', $data['startdate'])
+			->where('ref_date =', $data['startDate'])
 			->where('`characteristics` = ', $data['characteristics'])
 //			->where_in('geography', array('Canada', 'Newfoundland and Labrador', 'Prince Edward Island', 'Nova Scotia',
 //				'New Brunswick', 'Quebec', 'Ontario', 'Manitoba', 'Saskatchewan', 'Alberta', 'British Columbia'))
@@ -156,7 +156,7 @@ class Datagathering_model extends CI_Model
 		WHEN 'Ontario' THEN 7 WHEN 'Manitoba' THEN 8 WHEN 'Saskatchewan' THEN 9 WHEN 'Alberta' THEN 10 WHEN 
 		'British Columbia' THEN 11 END AS order_prov", FALSE)
 			->from("`" . '02820087' . "`")
-			->where('ref_date =', $data['enddate'])
+			->where('ref_date =', $data['endDate'])
 			->where('`characteristics` =', $data['characteristics'])
 //			->where_in('geo', array('Canada', 'Newfoundland and Labrador', 'Prince Edward Island', 'Nova Scotia',
 //				'New Brunswick', 'Quebec', 'Ontario', 'Manitoba', 'Saskatchewan', 'Alberta', 'British Columbia'))
@@ -201,7 +201,7 @@ class Datagathering_model extends CI_Model
 		foreach($result as $key => $value) {
 
 			$temp = array();
-			// the following line will be used to slice the Pie chart
+			
 			$temp[] = array('v' => $value['geography']);
 			$temp[] = array('v' => $value['value']);
 			$temp[] = array('v' => (string)$value['value'] . '%');
@@ -294,7 +294,7 @@ class Datagathering_model extends CI_Model
 		WHEN 'Ontario' THEN 7 WHEN 'Manitoba' THEN 8 WHEN 'Saskatchewan' THEN 9 WHEN 'Alberta' THEN 10 WHEN 
 		'British Columbia' THEN 11 END AS order_prov", FALSE)
 			->from("`" . '02820087' . "`")
-			->where('ref_date =', $data['startdate'])
+			->where('ref_date =', $data['startDate'])
 			->where('`characteristics` =', $data['characteristics'])
 			->where('`agegroup` = ', $data['agegroup'])
 			->where('`sex` = ', $data['sex'])
@@ -309,7 +309,7 @@ class Datagathering_model extends CI_Model
 		WHEN 'Ontario' THEN 7 WHEN 'Manitoba' THEN 8 WHEN 'Saskatchewan' THEN 9 WHEN 'Alberta' THEN 10 WHEN 
 		'British Columbia' THEN 11 END AS order_prov", FALSE)
 			->from("`" . '02820087' . "`")
-			->where('ref_date =', $data['enddate'])
+			->where('ref_date =', $data['endDate'])
 			->where('`characteristics` =', $data['characteristics'])
 			->where('`agegroup` = "15 years and over"')
 			->where('`sex` = "Both sexes"')
@@ -453,7 +453,7 @@ class Datagathering_model extends CI_Model
 
 	public function getLabourForceStatistics($data)
 	{
-		$startyear = $data['startyear'];
+		$startYear = $data['startYear'];
 		$prevyear = $data['prevyear'];
 		$prevmonth = $data['prevmonth'];
 		$where_in = $data['characteristics'];
@@ -493,7 +493,7 @@ class Datagathering_model extends CI_Model
 
 		$this->db->select("value, ref_date, characteristics, " . $order);
 		$this->db->from("`" . $table . "`");
-		$this->db->where('`ref_date` =' , $startyear);
+		$this->db->where('`ref_date` =' , $startYear);
 		$this->db->where_in('characteristics', $where_in);
 		if($table == '02820087') {
 			$this->db->where('`agegroup` = ', $agegroup);
@@ -518,7 +518,7 @@ class Datagathering_model extends CI_Model
 		if($charttype == 'Youth') {
 			$tmp = new stdClass;
 			$tmp->value = '';
-			$tmp->ref_date = $startyear;
+			$tmp->ref_date = $startYear;
 			$tmp->characteristics = 'PT Employment Rate(%)';
 			$tmp->order = 10;
 			$start_result[] = $tmp;

@@ -33,16 +33,16 @@ class Charts extends CI_Controller {
 
 	public function participationMM()
 	{
-		$this->form_validation->set_rules('startdate', 'Start Date', 'required|min_length[7]|max_length[7]');
-		$this->form_validation->set_rules('enddate', 'End Date', 'required|min_length[7]|max_length[7]');
+		$this->form_validation->set_rules('startDate', 'Start Date', 'required|min_length[7]|max_length[7]');
+		$this->form_validation->set_rules('endDate', 'End Date', 'required|min_length[7]|max_length[7]');
 
 		if ($this->form_validation->run() == TRUE)
 		{
-			$startdate = $this->input->post('startdate');
-			$enddate = $this->input->post('enddate');
+			$startDate = $this->input->post('startDate');
+			$endDate = $this->input->post('endDate');
 			$dates = array (
-				'startdate' => $startdate,
-				'enddate' => $enddate
+				'startDate' => $startDate,
+				'endDate' => $endDate
 			);
 			$data['participation_mm'] = $this->nbdata->getParticipationRateMM($dates);
 		}
@@ -54,20 +54,20 @@ class Charts extends CI_Controller {
 
 	public function participationYY()
 	{
-		$this->form_validation->set_rules('startyear', 'Start Year', 'required|min_length[4]|max_length[4]');
-		$this->form_validation->set_rules('startmonth', 'Start Month', 'required|min_length[2]|max_length[2]');
+		$this->form_validation->set_rules('startYear', 'Start Year', 'required|min_length[4]|max_length[4]');
+		$this->form_validation->set_rules('startMonth', 'Start Month', 'required|min_length[2]|max_length[2]');
 
 		if ($this->form_validation->run() == TRUE)
 		{
-			$startyear = $this->input->post('startyear');
-			$startmonth = $this->input->post('startmonth');
+			$startYear = $this->input->post('startYear');
+			$startMonth = $this->input->post('startMonth');
 
 			// dates for y-y
-			$startdate = $startyear . '/' .$startmonth;
-			$enddate = ((int)$startyear - 1) . '/' . $startmonth;
+			$startDate = $startYear . '/' .$startMonth;
+			$endDate = ((int)$startYear - 1) . '/' . $startMonth;
 			$dates = array (
-				'startdate' => $enddate,
-				'enddate' => $startdate
+				'startDate' => $endDate,
+				'endDate' => $startDate
 			);
 			$data['participation_yy'] = $this->nbdata->getComparisonBarChart($dates);
 		}
@@ -79,124 +79,61 @@ class Charts extends CI_Controller {
 
 	public function getAllParticipationCharts()
 	{
-		$this->form_validation->set_rules('startyear', 'Start Year', 'required|min_length[4]|max_length[4]');
-		$this->form_validation->set_rules('startmonth', 'Start Month',
+		$this->form_validation->set_rules('startYear', 'Start Year', 'required|min_length[4]|max_length[4]');
+		$this->form_validation->set_rules('startMonth', 'Start Month',
 			'required|min_length[2]|max_length[2]|callback_monthCheck');
 
 		if ($this->form_validation->run() == TRUE)
 		{
-			$startyear = $this->input->post('startyear');
-			$startmonth = $this->input->post('startmonth');
+			$startYear = $this->input->post('startYear');
+			$startMonth = $this->input->post('startMonth');
 
-			// dates for y-y
-			$startdate = $startyear . '/' .$startmonth;
-			$enddate = ((int)$startyear - 1) . '/' . $startmonth;
-			$dates = array (
-				'startdate' => $enddate,
-				'enddate' => $startdate
-			);
+			$date_array = array('startYear' => $startYear, 'startMonth' => $startMonth);
 
+			$dates = $this->_dateSelectionArray($date_array);
 
-
-			// dates for m-m
-			if($startmonth <= 12 && $startmonth > 1) {
-				$mo = $startmonth - 1;
-
-				$mmDates = array(
-					'startdate' => $startyear . '/' . $startmonth,
-					'enddate' => $startyear . '/' . $mo
-				);
-			} elseif($startmonth == 1) {
-				$mo = 12;
-				$yr = $startyear - 1;
-
-				$mmDates = array(
-					'startdate' => $startyear . '/' . $startmonth,
-					'enddate' => $yr . '/' . $mo
-				);
-			}
-
-			// dates for Unemployment m-m
-			if($startmonth <= 12 && $startmonth > 1) {
-				$mo = $startmonth - 1;
-
-				$urMmDates = array(
-					'startdate' => $startyear . '/' . $mo,
-					'enddate' => $startyear . '/' . $startmonth
-				);
-			} elseif($startmonth == 1) {
-				$mo = 12;
-				$yr = $startyear - 1;
-
-				$urMmDates = array(
-					'startdate' => $yr . '/' . $mo,
-					'enddate' => $startyear . '/' . $startmonth
-				);
-			}
 
 			// alternative dates for Employment Rate
 			$erDates = array (
-				'startdate' => $startdate,
-				'enddate' => $enddate,
+				'startDate' => $dates['startDate'],
+				'endDate' => $dates['endDate'],
 				'characteristics' => 'Employment (x 1,000)',
 				'datatype' => 'Seasonally adjusted'
 			);
 
-			//alternative dates for Employment Rate m-m - Trying to find what data is being pulled
-			if($startmonth <= 12 && $startmonth > 1) {
-				$mo = $startmonth - 1;
-
-				$erMMDates = array(
-					'startdate' => $startyear . '/' . $startmonth,
-					'enddate' => $startyear . '/' . $mo,
-					'characteristics' => 'Employment (x 1,000)',
-					'datatype' => 'Seasonally adjusted'
-				);
-			} elseif($startmonth == 1) {
-				$mo = 12;
-				$yr = $startyear - 1;
-
-				$erMMDates = array(
-					'startdate' => $startyear . '/' . $startmonth,
-					'enddate' => $yr . '/' . $mo,
-					'characteristics' => 'Employment (x 1,000)',
-					'datatype' => 'Seasonally adjusted'
-				);
-			}
+			//alternative dates for Employment Rate m-m
+			$erMMDates = $dates['rev_chrono_mm_offset'];
+			$erMMDates['characteristics'] = 'Employment (x 1,000)';
+			$erMMDates['datatype'] = 'Seasonally adjusted';
 
 			// dates for 10 year growth
-			$endyear = ((int)$startyear - 10) . '/' . $startmonth;
-			$dataGrowth = array(
-
-				'startdate' => $startdate,
-				'enddate' => $endyear,
-				'characteristics' => 'Employment (x 1,000)',
-				'datatype' => 'Seasonally adjusted'
-			);
+			$dataGrowth = $dates['ten_year_span'];
+			$dataGrowth['characteristics'] = 'Employment (x 1,000)';
+			$dataGrowth['datatype'] = 'Seasonally adjusted';
 
 
 			$dataParticipation = array (
-				'date' => $startdate,
+				'date' => $dates['startDate'],
 				'characteristics' => 'Participation rate (percent)'
 			);
 			$dataUnemployment = array (
-				'date' => $startdate,
+				'date' => $dates['startDate'],
 				'characteristics' => 'Unemployment rate (percent)'
 			);
 
-			$dataUR_MM = $urMmDates;
+			$dataUR_MM = $dates['mm_chrono'];
 			$dataUR_MM['characteristics'] = 'Unemployment rate (percent)';
 			$dataUR_MM['datatype'] = 'Seasonally adjusted';
 
-			$dataUR_YY = $dates;
+			$dataUR_YY = $dates['chrono_year'];
 			$dataUR_YY['characteristics'] = 'Unemployment rate (percent)';
 			$dataUR_YY['datatype'] = 'Seasonally adjusted';
 
-			$dataPR_MM = $mmDates;
+			$dataPR_MM = $dates['reverse_mm_chrono'];
 			$dataPR_MM['characteristics'] = 'Participation rate (percent)';
 			$dataPR_MM['datatype'] = 'Seasonally adjusted';
 
-			$dataPR_YY = $dates;
+			$dataPR_YY = $dates['chrono_year'];
 			$dataPR_YY['characteristics'] = 'Participation rate (percent)';
 			$dataPR_YY['datatype'] = 'Seasonally adjusted';
 
@@ -234,19 +171,19 @@ class Charts extends CI_Controller {
 
 	public function getLabourForceCharts()
 	{
-		$this->form_validation->set_rules('startyear', 'Start Year', 'required|min_length[4]|max_length[4]');
-		$this->form_validation->set_rules('startmonth', 'Start Month',
+		$this->form_validation->set_rules('startYear', 'Start Year', 'required|min_length[4]|max_length[4]');
+		$this->form_validation->set_rules('startMonth', 'Start Month',
 			'required|min_length[2]|max_length[2]|callback_monthCheck');
 
 
 		if ($this->form_validation->run() == TRUE) {
 
-			$startyear = $this->input->post('startyear');
-			$startmonth = $this->input->post('startmonth');
+			$startYear = $this->input->post('startYear');
+			$startMonth = $this->input->post('startMonth');
 
 
 			// date array to get arrays for trend reports and generate chart and table data
-			$date = array('startmonth' => $startmonth, 'startyear' => $startyear);
+			$date = array('startMonth' => $startMonth, 'startYear' => $startYear);
 
 			// for Month to Month trends
 			$MM = $this->_monthToMonthArray($date);
@@ -287,7 +224,6 @@ class Charts extends CI_Controller {
 			$yt_date['region'] = 'Youth';
 			$data['youth'] = $this->generateRegionTableReportData($yt_date);
 
-
 			$dataLF_MM = array (
 				'where_in' => $MM,
 				'characteristics' => 'Labour force (x 1,000)'
@@ -313,9 +249,6 @@ class Charts extends CI_Controller {
 				'characteristics' => 'Unemployment rate (percent)'
 			);
 
-
-
-
 			$data['labour_force_mm'] = $this->nbdata->getLabourForceData($dataLF_MM);
 			$data['labour_force_yy'] = $this->nbdata->getLabourForceData($dataLF_YY);
 			$data['employment_mm'] = $this->nbdata->getLabourForceData($dataEM_MM);
@@ -333,11 +266,26 @@ class Charts extends CI_Controller {
 
 	public function generateBarChartData($data)
 	{
+		$startMonth = $data['startMonth'];
+		$startYear = $data['startYear'];
+		$characteristics = $data['characteristics'];
+		$datatype = $data['datatype'];
+		$reportType = $data['reportType'];
+
+		// date array to get arrays for trend reports and generate chart and table data
+		$date = array('startMonth' => $startMonth, 'startYear' => $startYear);
+
+
 
 	}
 
 	public function generateComparisonBarChartData($data)
 	{
+		$startMonth = $data['startMonth'];
+		$startYear = $data['startYear'];
+		$characteristics = $data['characteristics'];
+		$datatype = $data['datatype'];
+
 
 	}
 
@@ -350,15 +298,22 @@ class Charts extends CI_Controller {
 		} else {
 			$characteristics = array('language' => 'FR', 'table' => '02820087');
 		}
-		$geo = $this->nbdata->getGeography($lang)->result();
+
+		$geo = $this->nbdata->getGeography($lang);
 		$geography = array();
-		foreach($geo as $key => $value) {
-			$geography[$value->name] = $value->name;
+
+		if($geo->num_rows() > 0) {
+			foreach ($geo->result() as $key => $value) {
+				$geography[$value->name] = $value->name;
+			}
 		}
-		$char = $this->nbdata->getCharacteristics($characteristics)->result();
+		$char = $this->nbdata->getCharacteristics($characteristics);
 		$characteristics = array();
-		foreach($char as $key => $value) {
-			$characteristics[$value->characteristic] = $value->characteristic;
+
+		if($char->num_rows() > 0) {
+			foreach ($char->result() as $key => $value) {
+				$characteristics[$value->characteristic] = $value->characteristic;
+			}
 		}
 
 		$data['agegroups'] = $this->_arrays('agegroups');
@@ -379,17 +334,17 @@ class Charts extends CI_Controller {
 
 	public function generateCustomChart()
 	{
-		$this->form_validation->set_rules('startyear', 'Start Year', 'required|min_length[4]|max_length[4]');
-		$this->form_validation->set_rules('startmonth', 'Start Month',
+		$this->form_validation->set_rules('startYear', 'Start Year', 'required|min_length[4]|max_length[4]');
+		$this->form_validation->set_rules('startMonth', 'Start Month',
 			'required|min_length[2]|max_length[2]|callback_monthCheck');
 
 		if ($this->form_validation->run() == TRUE) {
 			$data = array();
-			$startyear = $this->input->post('startyear');
-			$startmonth = $this->input->post('startmonth');
+			$startYear = $this->input->post('startYear');
+			$startMonth = $this->input->post('startMonth');
 
-			$data['startdate'] = ($startyear - 1) . '/' . $startmonth;
-			$data['enddate'] = $startyear . '/' . $startmonth;
+			$data['startDate'] = ($startYear - 1) . '/' . $startMonth;
+			$data['endDate'] = $startYear . '/' . $startMonth;
 			$data['agegroup'] = $this->input->post('agegroup');
 			$data['sex'] = $this->input->post('sex');
 			$data['datatype'] = $this->input->post('datatype');
@@ -414,24 +369,24 @@ class Charts extends CI_Controller {
 
 	public function generateOverallTableReportData($data)
 	{
-		$startmonth = $data['startmonth'];
-		$startyear = $data['startyear'];
+		$startMonth = $data['startMonth'];
+		$startYear = $data['startYear'];
 
 		// for Year over year and last month to current month data table
-		$mo = $startmonth - 1;
+		$mo = $startMonth - 1;
 		if($mo == 0) {
 			$mo = 12;
 		}
-		if($startmonth == 1) {
-			$prevMonthYear = $startyear -1;
+		if($startMonth == 1) {
+			$prevMonthYear = $startYear -1;
 		} else {
-			$prevMonthYear = $startyear;
+			$prevMonthYear = $startYear;
 		}
-		$mo_pad = sprintf('%02d', $startmonth);
+		$mo_pad = sprintf('%02d', $startMonth);
 		$dataTable = array (
 
-			'startyear' => $startyear . '/' . $mo_pad,
-			'prevyear' => ($startyear - 1) . '/' . $mo_pad,
+			'startYear' => $startYear . '/' . $mo_pad,
+			'prevyear' => ($startYear - 1) . '/' . $mo_pad,
 			'prevmonth' =>  $prevMonthYear . '/' . sprintf( '%02d', $mo),
 			'characteristics' => array (
 				'Population (x 1,000)', 'Labour force (x 1,000)', 'Employment (x 1,000)',
@@ -450,42 +405,49 @@ class Charts extends CI_Controller {
 
 		);
 
-		$dateObj   = DateTime::createFromFormat('!m', $startmonth);
+		$dateObj   = DateTime::createFromFormat('!m', $startMonth);
 		$monthName = $dateObj->format('F');
 
 		$labour_force_statistics = array(
 			'data' => $this->nbdata->getLabourForceStatistics($dataTable),
-			'date' => $monthName . ' ' . $startyear);
+			'date' => $monthName . ' ' . $startYear);
 
 		return $labour_force_statistics;
 	}
 
+	/**
+	 * Start data includes Start Month, Start Year and Region. This information is used to create associated charts for
+	 * the specified economic region and return the data sets to be assigned to a view. This controller returns an
+	 * entire set of region or youth reports(trends and data table)
+	 * @param $startData
+	 * @return mixed
+	 */
 	public function generateRegionTableReportData($startData)
 	{
-		$startmonth = $startData['startmonth'];
-		$startyear = $startData['startyear'];
+		$startMonth = $startData['startMonth'];
+		$startYear = $startData['startYear'];
 		$region = $startData['region'];
 
 
 		// for Year over year and last month to current month data table
-		$mo = $startmonth - 1;
+		$mo = $startMonth - 1;
 		if($mo == 0) {
 			$mo = 12;
 		}
-		if($startmonth == 1) {
-			$prevMonthYear = $startyear -1;
+		if($startMonth == 1) {
+			$prevMonthYear = $startYear -1;
 		} else {
-			$prevMonthYear = $startyear;
+			$prevMonthYear = $startYear;
 		}
-		$mo_pad = sprintf('%02d', $startmonth);
+		$mo_pad = sprintf('%02d', $startMonth);
 
 		$MM = $this->_monthToMonthArray($startData);
 		$YY = $this->_yearToYearArray($startData);
 
 		$dataTable = array (
 
-			'startyear' => $startyear . '/' . $mo_pad,
-			'prevyear' => ($startyear - 1) . '/' . $mo_pad,
+			'startYear' => $startYear . '/' . $mo_pad,
+			'prevyear' => ($startYear - 1) . '/' . $mo_pad,
 			'prevmonth' =>  $prevMonthYear . '/' . sprintf( '%02d', $mo),
 			'characteristics' => array (
 				'Population (x 1,000)', 'Labour force (x 1,000)', 'Employment (x 1,000)',
@@ -506,8 +468,8 @@ class Charts extends CI_Controller {
 
 		$regionDataTable = array (
 
-			'startyear' => $startyear . '/' . $mo_pad,
-			'prevyear' => ($startyear - 1) . '/' . $mo_pad,
+			'startYear' => $startYear . '/' . $mo_pad,
+			'prevyear' => ($startYear - 1) . '/' . $mo_pad,
 			'prevmonth' =>  $prevMonthYear . '/' . sprintf( '%02d', $mo),
 			'characteristics' => array (
 				'Population (x 1,000)', 'Labour force (x 1,000)', 'Employment (x 1,000)',
@@ -526,7 +488,8 @@ class Charts extends CI_Controller {
 		);
 
 
-		$dateObj   = DateTime::createFromFormat('!m', $startmonth);
+		// Get name for month for table header
+		$dateObj   = DateTime::createFromFormat('!m', $startMonth);
 		$monthName = $dateObj->format('F');
 
 		$regionDataTable['table'] = '02820122';
@@ -535,7 +498,7 @@ class Charts extends CI_Controller {
 				$regionDataTable['geography'] = $this->_returnGeographyByRegion($region);
 				$data['se_lf_stats'] = array (
 					'data' => $this->nbdata->getLabourForceStatistics($regionDataTable),
-					'date' => $monthName . ' ' . $startyear,
+					'date' => $monthName . ' ' . $startYear,
 					'title' => $region
 				);
 				$se_lf_mm = array (
@@ -586,7 +549,7 @@ class Charts extends CI_Controller {
 				$regionDataTable['geography'] = $this->_returnGeographyByRegion($region);
 				$data['sw_lf_stats'] = array (
 					'data' => $this->nbdata->getLabourForceStatistics($regionDataTable),
-					'date' => $monthName . ' ' . $startyear,
+					'date' => $monthName . ' ' . $startYear,
 					'title' => $region
 				);
 				$sw_lf_mm = array (
@@ -637,7 +600,7 @@ class Charts extends CI_Controller {
 				$regionDataTable['geography'] = $this->_returnGeographyByRegion($region);
 				$data['ce_lf_stats'] = array (
 					'data' => $this->nbdata->getLabourForceStatistics($regionDataTable),
-					'date' => $monthName . ' ' . $startyear,
+					'date' => $monthName . ' ' . $startYear,
 					'title' => $region
 				);
 				$ce_lf_mm = array (
@@ -688,7 +651,7 @@ class Charts extends CI_Controller {
 				$regionDataTable['geography'] = $this->_returnGeographyByRegion($region);
 				$data['nw_lf_stats'] = array (
 					'data' => $this->nbdata->getLabourForceStatistics($regionDataTable),
-					'date' => $monthName . ' ' . $startyear,
+					'date' => $monthName . ' ' . $startYear,
 					'title' => $region
 				);
 				$nw_lf_mm = array (
@@ -739,7 +702,7 @@ class Charts extends CI_Controller {
 				$regionDataTable['geography'] = $this->_returnGeographyByRegion($region);
 				$data['ne_lf_stats'] = array (
 					'data' => $this->nbdata->getLabourForceStatistics($regionDataTable),
-					'date' => $monthName . ' ' . $startyear,
+					'date' => $monthName . ' ' . $startYear,
 					'title' => $region
 				);
 				$ne_lf_mm = array (
@@ -792,7 +755,7 @@ class Charts extends CI_Controller {
 				$dataTable['charttype'] = 'Youth';
 				$data['youth_stats'] = array (
 					'data' => $this->nbdata->getLabourForceStatistics($dataTable),
-					'date' => $monthName . ' ' . $startyear,
+					'date' => $monthName . ' ' . $startYear,
 					'title' => $region
 				);
 				$yt_lf_mm = array (
@@ -854,7 +817,7 @@ class Charts extends CI_Controller {
 	{
 		if($num > 12 || $num < 1) {
 			$this->form_validation->set_message(
-				'startmonth',
+				'startMonth',
 				'The %s field must be a valid month'
 			);
 			return FALSE;
@@ -924,14 +887,14 @@ class Charts extends CI_Controller {
 
 	private function _monthToMonthArray($data)
 	{
-		$startmonth = $data['startmonth'];
-		$startyear = $data['startyear'];
+		$startMonth = $data['startMonth'];
+		$startYear = $data['startYear'];
 
 		// build 12 month array
 		$MM = array();
-		if ($startmonth <= 12 && $startmonth >= 1) {
-			$month = $startmonth;
-			$yr = $startyear;
+		if ($startMonth <= 12 && $startMonth >= 1) {
+			$month = $startMonth;
+			$yr = $startYear;
 			for ($i = 0; $i <= 13; $i++) {
 				if ($month > 0) {
 					$mo_padded = sprintf('%02d', $month);
@@ -949,14 +912,14 @@ class Charts extends CI_Controller {
 
 	private function _yearToYearArray($data)
 	{
-		$startmonth = $data['startmonth'];
-		$startyear = $data['startyear'];
+		$startMonth = $data['startMonth'];
+		$startYear = $data['startYear'];
 
 		// build 10 year array
 		$YY = array();
-		if ($startmonth <= 12 && $startmonth >= 1) {
-			$month = $startmonth;
-			$yr = $startyear;
+		if ($startMonth <= 12 && $startMonth >= 1) {
+			$month = $startMonth;
+			$yr = $startYear;
 			for ($i = 0; $i <= 9; $i++) {
 				$mo_padded = sprintf('%02d', $month);
 				$YY[$i] = $yr . '/' . $mo_padded;
@@ -967,6 +930,110 @@ class Charts extends CI_Controller {
 		return $YY;
 	}
 
+	/**
+	 * This function exists to create a selection of date arrays to use to build charts with. Each array serves a
+	 * specific purpose as commented below. The multiple date formats are used to minimize the number of queries
+	 * needed to produce the desired reports. All dates used are specifically used to match existing results from
+	 * NBJobs.
+	 * @param $data
+	 * @return mixed
+	 */
+	private function _dateSelectionArray($data)
+	{
+
+
+		$startMonth = $data['startMonth'];
+		$startYear = $data['startYear'];
+
+		// dates for standard year over year chart selection. StartDate is always the date selected at input.
+		// EndDate is always the startYear - 1. Exp: startdate: 2017/01, endDate 2016/01
+		$dates['startDate'] = $startDate = $startYear . '/' .$startMonth;
+		$dates['endDate'] = ((int)$startYear - 1) . '/' . $startMonth;
+
+		// chrono_year is startDate and endDate in chonological order: startDate: 2016/01, endDate 2017/01
+		//  This date array is used in the Unemployment Rate Year to Year and Participation Rate Year to Year
+		// report.
+		$dates['chrono_year'] = array (
+			'startDate' => $dates['endDate'],
+			'endDate' => $dates['startDate']
+		);
+
+		// reverse_mm_chrono is the date array for month to month comparison in reverse chronological order.
+		// Entered year and month: 2017  01
+		// Example: startDate: 2017/01 endDate: 2016/12.  This date array is used in the Participation Rate Month to
+		// Month chart
+		if($startMonth <= 12 && $startMonth > 1) {
+			$mo = $startMonth - 1;
+
+			$dates['reverse_mm_chrono'] = array(
+				'startDate' => $startYear . '/' . $startMonth,
+				'endDate' => $startYear . '/' . $mo
+			);
+		} elseif($startMonth == 1) {
+			$mo = 12;
+			$yr = $startYear - 1;
+
+			$dates['reverse_mm_chrono'] = array(
+				'startDate' => $startYear . '/' . $startMonth,
+				'endDate' => $yr . '/' . $mo
+			);
+		}
+
+		// mm_chrono is the date array for month to month comparison in standard chronological order.
+		// Entered year and month 2017  01
+		// Example: startDate: 2016/12, endDate: 2017/01. This date array is used in Unemployment Rate month to month
+		// chart
+		if($startMonth <= 12 && $startMonth > 1) {
+			$mo = $startMonth - 1;
+
+			$dates['mm_chrono'] = array(
+				'startDate' => $startYear . '/' . $mo,
+				'endDate' => $startYear . '/' . $startMonth
+			);
+		} elseif($startMonth == 1) {
+			$mo = 12;
+			$yr = $startYear - 1;
+
+			$dates['mm_chrono'] = array(
+				'startDate' => $yr . '/' . $mo,
+				'endDate' => $startYear . '/' . $startMonth
+			);
+		}
+
+		// rev_chrono_mm_offset is the date array for month to month comparison in reverse chronological order, offset
+		// by one month. This is done specifically to match the desired results in the existing NBJobs reports.
+		// Entered year and month 2017 01
+		// Example result: startDate: 2017/01 endDate: 2016/12
+		if($startMonth <= 12 && $startMonth > 1) {
+			$mo = $startMonth - 1;
+
+			$dates['rev_chrono_mm_offset'] = array(
+				'startDate' => $startYear . '/' . $startMonth,
+				'endDate' => $startYear . '/' . $mo,
+				'characteristics' => 'Employment (x 1,000)',
+				'datatype' => 'Seasonally adjusted'
+			);
+		} elseif($startMonth == 1) {
+			$mo = 12;
+			$yr = $startYear - 1;
+
+			$dates['rev_chrono_mm_offset'] = array(
+				'startDate' => $startYear . '/' . $startMonth,
+				'endDate' => $yr . '/' . $mo,
+				'characteristics' => 'Employment (x 1,000)',
+				'datatype' => 'Seasonally adjusted'
+			);
+		}
+
+		// ten_year_span is the date array for 10 year comparison chart. 
+		$endYear = ((int)$startYear - 10) . '/' . $startMonth;
+		$dates['ten_year_span'] = array(
+			'startDate' => $startDate,
+			'endDate' => $endYear
+		);
+
+		return $dates;
+	}
 
 
 }

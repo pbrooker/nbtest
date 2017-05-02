@@ -82,10 +82,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <!--        <br><br>-->
 <!--		--><?php //echo form_open('Charts/participationMM') ;?>
 <!--        <p>Get Participation M-M Chart</p>-->
-<!--        <label for="startdate">Enter Start date in Year/Month format (eg. 2017/01)</label>-->
-<!--        <input id="startdate" name="startdate" type="text" size="15"><br>-->
-<!--        <label for="enddate">Enter End date in Year/Month format (eg. 2017/01)</label>-->
-<!--        <input id="enddate" name="enddate" type="text" size="15"><br>-->
+<!--        <label for="startDate">Enter Start date in Year/Month format (eg. 2017/01)</label>-->
+<!--        <input id="startDate" name="startDate" type="text" size="15"><br>-->
+<!--        <label for="endDate">Enter End date in Year/Month format (eg. 2017/01)</label>-->
+<!--        <input id="endDate" name="endDate" type="text" size="15"><br>-->
 <!---->
 <!--		--><?php //echo form_submit('Charts', 'Get Participation Chart!');?>
 <!--		--><?php //echo form_close();?>
@@ -93,10 +93,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <!--        <br><br>-->
 <!--		--><?php //echo form_open('Charts/participationYY') ;?>
 <!--        <p>Get Participation Y-Y  Chart</p>-->
-<!--        <label for="startyear">Enter the start year (eg. 2016)</label>-->
-<!--        <input id="startyear" name="startyear" type="text" size="15"><br>-->
-<!--        <label for="startmonth">Enter the start month in numberic format (eg. 12 for December)</label>-->
-<!--        <input id="startmonth" name="startmonth" type="text" size="15"><br>-->
+<!--        <label for="startYear">Enter the start year (eg. 2016)</label>-->
+<!--        <input id="startYear" name="startYear" type="text" size="15"><br>-->
+<!--        <label for="startMonth">Enter the start month in numberic format (eg. 12 for December)</label>-->
+<!--        <input id="startMonth" name="startMonth" type="text" size="15"><br>-->
 <!---->
 <!--		--><?php //echo form_submit('Charts', 'Get Participation Chart!');?>
 <!--		--><?php //echo form_close();?>
@@ -104,10 +104,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <br>
 		<?php echo form_open('Charts/getAllParticipationCharts') ;?>
         <p>Get All Participation Charts</p>
-        <label for="startyear">Enter the year for reports (eg. 2016)</label>
-        <input id="startyear" name="startyear" type="text" size="15"><br>
-        <label for="startmonth">Enter the month in numberic format for reports (eg. 12 for December)</label>
-        <input id="startmonth" name="startmonth" type="text" size="15"><br>
+        <label for="startYear">Enter the year for reports (eg. 2016)</label>
+        <input id="startYear" name="startYear" type="text" size="15"><br>
+        <label for="startMonth">Enter the month in numberic format for reports (eg. 12 for December)</label>
+        <input id="startMonth" name="startMonth" type="text" size="15"><br>
 
 		<?php echo form_submit('Charts', 'Get Participation Charts!');?>
 		<?php echo form_close();?>
@@ -116,10 +116,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		<?php echo form_open('Charts/getLabourForceCharts') ;?>
         <p>Get All Labour Force Charts</p>
-        <label for="startyear">Enter the year for reports (eg. 2016)</label>
-        <input id="startyear" name="startyear" type="text" size="15"><br>
-        <label for="startmonth">Enter the month in numberic format for reports (eg. 12 for December)</label>
-        <input id="startmonth" name="startmonth" type="text" size="15"><br>
+        <label for="startYear">Enter the year for reports (eg. 2016)</label>
+        <input id="startYear" name="startYear" type="text" size="15"><br>
+        <label for="startMonth">Enter the month in numberic format for reports (eg. 12 for December)</label>
+        <input id="startMonth" name="startMonth" type="text" size="15"><br>
 
 		<?php echo form_submit('Charts', 'Get Labour Force Charts!');?>
 		<?php echo form_close();?>
