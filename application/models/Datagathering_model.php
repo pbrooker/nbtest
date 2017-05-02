@@ -427,7 +427,6 @@ class Datagathering_model extends CI_Model
 			array('id' =>'','label' => 'Date', 'type' => 'date' ),
 			array('id' =>'', 'label' => 'Value', 'type' => 'number')
 
-
 		);
 		$rows = array();
 
@@ -441,7 +440,6 @@ class Datagathering_model extends CI_Model
 			} else {
 				$temp[] = array('v' => ($value->value));
 			}
-
 
 			$rows[] = array('c' => $temp);
 

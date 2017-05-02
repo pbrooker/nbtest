@@ -311,8 +311,8 @@
 
         function drawTable() {
 
-            var data = new google.visualization.DataTable(<?= $se_lf_stats['data'] ;?>);
-            var title = "Labour Force Statistics: <?= $se_lf_stats['date'] ;?> - <?= $se_lf_stats['title'];?>";
+            var data = new google.visualization.DataTable(<?= $southeast['se_lf_stats']['data'] ;?>);
+            var title = "Labour Force Statistics: <?= $southeast['se_lf_stats']['date'] ;?> - <?= $southeast['se_lf_stats']['title'];?>";
 
             var options = {
                 title:  title,
@@ -344,7 +344,7 @@
 
         function drawChart() {
 
-            var data = new google.visualization.DataTable(<?= $se_lf_mm ;?>);
+            var data = new google.visualization.DataTable(<?= $southeast['se_lf_mm'] ;?>);
 
             var options = {
                 title: "Labour Force M-M Trends",
@@ -385,7 +385,7 @@
 
         function drawChart() {
 
-            var data = new google.visualization.DataTable(<?= $se_lf_yy ;?>);
+            var data = new google.visualization.DataTable(<?= $southeast['se_lf_yy'] ;?>);
 
             var options = {
                 title: "Labour Force Y-Y Trends",
@@ -426,7 +426,7 @@
 
         function drawChart() {
 
-            var data = new google.visualization.DataTable(<?= $se_em_mm ;?>);
+            var data = new google.visualization.DataTable(<?= $southeast['se_em_mm'] ;?>);
 
             var options = {
                 title: "Employment M-M Trends",
@@ -467,7 +467,7 @@
 
         function drawChart() {
 
-            var data = new google.visualization.DataTable(<?= $se_em_yy ;?>);
+            var data = new google.visualization.DataTable(<?= $southeast['se_em_yy'] ;?>);
 
             var options = {
                 title: "Employment Y-Y Trends",
@@ -508,7 +508,7 @@
 
         function drawChart() {
 
-            var data = new google.visualization.DataTable(<?= $se_um_mm ;?>);
+            var data = new google.visualization.DataTable(<?= $southeast['se_um_mm'] ;?>);
 
             var options = {
                 title: "Unemployment M-M Trends",
@@ -549,7 +549,7 @@
 
         function drawChart() {
 
-            var data = new google.visualization.DataTable(<?= $se_um_yy ;?>);
+            var data = new google.visualization.DataTable(<?= $southeast['se_um_yy'] ;?>);
 
             var options = {
                 title: "Unemployment Y-Y Trends",
@@ -593,8 +593,8 @@
 
         function drawTable() {
 
-            var data = new google.visualization.DataTable(<?= $sw_lf_stats['data'] ;?>);
-            var title = "Labour Force Statistics: <?= $sw_lf_stats['date'] ;?> - <?= $sw_lf_stats['title'];?>";
+            var data = new google.visualization.DataTable(<?= $southwest['sw_lf_stats']['data'] ;?>);
+            var title = "Labour Force Statistics: <?= $southwest['sw_lf_stats']['date'] ;?> - <?= $southwest['sw_lf_stats']['title'];?>";
 
             var options = {
                 title: title,
@@ -626,7 +626,7 @@
 
         function drawChart() {
 
-            var data = new google.visualization.DataTable(<?= $sw_lf_mm ;?>);
+            var data = new google.visualization.DataTable(<?= $southwest['sw_lf_mm'] ;?>);
 
             var options = {
                 title: "Labour Force M-M Trends",
@@ -667,7 +667,7 @@
 
         function drawChart() {
 
-            var data = new google.visualization.DataTable(<?= $sw_lf_yy ;?>);
+            var data = new google.visualization.DataTable(<?= $southwest['sw_lf_yy'] ;?>);
 
             var options = {
                 title: "Labour Force Y-Y Trends",
@@ -708,7 +708,7 @@
 
         function drawChart() {
 
-            var data = new google.visualization.DataTable(<?= $sw_em_mm ;?>);
+            var data = new google.visualization.DataTable(<?= $southwest['sw_em_mm'] ;?>);
 
             var options = {
                 title: "Employment M-M Trends",
@@ -749,7 +749,7 @@
 
         function drawChart() {
 
-            var data = new google.visualization.DataTable(<?= $sw_em_yy ;?>);
+            var data = new google.visualization.DataTable(<?= $southwest['sw_em_yy'] ;?>);
 
             var options = {
                 title: "Employment Y-Y Trends",
@@ -790,7 +790,7 @@
 
         function drawChart() {
 
-            var data = new google.visualization.DataTable(<?= $sw_um_mm ;?>);
+            var data = new google.visualization.DataTable(<?= $southwest['sw_um_mm'] ;?>);
 
             var options = {
                 title: "Unemployment M-M Trends",
@@ -831,7 +831,7 @@
 
         function drawChart() {
 
-            var data = new google.visualization.DataTable(<?= $sw_um_yy ;?>);
+            var data = new google.visualization.DataTable(<?= $southwest['sw_um_yy'] ;?>);
 
             var options = {
                 title: "Unemployment Y-Y Trends",
@@ -873,8 +873,8 @@
 
         function drawTable() {
 
-            var data = new google.visualization.DataTable(<?= $ce_lf_stats['data'] ;?>);
-            var title = "Labour Force Statistics: <?= $ce_lf_stats['date'] ;?> - <?= $ce_lf_stats['title'];?>";
+            var data = new google.visualization.DataTable(<?= $central['ce_lf_stats']['data'] ;?>);
+            var title = "Labour Force Statistics: <?= $central['ce_lf_stats']['date'] ;?> - <?= $central['ce_lf_stats']['title'];?>";
 
             var options = {
                 title: title,
@@ -906,7 +906,7 @@
 
         function drawChart() {
 
-            var data = new google.visualization.DataTable(<?= $ce_lf_mm ;?>);
+            var data = new google.visualization.DataTable(<?= $central['ce_lf_mm'] ;?>);
 
             var options = {
                 title: "Labour Force M-M Trends",
@@ -947,7 +947,7 @@
 
         function drawChart() {
 
-            var data = new google.visualization.DataTable(<?= $ce_lf_yy ;?>);
+            var data = new google.visualization.DataTable(<?= $central['ce_lf_yy'] ;?>);
 
             var options = {
                 title: "Labour Force Y-Y Trends",
@@ -988,7 +988,7 @@
 
         function drawChart() {
 
-            var data = new google.visualization.DataTable(<?= $ce_em_mm ;?>);
+            var data = new google.visualization.DataTable(<?= $central['ce_em_mm'] ;?>);
 
             var options = {
                 title: "Employment M-M Trends",
@@ -1029,7 +1029,7 @@
 
         function drawChart() {
 
-            var data = new google.visualization.DataTable(<?= $ce_em_yy ;?>);
+            var data = new google.visualization.DataTable(<?= $central['ce_em_yy'] ;?>);
 
             var options = {
                 title: "Employment Y-Y Trends",
@@ -1070,7 +1070,7 @@
 
         function drawChart() {
 
-            var data = new google.visualization.DataTable(<?= $ce_um_mm ;?>);
+            var data = new google.visualization.DataTable(<?= $central['ce_um_mm'] ;?>);
 
             var options = {
                 title: "Unemployment M-M Trends",
@@ -1111,7 +1111,7 @@
 
         function drawChart() {
 
-            var data = new google.visualization.DataTable(<?= $ce_um_yy ;?>);
+            var data = new google.visualization.DataTable(<?= $central['ce_um_yy'] ;?>);
 
             var options = {
                 title: "Unemployment Y-Y Trends",
@@ -1153,8 +1153,8 @@
 
         function drawTable() {
 
-            var data = new google.visualization.DataTable(<?= $nw_lf_stats['data'] ;?>);
-            var title = "Labour Force Statistics: <?= $nw_lf_stats['date'] ;?> - <?= $nw_lf_stats['title'];?>";
+            var data = new google.visualization.DataTable(<?= $northwest['nw_lf_stats']['data'] ;?>);
+            var title = "Labour Force Statistics: <?= $northwest['nw_lf_stats']['date'] ;?> - <?= $northwest['nw_lf_stats']['title'];?>";
 
             var options = {
                 title: title,
@@ -1186,7 +1186,7 @@
 
         function drawChart() {
 
-            var data = new google.visualization.DataTable(<?= $nw_lf_mm ;?>);
+            var data = new google.visualization.DataTable(<?= $northwest['nw_lf_mm'] ;?>);
 
             var options = {
                 title: "Labour Force M-M Trends",
@@ -1227,7 +1227,7 @@
 
         function drawChart() {
 
-            var data = new google.visualization.DataTable(<?= $nw_lf_yy ;?>);
+            var data = new google.visualization.DataTable(<?= $northwest['nw_lf_yy'] ;?>);
 
             var options = {
                 title: "Labour Force Y-Y Trends",
@@ -1268,7 +1268,7 @@
 
         function drawChart() {
 
-            var data = new google.visualization.DataTable(<?= $nw_em_mm ;?>);
+            var data = new google.visualization.DataTable(<?= $northwest['nw_em_mm'] ;?>);
 
             var options = {
                 title: "Employment M-M Trends",
@@ -1309,7 +1309,7 @@
 
         function drawChart() {
 
-            var data = new google.visualization.DataTable(<?= $nw_em_yy ;?>);
+            var data = new google.visualization.DataTable(<?= $northwest['nw_em_yy'] ;?>);
 
             var options = {
                 title: "Employment Y-Y Trends",
@@ -1350,7 +1350,7 @@
 
         function drawChart() {
 
-            var data = new google.visualization.DataTable(<?= $nw_um_mm ;?>);
+            var data = new google.visualization.DataTable(<?= $northwest['nw_um_mm'] ;?>);
 
             var options = {
                 title: "Unemployment M-M Trends",
@@ -1391,7 +1391,7 @@
 
         function drawChart() {
 
-            var data = new google.visualization.DataTable(<?= $nw_um_yy ;?>);
+            var data = new google.visualization.DataTable(<?= $northwest['nw_um_yy'] ;?>);
 
             var options = {
                 title: "Unemployment Y-Y Trends",
@@ -1433,8 +1433,8 @@
 
         function drawTable() {
 
-            var data = new google.visualization.DataTable(<?= $ne_lf_stats['data'] ;?>);
-            var title = "Labour Force Statistics: <?= $ne_lf_stats['date'] ;?> - <?= $ne_lf_stats['title'];?>";
+            var data = new google.visualization.DataTable(<?= $northeast['ne_lf_stats']['data'] ;?>);
+            var title = "Labour Force Statistics: <?= $northeast['ne_lf_stats']['date'] ;?> - <?= $northeast['ne_lf_stats']['title'];?>";
 
             var options = {
                 title: title,
@@ -1466,7 +1466,7 @@
 
         function drawChart() {
 
-            var data = new google.visualization.DataTable(<?= $ne_lf_mm ;?>);
+            var data = new google.visualization.DataTable(<?= $northeast['ne_lf_mm'] ;?>);
 
             var options = {
                 title: "Labour Force M-M Trends",
@@ -1507,7 +1507,7 @@
 
         function drawChart() {
 
-            var data = new google.visualization.DataTable(<?= $ne_lf_yy ;?>);
+            var data = new google.visualization.DataTable(<?= $northeast['ne_lf_yy'] ;?>);
 
             var options = {
                 title: "Labour Force Y-Y Trends",
@@ -1548,7 +1548,7 @@
 
         function drawChart() {
 
-            var data = new google.visualization.DataTable(<?= $ne_em_mm ;?>);
+            var data = new google.visualization.DataTable(<?= $northeast['ne_em_mm'] ;?>);
 
             var options = {
                 title: "Employment M-M Trends",
@@ -1589,7 +1589,7 @@
 
         function drawChart() {
 
-            var data = new google.visualization.DataTable(<?= $ne_em_yy ;?>);
+            var data = new google.visualization.DataTable(<?= $northeast['ne_em_yy'] ;?>);
 
             var options = {
                 title: "Employment Y-Y Trends",
@@ -1630,7 +1630,7 @@
 
         function drawChart() {
 
-            var data = new google.visualization.DataTable(<?= $ne_um_mm ;?>);
+            var data = new google.visualization.DataTable(<?= $northeast['ne_um_mm'] ;?>);
 
             var options = {
                 title: "Unemployment M-M Trends",
@@ -1671,7 +1671,7 @@
 
         function drawChart() {
 
-            var data = new google.visualization.DataTable(<?= $ne_um_yy ;?>);
+            var data = new google.visualization.DataTable(<?= $northeast['ne_um_yy'] ;?>);
 
             var options = {
                 title: "Unemployment Y-Y Trends",
@@ -1713,8 +1713,8 @@
 
         function drawTable() {
 
-            var data = new google.visualization.DataTable(<?= $youth_stats['data'] ;?>);
-            var title = "Labour Force Statistics: <?= $youth_stats['date'] ;?> - <?= $youth_stats['title'];?>";
+            var data = new google.visualization.DataTable(<?= $youth['youth_stats']['data'] ;?>);
+            var title = "Labour Force Statistics: <?= $youth['youth_stats']['date'] ;?> - <?= $youth['youth_stats']['title'];?>";
 
             var options = {
                 title: title,
@@ -1746,7 +1746,7 @@
 
         function drawChart() {
 
-            var data = new google.visualization.DataTable(<?= $yt_lf_mm ;?>);
+            var data = new google.visualization.DataTable(<?= $youth['yt_lf_mm'] ;?>);
 
             var options = {
                 title: "Labour Force M-M Trends",
@@ -1787,7 +1787,7 @@
 
         function drawChart() {
 
-            var data = new google.visualization.DataTable(<?= $yt_lf_yy ;?>);
+            var data = new google.visualization.DataTable(<?= $youth['yt_lf_yy'] ;?>);
 
             var options = {
                 title: "Labour Force Y-Y Trends",
@@ -1828,7 +1828,7 @@
 
         function drawChart() {
 
-            var data = new google.visualization.DataTable(<?= $yt_em_mm ;?>);
+            var data = new google.visualization.DataTable(<?= $youth['yt_em_mm'] ;?>);
 
             var options = {
                 title: "Employment M-M Trends",
@@ -1869,7 +1869,7 @@
 
         function drawChart() {
 
-            var data = new google.visualization.DataTable(<?= $yt_em_yy ;?>);
+            var data = new google.visualization.DataTable(<?= $youth['yt_em_yy'] ;?>);
 
             var options = {
                 title: "Employment Y-Y Trends",
@@ -1910,7 +1910,7 @@
 
         function drawChart() {
 
-            var data = new google.visualization.DataTable(<?= $yt_um_mm ;?>);
+            var data = new google.visualization.DataTable(<?= $youth['yt_um_mm'] ;?>);
 
             var options = {
                 title: "Unemployment M-M Trends",
@@ -1951,7 +1951,7 @@
 
         function drawChart() {
 
-            var data = new google.visualization.DataTable(<?= $yt_um_yy ;?>);
+            var data = new google.visualization.DataTable(<?= $youth['yt_um_yy'] ;?>);
 
             var options = {
                 title: "Unemployment Y-Y Trends",
@@ -2080,7 +2080,7 @@
 <br>
 
 <div class="col-md-12" style="width: 100%">
-    <h2>Labour Force Statistics: <?= $se_lf_stats['date'];?> - <?= $se_lf_stats['title'];?></h2>
+    <h2>Labour Force Statistics: <?= $southeast['se_lf_stats']['date'];?> - <?= $southeast['se_lf_stats']['title'];?></h2>
     <div id="se_lf_stats" style="width: 100%"></div> <label for="table_divLF_main">M-M = month over month. Y-Y = year over year. The coloured line in the charts below represents the linear trend line.</label>
     <div class="text-center" style="width: 100%; background-color: #F6C01F; font-weight: bold">It is recommended to consider trends over the long-term.</div>
 
@@ -2127,7 +2127,7 @@
 <br>
 
 <div class="col-md-12" style="width: 100%">
-    <h2>Labour Force Statistics: <?= $sw_lf_stats['date'];?> - <?= $sw_lf_stats['title'];?></h2>
+    <h2>Labour Force Statistics: <?= $southwest['sw_lf_stats']['date'];?> - <?= $southwest['sw_lf_stats']['title'];?></h2>
     <div id="sw_lf_stats" style="width: 100%"></div>
     <label for="table_divLF_main">M-M = month over month. Y-Y = year over year. The coloured line in the charts below represents the linear trend line.</label>
     <div class="text-center" style="width: 100%; background-color: #F6C01F; font-weight: bold">It is recommended to consider trends over the long-term.</div>
@@ -2175,7 +2175,7 @@
 <br>
 
 <div class="col-md-12" style="width: 100%">
-    <h2>Labour Force Statistics: <?= $ce_lf_stats['date'];?> - <?= $ce_lf_stats['title'];?></h2>
+    <h2>Labour Force Statistics: <?= $central['ce_lf_stats']['date'];?> - <?= $central['ce_lf_stats']['title'];?></h2>
     <div id="ce_lf_stats" style="width: 100%"></div>
     <label for="table_divLF_main">M-M = month over month. Y-Y = year over year. The coloured line in the charts below represents the linear trend line.</label>
     <div class="text-center" style="width: 100%; background-color: #F6C01F; font-weight: bold">It is recommended to consider trends over the long-term.</div>
@@ -2223,7 +2223,7 @@
 <br>
 
 <div class="col-md-12" style="width: 100%">
-    <h2>Labour Force Statistics: <?= $nw_lf_stats['date'];?> - <?= $nw_lf_stats['title'];?></h2>
+    <h2>Labour Force Statistics: <?= $northwest['nw_lf_stats']['date'];?> - <?= $northwest['nw_lf_stats']['title'];?></h2>
     <div id="nw_lf_stats" style="width: 100%"></div>
     <label for="table_divLF_main">M-M = month over month. Y-Y = year over year. The coloured line in the charts below represents the linear trend line.</label>
     <div class="text-center" style="width: 100%; background-color: #F6C01F; font-weight: bold">It is recommended to consider trends over the long-term.</div>
@@ -2271,7 +2271,7 @@
 <br>
 
 <div class="col-md-12" style="width: 100%;">
-    <h2>Labour Force Statistics: <?= $ne_lf_stats['date'];?> - <?= $ne_lf_stats['title'];?></h2>
+    <h2>Labour Force Statistics: <?= $northeast['ne_lf_stats']['date'];?> - <?= $northeast['ne_lf_stats']['title'];?></h2>
     <div id="ne_lf_stats" style="width: 100%"></div>
     <label for="table_divLF_main">M-M = month over month. Y-Y = year over year. The coloured line in the charts below represents the linear trend line.</label>
     <div class="text-center" style="width: 100%; background-color: #F6C01F; font-weight: bold">It is recommended to consider trends over the long-term.</div>
