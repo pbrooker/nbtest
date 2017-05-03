@@ -119,22 +119,21 @@ class Charts extends CI_Controller {
 			$dates = $this->_dateSelectionArray($date_array);
 
 
-			// alternative dates for Employment Rate
-			$erDates = array (
-				'startDate' => $dates['startDate'],
-				'endDate' => $dates['endDate'],
-				'characteristics' => 'Employment (x 1,000)',
-				'datatype' => 'Seasonally adjusted',
-				'chartType' => 'perc'
-			);
+			//  Employment Rate
+			$erDates = $dates['dates'];
+			$erDates['characteristics'] = 'Employment (x 1,000)';
+			$erDates['datatype'] = 'Seasonally adjusted';
+			$erDates['chartType'] = 'perc';
 
-			//alternative dates for Employment Rate m-m
-			$erMMDates = $dates['rev_chrono_mm_offset'];
+
+			// Employment Rate m-m
+			$erMMDates = $dates['mm_chrono'];
 			$erMMDates['characteristics'] = 'Employment (x 1,000)';
 			$erMMDates['datatype'] = 'Seasonally adjusted';
 			$erMMDates['chartType'] = 'perc';
+			$erMMDates['calcType'] = 'reverse';
 
-			// dates for 10 year growth
+			// 10 year growth
 			$dataGrowth = $dates['ten_year_span'];
 			$dataGrowth['characteristics'] = 'Employment (x 1,000)';
 			$dataGrowth['datatype'] = 'Seasonally adjusted';
@@ -154,17 +153,19 @@ class Charts extends CI_Controller {
 			$dataUR_MM['characteristics'] = 'Unemployment rate (percent)';
 			$dataUR_MM['datatype'] = 'Seasonally adjusted';
 
-			$dataUR_YY = $dates['chrono_year'];
+			$dataUR_YY = $dates['dates'];
 			$dataUR_YY['characteristics'] = 'Unemployment rate (percent)';
 			$dataUR_YY['datatype'] = 'Seasonally adjusted';
+			$dataUR_YY['calcType'] = 'reverse';
 
-			$dataPR_MM = $dates['reverse_mm_chrono'];
+			$dataPR_MM = $dates['mm_chrono'];
 			$dataPR_MM['characteristics'] = 'Participation rate (percent)';
 			$dataPR_MM['datatype'] = 'Seasonally adjusted';
 
-			$dataPR_YY = $dates['chrono_year'];
+			$dataPR_YY = $dates['dates'];
 			$dataPR_YY['characteristics'] = 'Participation rate (percent)';
 			$dataPR_YY['datatype'] = 'Seasonally adjusted';
+			$dataPR_YY['calcType'] = 'reverse';
 
 
 			// Common to all queries
@@ -1059,48 +1060,23 @@ class Charts extends CI_Controller {
 	private function _dateSelectionArray($data)
 	{
 
-
 		$startMonth = $data['startMonth'];
 		$startYear = $data['startYear'];
 
-		// dates for standard year over year chart selection. StartDate is always the date selected at input.
+		// dates for standard year over year chart selection. StartDate is always the date selected at input. Depending
+		// on the type of chart, this date array is handed in with a 'reverse' variable to make sure the appropriate
+		// math is performed on the query results.
 		// EndDate is always the startYear - 1. Exp: startdate: 2017/01, endDate 2016/01
-		$dates['startDate'] = $startDate = $startYear . '/' .$startMonth;
+		$dates['startDate'] = $startYear . '/' .$startMonth;
 		$dates['endDate'] = ((int)$startYear - 1) . '/' . $startMonth;
 
-		// chrono_year is startDate and endDate in chonological order: startDate: 2016/01, endDate 2017/01
-		//  This date array is used in the Unemployment Rate Year to Year and Participation Rate Year to Year
-		// report.
-		$dates['chrono_year'] = array (
-			'startDate' => $dates['endDate'],
-			'endDate' => $dates['startDate']
-		);
+		$dates['dates'] = array('startDate' => $dates['startDate'], 'endDate' => $dates['endDate']);
 
-		// reverse_mm_chrono is the date array for month to month comparison in reverse chronological order.
-		// Entered year and month: 2017  01
-		// Example: startDate: 2017/01 endDate: 2016/12.  This date array is used in the Participation Rate Month to
-		// Month chart
-		if($startMonth <= 12 && $startMonth > 1) {
-			$mo = $startMonth - 1;
-
-			$dates['reverse_mm_chrono'] = array(
-				'startDate' => $startYear . '/' . $startMonth,
-				'endDate' => $startYear . '/' . $mo
-			);
-		} elseif($startMonth == 1) {
-			$mo = 12;
-			$yr = $startYear - 1;
-
-			$dates['reverse_mm_chrono'] = array(
-				'startDate' => $startYear . '/' . $startMonth,
-				'endDate' => $yr . '/' . $mo
-			);
-		}
-
-		// mm_chrono is the date array for month to month comparison in standard chronological order.
+		// mm_chrono is the date array for month to month comparison in standard chronological order. Depending on
+		// the type of chart, this date array is handed in with a 'reverse' variable to make sure the appropriate math
+		// is performed on the query results.
 		// Entered year and month 2017  01
-		// Example: startDate: 2016/12, endDate: 2017/01. This date array is used in Unemployment Rate month to month
-		// chart
+		// Example: startDate: 2016/12, endDate: 2017/01.
 		if($startMonth <= 12 && $startMonth > 1) {
 			$mo = $startMonth - 1;
 
@@ -1118,35 +1094,10 @@ class Charts extends CI_Controller {
 			);
 		}
 
-		// rev_chrono_mm_offset is the date array for month to month comparison in reverse chronological order, offset
-		// by one month. This is done specifically to match the desired results in the existing NBJobs reports.
-		// Entered year and month 2017 01
-		// Example result: startDate: 2017/01 endDate: 2016/12
-		if($startMonth <= 12 && $startMonth > 1) {
-			$mo = $startMonth - 1;
-
-			$dates['rev_chrono_mm_offset'] = array(
-				'startDate' => $startYear . '/' . $startMonth,
-				'endDate' => $startYear . '/' . $mo,
-				'characteristics' => 'Employment (x 1,000)',
-				'datatype' => 'Seasonally adjusted'
-			);
-		} elseif($startMonth == 1) {
-			$mo = 12;
-			$yr = $startYear - 1;
-
-			$dates['rev_chrono_mm_offset'] = array(
-				'startDate' => $startYear . '/' . $startMonth,
-				'endDate' => $yr . '/' . $mo,
-				'characteristics' => 'Employment (x 1,000)',
-				'datatype' => 'Seasonally adjusted'
-			);
-		}
-
 		// ten_year_span is the date array for 10 year comparison chart.
 		$endYear = ((int)$startYear - 10) . '/' . $startMonth;
 		$dates['ten_year_span'] = array(
-			'startDate' => $startDate,
+			'startDate' => $dates['startDate'],
 			'endDate' => $endYear
 		);
 

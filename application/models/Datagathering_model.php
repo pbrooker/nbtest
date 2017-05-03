@@ -127,7 +127,7 @@ class Datagathering_model extends CI_Model
 			return $count;
 
 	}
-	
+
 	/**
 	 * Query returns data based on the selected characteristics and date.
 	 * @param $data
@@ -223,6 +223,12 @@ class Datagathering_model extends CI_Model
 			$chartType = "";
 		}
 
+		if(isset($data['calcType']) && $data['calcType'] != "") {
+			$calcType = $data['calcType'];
+		} else {
+			$calcType = "";
+		}
+
 		$this->db->select("geography, value, CASE geography WHEN 'Canada' THEN 1 WHEN 'Newfoundland and Labrador' THEN
 		2 WHEN 'Prince Edward Island' THEN 3 WHEN 'Nova Scotia' THEN 4 WHEN 'New Brunswick' THEN 5 WHEN 'Quebec' THEN 6 
 		WHEN 'Ontario' THEN 7 WHEN 'Manitoba' THEN 8 WHEN 'Saskatchewan' THEN 9 WHEN 'Alberta' THEN 10 WHEN 
@@ -260,7 +266,11 @@ class Datagathering_model extends CI_Model
 			foreach($end as $innerKey => $innerValue) {
 				if($innerValue->geography == $name) {
 					if($chartType == 'perc') {
-						$diff =  $val - $innerValue->value;
+						if($calcType == 'reverse') {
+							$diff = $innerValue->value - $val;
+						} else {
+							$diff = $val - $innerValue->value;
+						}
 						$percent = sprintf('%.01f',  ($diff / $innerValue->value) * 100);
 						$shortName = $this->_provinceNames($name);
 						$temp = array(
@@ -268,7 +278,11 @@ class Datagathering_model extends CI_Model
 							'value' => $percent
 						);
 					} else {
-						$diff =  $innerValue->value - $val;
+						if($calcType == 'reverse') {
+							$diff = $val - $innerValue->value;
+						} else {
+							$diff = $innerValue->value - $val;
+						}
 						$shortName = $this->_provinceNames($name);
 						$temp = array(
 							'geography' => $shortName,
