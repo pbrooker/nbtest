@@ -33,25 +33,50 @@ class Charts extends CI_Controller {
 
 	public function barChart()
 	{
-		$this->form_validation->set_rules('startDate', 'Start Date', 'required|min_length[7]|max_length[7]');
-		$this->form_validation->set_rules('endDate', 'End Date', 'required|min_length[7]|max_length[7]');
+		$this->form_validation->set_rules('startYear', 'Start Year', 'required|min_length[4]|max_length[4]');
+		$this->form_validation->set_rules('startMonth', 'Start Month', 'required|min_length[2]|max_length[2]');
 
 		if ($this->form_validation->run() == TRUE)
 		{
-			$startDate = $this->input->post('startDate');
-			$endDate = $this->input->post('endDate');
+			$startYear = $this->input->post('startYear');
+			$startMonth = $this->input->post('startMonth');
+			$agegroup = $this->input->post('agegroup');
+			$sex = $this->input->post('sex');
+			$statistics = $this->input->post('stats');
+			$datatype = $this->input->post('datatype');
+			$characteristics = $this->input->post('characteristics');
 
+			$data['date'] = $startYear . '/' . $startMonth;
+			$data['agegroup'] = $agegroup;
+			$data['statistics'] = $statistics;
+			$data['sex'] = $sex;
+			$data['datatype'] = $datatype;
+			$data['characteristics'] = $characteristics;
 
+			$query = $this->generateBarChartData($data);
 
 		}
-		if(isset($data)) {
+		if(isset($query) && ($query != 'Error - characteristics must be set' || $query != 'Error - no data returned')) {
 
-			$chart['title'] = 'Custom Labour Force Chart';
+			$chart['title'] = 'Custom Labour Force Chart - ' . $characteristics ;
+			$chart['data'] = $query;
 
 
 			$this->template->write('custom_title', 'Custom Chart');
 			$this->template->write_view('head', 'chart_views/bar_chart', $chart);
 			$this->template->write_view('content', 'chart_views/view');
+
+			$this->template->render();
+
+		} elseif($query == 'Error - characteristics must be set' || $query == 'Error - no data returned') {
+
+			$chart['message'] = $query;
+			$chart['heading'] = 'Custom Labour Force Chart';
+
+
+			$this->template->write('custom_title', 'Error');
+
+			$this->template->write_view('content', 'errors/html/error_general');
 
 			$this->template->render();
 		}
@@ -304,10 +329,10 @@ class Charts extends CI_Controller {
 
 		} else {
 
-			$data['date'] = $data['startYear'] . '/' . $data['startMonth'];
+
 			$chartData = $this->nbdata->getBarChart($data);
 
-			if($chartData->numRows() > 0) {
+			if(isset($chartData)) {
 
 				return $chartData;
 
@@ -380,7 +405,7 @@ class Charts extends CI_Controller {
 		$data['stats'] = $this->_arrays('stat_02820087');
 		$data['datatype'] = $this->_arrays('dt_02820087');
 		$data['geography'] = $geography;
-		$data['characteristics'] = $characteristics;
+		$data['characteristics'] = $char2820087;
 
 
 		if (isset($data)) {
