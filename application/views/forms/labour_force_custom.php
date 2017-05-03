@@ -31,17 +31,41 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 <div id="container">
 
-    <p>Create a custom Labour Force Charts</p>
-	<?php echo form_open('Charts/generateCustomChart') ;?>
-	<label for="startYear">Enter the year for reports (eg. 2016)</label>
-	<input id="startYear" name="startYear" type="text" size="15"><br>
-	<label for="startMonth">Enter the month in numberic format for reports (eg. 12 for December)</label>
-	<input id="startMonth" name="startMonth" type="text" size="15"><br>
+<!--    <p>Create a custom Labour Force Charts</p>-->
+<!--<!--	-->--><?php ////echo form_open('Charts/generateCustomChart') ;?>
+<!--	<label for="startYear">Enter the year for reports (eg. 2016)</label>-->
+<!--	<input id="startYear" name="startYear" type="text" size="15"><br>-->
+<!--	<label for="startMonth">Enter the month in numberic format for reports (eg. 12 for December)</label>-->
+<!--	<input id="startMonth" name="startMonth" type="text" size="15"><br>-->
+<!--    <label for="agegroups">Select Agegroup</label>-->
+<!--    --><?php //echo form_dropdown('agegroup', $agegroups);  ?><!--<br>-->
+<!--    <label for="agegroups">Select Sex</label>-->
+<!--	--><?php //echo form_dropdown('sex', $sex);  ?><!--<br>-->
+<!---->
+<!--    <label for="agegroups">Select Statistics</label>-->
+<!--	--><?php //echo form_dropdown('stats', $stats);  ?><!--<br>-->
+<!--    <label for="agegroups">Select Datatype</label>-->
+<!--	--><?php //echo form_dropdown('datatype', $datatype);  ?><!--<br>-->
+<!--    <label for="agegroups">Select Geography</label>-->
+<!--	--><?php //echo form_dropdown('geography', $geography);  ?><!--<br>-->
+<!--    <label for="agegroups">Select Characteristics</label>-->
+<!--	--><?php //echo form_dropdown('characteristics', $characteristics);  ?><!--<br>-->
+<!---->
+<!---->
+<!--	--><?php //echo form_submit('Charts', 'Create Custom Charts!');?>
+<!--	--><?php //echo form_close();?>
+
+
+    <p>Create a Bar Chart</p>
+    <?php echo form_open('Charts/barChart'); ?>
+    <label for="startYear">Enter the year for reports (eg. 2016)</label>
+    <input id="startYear" name="startYear" type="text" size="15"><br>
+    <label for="startMonth">Enter the month in numberic format for reports (eg. 12 for December)</label>
+    <input id="startMonth" name="startMonth" type="text" size="15"><br>
     <label for="agegroups">Select Agegroup</label>
-    <?php echo form_dropdown('agegroup', $agegroups);  ?><br>
+	<?php echo form_dropdown('agegroup', $agegroups);  ?><br>
     <label for="agegroups">Select Sex</label>
 	<?php echo form_dropdown('sex', $sex);  ?><br>
-
     <label for="agegroups">Select Statistics</label>
 	<?php echo form_dropdown('stats', $stats);  ?><br>
     <label for="agegroups">Select Datatype</label>
@@ -52,8 +76,79 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<?php echo form_dropdown('characteristics', $characteristics);  ?><br>
 
 
-	<?php echo form_submit('Charts', 'Create Custom Charts!');?>
+	<?php echo form_submit('Charts', 'Create Comparison Bar Chart!');?>
 	<?php echo form_close();?>
+
+    <p>Create a Bar Chart</p>
+	<?php echo form_open('Charts/comparisonBarChart'); ?>
+    <label for="startYear">Enter the year for reports (eg. 2016)</label>
+    <input id="startYear" name="startYear" type="text" size="15"><br>
+    <label for="startMonth">Enter the month in numberic format for reports (eg. 12 for December)</label>
+    <input id="startMonth" name="startMonth" type="text" size="15"><br>
+    <label for="agegroups">Select Agegroup</label>
+	<?php echo form_dropdown('agegroup', $agegroups);  ?><br>
+    <label for="agegroups">Select Sex</label>
+	<?php echo form_dropdown('sex', $sex);  ?><br>
+    <label for="agegroups">Select Statistics</label>
+	<?php echo form_dropdown('stats', $stats);  ?><br>
+    <label for="agegroups">Select Datatype</label>
+	<?php echo form_dropdown('datatype', $datatype);  ?><br>
+    <label for="agegroups">Select Geography</label>
+	<?php echo form_dropdown('geography', $geography);  ?><br>
+    <label for="agegroups">Select Characteristics</label>
+	<?php echo form_dropdown('characteristics', $characteristics);  ?><br>
+
+
+	<?php echo form_submit('Charts', 'Create Comparison Bar Chart!');?>
+	<?php echo form_close();?>
+
+    <p>Create a Bar Chart</p>
+	<?php echo form_open('Charts/trendChart'); ?>
+    <label for="startYear">Enter the year for reports (eg. 2016)</label>
+    <input id="startYear" name="startYear" type="text" size="15"><br>
+    <label for="startMonth">Enter the month in numberic format for reports (eg. 12 for December)</label>
+    <input id="startMonth" name="startMonth" type="text" size="15"><br>
+    <label for="agegroups">Select Agegroup</label>
+	<?php echo form_dropdown('agegroup', $agegroups);  ?><br>
+    <label for="agegroups">Select Sex</label>
+	<?php echo form_dropdown('sex', $sex);  ?><br>
+    <label for="agegroups">Select Statistics</label>
+	<?php echo form_dropdown('stats', $stats);  ?><br>
+    <label for="agegroups">Select Datatype</label>
+	<?php echo form_dropdown('datatype', $datatype);  ?><br>
+    <label for="agegroups">Select Geography</label>
+	<?php echo form_dropdown('geography', $geography);  ?><br>
+    <label for="agegroups">Select Characteristics</label>
+	<?php echo form_dropdown('characteristics', $characteristics);  ?><br>
+
+
+	<?php echo form_submit('Charts', 'Create Trend Chart!');?>
+	<?php echo form_close();?>
+
+    <p>Create a Bar Chart</p>
+	<?php echo form_open('Charts/summaryTable'); ?>
+    <label for="startYear">Enter the year for reports (eg. 2016)</label>
+    <input id="startYear" name="startYear" type="text" size="15"><br>
+    <label for="startMonth">Enter the month in numberic format for reports (eg. 12 for December)</label>
+    <input id="startMonth" name="startMonth" type="text" size="15"><br>
+    <label for="agegroups">Select Agegroup</label>
+	<?php echo form_dropdown('agegroup', $agegroups);  ?><br>
+    <label for="agegroups">Select Sex</label>
+	<?php echo form_dropdown('sex', $sex);  ?><br>
+    <label for="agegroups">Select Statistics</label>
+	<?php echo form_dropdown('stats', $stats);  ?><br>
+    <label for="agegroups">Select Datatype</label>
+	<?php echo form_dropdown('datatype', $datatype);  ?><br>
+    <label for="agegroups">Select Geography</label>
+	<?php echo form_dropdown('geography', $geography);  ?><br>
+    <label for="agegroups">Select Characteristics</label>
+	<?php echo form_dropdown('characteristics', $characteristics);  ?><br>
+
+
+	<?php echo form_submit('Charts', 'Create Summary Table!');?>
+	<?php echo form_close();?>
+
+
 </div>
 </body>
 </html>
