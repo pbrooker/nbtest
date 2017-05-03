@@ -152,7 +152,7 @@ class Charts extends CI_Controller {
 
 
 			// Employment Rate m-m
-			$erMMDates = $dates['mm_chrono'];
+			$erMMDates = $dates['month_month_array'];
 			$erMMDates['characteristics'] = 'Employment (x 1,000)';
 			$erMMDates['datatype'] = 'Seasonally adjusted';
 			$erMMDates['chartType'] = 'perc';
@@ -174,7 +174,7 @@ class Charts extends CI_Controller {
 				'characteristics' => 'Unemployment rate (percent)'
 			);
 
-			$dataUR_MM = $dates['mm_chrono'];
+			$dataUR_MM = $dates['month_month_array'];
 			$dataUR_MM['characteristics'] = 'Unemployment rate (percent)';
 			$dataUR_MM['datatype'] = 'Seasonally adjusted';
 
@@ -183,7 +183,7 @@ class Charts extends CI_Controller {
 			$dataUR_YY['datatype'] = 'Seasonally adjusted';
 			$dataUR_YY['calcType'] = 'reverse';
 
-			$dataPR_MM = $dates['mm_chrono'];
+			$dataPR_MM = $dates['month_month_array'];
 			$dataPR_MM['characteristics'] = 'Participation rate (percent)';
 			$dataPR_MM['datatype'] = 'Seasonally adjusted';
 
@@ -1088,24 +1088,28 @@ class Charts extends CI_Controller {
 		$startMonth = $data['startMonth'];
 		$startYear = $data['startYear'];
 
+		// startDate is used for current month bar charts.
+		$dates['startDate'] = $startYear . '/' .$startMonth;
+
+
 		// dates for standard year over year chart selection. StartDate is always the date selected at input. Depending
 		// on the type of chart, this date array is handed in with a 'reverse' variable to make sure the appropriate
 		// math is performed on the query results.
-		// EndDate is always the startYear - 1. Exp: startdate: 2017/01, endDate 2016/01
-		$dates['startDate'] = $startYear . '/' .$startMonth;
-		$dates['endDate'] = ((int)$startYear - 1) . '/' . $startMonth;
+		// endDate is always the startYear - 1. Exp: startdate: 2017/01, endDate 2016/01
 
-		$dates['dates'] = array('startDate' => $dates['startDate'], 'endDate' => $dates['endDate']);
+		$endDate = ((int)$startYear - 1) . '/' . $startMonth;
 
-		// mm_chrono is the date array for month to month comparison in standard chronological order. Depending on
-		// the type of chart, this date array is handed in with a 'reverse' variable to make sure the appropriate math
-		// is performed on the query results.
+		$dates['dates'] = array('startDate' => $dates['startDate'], 'endDate' => $endDate);
+
+		// month_month_array is the date array for month to month comparison in standard chronological order. Depending
+		// on the type of chart, this date array is handed in with a 'reverse' variable to make sure the appropriate
+		// math is performed on the query results.
 		// Entered year and month 2017  01
 		// Example: startDate: 2016/12, endDate: 2017/01.
 		if($startMonth <= 12 && $startMonth > 1) {
 			$mo = $startMonth - 1;
 
-			$dates['mm_chrono'] = array(
+			$dates['month_month_array'] = array(
 				'startDate' => $startYear . '/' . $mo,
 				'endDate' => $startYear . '/' . $startMonth
 			);
@@ -1113,7 +1117,7 @@ class Charts extends CI_Controller {
 			$mo = 12;
 			$yr = $startYear - 1;
 
-			$dates['mm_chrono'] = array(
+			$dates['month_month_array'] = array(
 				'startDate' => $yr . '/' . $mo,
 				'endDate' => $startYear . '/' . $startMonth
 			);
