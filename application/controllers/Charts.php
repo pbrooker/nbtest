@@ -329,7 +329,6 @@ class Charts extends CI_Controller {
 
 		} else {
 
-
 			$chartData = $this->nbdata->getBarChart($data);
 
 			if(isset($chartData)) {
@@ -345,6 +344,7 @@ class Charts extends CI_Controller {
 
 	public function generateComparisonBarChartData($data)
 	{
+		// TODO: finish this function
 		$startMonth = $data['startMonth'];
 		$startYear = $data['startYear'];
 		$characteristics = $data['characteristics'];
@@ -416,42 +416,6 @@ class Charts extends CI_Controller {
 
 	}
 
-	// This function was a test function, will be rebuilt to address all charts if that feature is implemented.
-//	public function generateCustomChart()
-//	{
-//		$this->form_validation->set_rules('startYear', 'Start Year', 'required|min_length[4]|max_length[4]');
-//		$this->form_validation->set_rules('startMonth', 'Start Month',
-//			'required|min_length[2]|max_length[2]|callback_monthCheck');
-//
-//		if ($this->form_validation->run() == TRUE) {
-//			$data = array();
-//			$startYear = $this->input->post('startYear');
-//			$startMonth = $this->input->post('startMonth');
-//
-//			$data['startDate'] = ($startYear - 1) . '/' . $startMonth;
-//			$data['endDate'] = $startYear . '/' . $startMonth;
-//			$data['agegroup'] = $this->input->post('agegroup');
-//			$data['sex'] = $this->input->post('sex');
-//			$data['datatype'] = $this->input->post('datatype');
-//			$data['geography'] = $this->input->post('geography');
-//			$data['statistics'] = $this->input->post('stats');
-//			$data['characteristics'] = $this->input->post('characteristics');
-//
-//			$chart['data'] = $this->nbdata->getComparisonBarChart($data);
-//
-//			$chart['title'] = 'Custom Labour Force Chart';
-//
-//
-//			$this->template->write('custom_title', 'Custom Chart');
-//			$this->template->write_view('head', 'chart_views/bar_chart', $chart);
-//			$this->template->write_view('content', 'chart_views/view');
-//
-//			$this->template->render();
-//
-//		}
-//
-//	}
-
 	public function generateOverallTableReportData($data)
 	{
 		$startMonth = $data['startMonth'];
@@ -500,6 +464,93 @@ class Charts extends CI_Controller {
 		return $labour_force_statistics;
 	}
 
+	public function generateParticipationCharts($startData)
+	{
+		$startYear = $startData['startYear'];
+		$startMonth = $startData['startMonth'];
+
+		$date_array = array('startYear' => $startYear, 'startMonth' => $startMonth);
+
+		$dates = $this->_dateSelectionArray($date_array);
+
+
+		//  Employment Rate
+		$erDates = $dates['dates'];
+		$erDates['characteristics'] = 'Employment (x 1,000)';
+		$erDates['datatype'] = 'Seasonally adjusted';
+		$erDates['chartType'] = 'perc';
+
+
+		// Employment Rate m-m
+		$erMMDates = $dates['month_month_array'];
+		$erMMDates['characteristics'] = 'Employment (x 1,000)';
+		$erMMDates['datatype'] = 'Seasonally adjusted';
+		$erMMDates['chartType'] = 'perc';
+		$erMMDates['calcType'] = 'reverse';
+
+		// 10 year growth
+		$dataGrowth = $dates['ten_year_span'];
+		$dataGrowth['characteristics'] = 'Employment (x 1,000)';
+		$dataGrowth['datatype'] = 'Seasonally adjusted';
+		$dataGrowth['chartType'] = 'perc';
+
+
+		$dataParticipation = array (
+			'date' => $dates['startDate'],
+			'characteristics' => 'Participation rate (percent)'
+		);
+		$dataUnemployment = array (
+			'date' => $dates['startDate'],
+			'characteristics' => 'Unemployment rate (percent)'
+		);
+
+		$dataUR_MM = $dates['month_month_array'];
+		$dataUR_MM['characteristics'] = 'Unemployment rate (percent)';
+		$dataUR_MM['datatype'] = 'Seasonally adjusted';
+
+		$dataUR_YY = $dates['dates'];
+		$dataUR_YY['characteristics'] = 'Unemployment rate (percent)';
+		$dataUR_YY['datatype'] = 'Seasonally adjusted';
+		$dataUR_YY['calcType'] = 'reverse';
+
+		$dataPR_MM = $dates['month_month_array'];
+		$dataPR_MM['characteristics'] = 'Participation rate (percent)';
+		$dataPR_MM['datatype'] = 'Seasonally adjusted';
+
+		$dataPR_YY = $dates['dates'];
+		$dataPR_YY['characteristics'] = 'Participation rate (percent)';
+		$dataPR_YY['datatype'] = 'Seasonally adjusted';
+		$dataPR_YY['calcType'] = 'reverse';
+
+
+		// Common to all queries
+		$common_settings = array ('agegroup' => '15 years and over', 'sex' => 'Both sexes',
+			'statistics' => 'Estimate' );
+
+		foreach($common_settings as $key => $value) {
+
+			$erDates[$key] = $value;
+			$dataGrowth[$key] = $value;
+			$erMMDates[$key] = $value;
+			$dataUR_MM[$key] = $value;
+			$dataUR_YY[$key] = $value;
+			$dataPR_MM[$key] = $value;
+			$dataPR_YY[$key] = $value;
+		}
+
+		$data['participation_yy'] = $this->nbdata->getComparisonBarChart($dataPR_YY);
+		$data['participation'] = $this->generateBarChartData($dataParticipation);
+		$data['participation_mm'] = $this->nbdata->getComparisonBarChart($dataPR_MM);
+		$data['employment_mm'] = $this->nbdata->getComparisonBarChart($erMMDates);
+		$data['employment_yy'] = $this->nbdata->getComparisonBarChart($erDates);
+		$data['employment_ur'] = $this->generateBarChartData($dataUnemployment);
+		$data['employment_urMM'] = $this->nbdata->getComparisonBarChart($dataUR_MM);
+		$data['employment_urYY'] = $this->nbdata->getComparisonBarChart($dataUR_YY);
+		$data['growth_10yr'] = $this->nbdata->getComparisonBarChart($dataGrowth);
+
+		return $data;
+	}
+
 
 	/**
 	 * Generates 4 participation bar charts for youth based on input data
@@ -514,32 +565,41 @@ class Charts extends CI_Controller {
 		$erMMDates = $dates['month_month_array'];
 		$erMMDates['characteristics'] = 'Employment (x 1,000)';
 		$erMMDates['datatype'] = 'Unadjusted';
-		$erMMDates['agegroup'] = '15 to 24 years';
 		$erMMDates['chartType'] = 'perc';
 		$erMMDates['calcType'] = 'reverse';
 
 		//  Employment Rate
 		$erDates = $dates['dates'];
 		$erDates['characteristics'] = 'Employment (x 1,000)';
-		$erDates['agegroup'] = '15 to 24 years';
 		$erDates['datatype'] = 'Unadjusted';
 		$erDates['chartType'] = 'perc';
 
 		$dataParticipation = array (
 			'date' => $dates['startDate'],
-			'characteristics' => 'Participation rate (percent)',
-			'agegroup' => '15 to 24 years'
+			'characteristics' => 'Participation rate (percent)'
 		);
 		$dataUnemployment = array (
 			'date' => $dates['startDate'],
-			'characteristics' => 'Unemployment rate (percent)',
-			'agegroup' => '15 to 24 years'
+			'characteristics' => 'Unemployment rate (percent)'
 		);
+
+		// Common to all queries
+		$common_settings = array ('agegroup' => '15 to 24 years', 'sex' => 'Both sexes',
+			'statistics' => 'Estimate' );
+
+		foreach($common_settings as $key => $value) {
+
+			$erDates[$key] = $value;
+			$erMMDates[$key] = $value;
+			$dataParticipation[$key] = $value;
+			$dataUnemployment[$key] = $value;
+		}
+
 
 		$data['er_mm_yt'] = $this->nbdata->getComparisonBarChart($erMMDates);
 		$data['er_yy_yt'] = $this->nbdata->getComparisonBarChart($erDates);
-		$data['participation_youth'] = $this->nbdata->getBarChart($dataParticipation);
-		$data['um_rate_yt'] = $this->nbdata->getBarChart($dataUnemployment);
+		$data['participation_youth'] = $this->generateBarChartData($dataParticipation);
+		$data['um_rate_yt'] = $this->generateBarChartData($dataUnemployment);
 
 		return $data;
 
@@ -1041,6 +1101,12 @@ class Charts extends CI_Controller {
 			'Unemployment (x 1,000)' => 'Unemployment (x 1,000)',
 			'Unemployment rate (percent)' => 'Unemployment rate (percent)'
 		);
+
+		if($table == '02820087') {
+			return $table_087;
+		} elseif($table == '02820122') {
+			return $table_122;
+		}
 	}
 
 	private function _chartTypes($type)

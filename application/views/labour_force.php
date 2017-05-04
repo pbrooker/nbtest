@@ -1,24 +1,25 @@
 <html>
 
 <head>
-    <script
-            src="https://code.jquery.com/jquery-3.2.1.min.js"
-            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-            crossorigin="anonymous"></script>
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
     <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
     <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
 
 
 
 	<!--Load the AJAX API-->
 	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
 
     <script type="text/javascript">
 
@@ -49,7 +50,17 @@
             formatter.format(data, 7);
 
 
+            $('#lf_main') .on('click', function() {
+
+                var csvFormattedDataTable = google.visualization.dataTableToCsv(data);
+                var encodedUri = 'data:application/csv;charset=utf-8,' + encodeURIComponent(csvFormattedDataTable);
+                this.href = encodedUri;
+                this.download = 'lf_main_NB_All';
+
+            });
+
             table.draw(data, options);
+
         }
 
     </script>
@@ -1995,6 +2006,7 @@
     <div id="table_divLF_main" style="width: 100%"></div>
     <label for="table_divLF_main">M-M = month over month. Y-Y = year over year. The coloured line in the charts below represents the linear trend line.</label>
     <div class="text-center" style="width: 100%; background-color: #F6C01F; font-weight: bold">It is recommended to consider trends over the long-term.</div>
+    <div style="margin-left: 50px"><a href="" id="lf_main" download="" class="btn btn-success">Export CSV</a></div>
 </div>
 
 <div class="col-md-12">
@@ -2316,4 +2328,65 @@
 
 
 </body>
+
+
+<script type="text/javascript">
+    $(document).ready(function() {
+
+//        function downloadCsv($csv, filename) {
+//
+//            var csv = $csv;
+//
+//            // Deliberate 'false', see comment below
+//            if (false && window.navigator.msSaveBlob) {
+//
+//                var blob = new Blob([decodeURIComponent(csv)], {
+//                    type: 'text/csv;charset=utf8'
+//                });
+//
+//                // Crashes in IE 10, IE 11 and Microsoft Edge
+//                // See MS Edge Issue #10396033
+//                // Hence, the deliberate 'false'
+//                // This is here just for completeness
+//                // Remove the 'false' at your own risk
+//                window.navigator.msSaveBlob(blob, filename);
+//
+//            } else if (window.Blob && window.URL) {
+//                // HTML5 Blob
+//                var blob = new Blob([csv], {
+//                    type: 'text/csv;charset=utf-8'
+//                });
+//                var csvUrl = URL.createObjectURL(blob);
+//
+//                $(this)
+//                    .attr({
+//                        'download': filename,
+//                        'href': csvUrl
+//                    });
+//            } else {
+//                // Data URI
+//                var csvData = 'data:application/csv;charset=utf-8,' + encodeURIComponent(csv);
+//
+//                $(this)
+//                    .attr({
+//                        'download': filename,
+//                        'href': csvData,
+//                        'target': '_blank'
+//                    });
+//            }
+//        }
+
+        // This must be a hyperlink
+//        $(".export").on('click', function(event) {
+//            // CSV
+//            var args = [$('#dvData>table'), 'export.csv'];
+//
+//            exportTableToCSV.apply(this, args);
+//
+//            // If CSV, don't do event.preventDefault() or return false
+//            // We actually need this to be a typical hyperlink
+//        });
+    });
+
+</script>
 </html>
