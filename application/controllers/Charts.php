@@ -500,6 +500,51 @@ class Charts extends CI_Controller {
 		return $labour_force_statistics;
 	}
 
+
+	/**
+	 * Generates 4 participation bar charts for youth based on input data
+	 * @param $startData
+	 */
+	public function generateYouthParticipationCharts($startData)
+	{
+
+		$dates = $this->_dateSelectionArray($startData);
+
+		// Employment Rate m-m
+		$erMMDates = $dates['month_month_array'];
+		$erMMDates['characteristics'] = 'Employment (x 1,000)';
+		$erMMDates['datatype'] = 'Unadjusted';
+		$erMMDates['agegroup'] = '15 to 24 years';
+		$erMMDates['chartType'] = 'perc';
+		$erMMDates['calcType'] = 'reverse';
+
+		//  Employment Rate
+		$erDates = $dates['dates'];
+		$erDates['characteristics'] = 'Employment (x 1,000)';
+		$erDates['agegroup'] = '15 to 24 years';
+		$erDates['datatype'] = 'Unadjusted';
+		$erDates['chartType'] = 'perc';
+
+		$dataParticipation = array (
+			'date' => $dates['startDate'],
+			'characteristics' => 'Participation rate (percent)',
+			'agegroup' => '15 to 24 years'
+		);
+		$dataUnemployment = array (
+			'date' => $dates['startDate'],
+			'characteristics' => 'Unemployment rate (percent)',
+			'agegroup' => '15 to 24 years'
+		);
+
+		$data['er_mm_yt'] = $this->nbdata->getComparisonBarChart($erMMDates);
+		$data['er_yy_yt'] = $this->nbdata->getComparisonBarChart($erDates);
+		$data['participation_youth'] = $this->nbdata->getBarChart($dataParticipation);
+		$data['um_rate_yt'] = $this->nbdata->getBarChart($dataUnemployment);
+
+		return $data;
+
+	}
+
 	/**
 	 * Start data includes Start Month, Start Year and Region. This information is used to create associated charts for
 	 * the specified economic region and return the data sets to be assigned to a view. This controller returns an

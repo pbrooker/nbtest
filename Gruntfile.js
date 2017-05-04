@@ -92,22 +92,9 @@ module.exports = function(grunt) {
             jquery: {
                 src: [
                     '<%= project.components %>/bootstrap-sass-official/assets/javascripts/bootstrap.js',
-                    '<%= project.components %>/jquery-migrate/jquery-migrate.js',
-                    '<%= project.components %>/jquery-ui/ui/jquery.ui.core.js',
-                    '<%= project.components %>/jquery-ui/ui/jquery.ui.widget.js',
-                    '<%= project.components %>/jquery-ui/ui/jquery.ui.mouse.js',
-                    '<%= project.components %>/jquery-ui/ui/jquery.ui.sortable.js',
-                    '<%= project.components %>/jquery-ui/ui/jquery.ui.slider.js',
-                    '<%= project.components %>/jquery-ui/ui/jquery.ui.effect.js',
-                    '<%= project.components %>/jquery-ui/ui/jquery.ui.effect-highlight.js',
-                    '<%= project.components %>/jquery-ui/ui/jquery.ui.effect-shake.js',
-                    '<%= project.components %>/jquery-ui/ui/jquery.ui.datepicker.js',
-                    '<%= project.components %>/minimalect/jquery.minimalect.js',
-                    '<%= project.components %>/jquery-autocomplete/dist/jquery.autocomplete.js',
                     '<%= project.components %>/jquery.validate/dist/jquery.validate.js',
-                    '<%= project.components %>/jquery-file-upload/js/vendor/jquery.ui.widget.js',
-                    '<%= project.components %>/jquery-file-upload/js/jquery.fileupload.js',
                     '<%= project.components %>/datatables/media/js/jquery.dataTables.js',
+                    '<%= project.assets %> /third_party/html2canvas.js'
                 ],
                 dest: '<%= project.assets %>/js/jquery.combined.js'
             },
@@ -116,21 +103,8 @@ module.exports = function(grunt) {
 
                 ],
                 dest: '<%= project.assets %>/js/app.js',
-            },
-            onboarding: {
-                src:  [
-                    '<%= project.components %>/bootstrap/dist/js/bootstrap.min.js',
-                    '<%= project.components %>/jquery.validate/dist/jquery.validate.js',
-                    '<%= project.components %>/minimalect/jquery.minimalect.js',
-                ],
-                dest: '<%= project.assets %>/js/onboarding/main.js'
-            },
-            partner: {
-                src:  [
-
-                ],
-                dest: '<%= project.assets %>/js/partner/main.js'
             }
+
         },
 
         uglify: {
@@ -146,16 +120,6 @@ module.exports = function(grunt) {
             app: {
                 files: {
                     '<%= project.assets %>/js/app.min.js': ['<%= project.assets %>/js/app.js']
-                }
-            },
-            onboarding: {
-                files: {
-                    '<%= project.assets %>/js/onboarding/main.min.js': ['<%= project.assets %>/js/onboarding/main.js']
-                }
-            },
-            partner: {
-                files: {
-                    '<%= project.assets %>/js/partner/main.min.js': ['<%= project.assets %>/js/partner/main.js']
                 }
             }
         }

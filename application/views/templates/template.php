@@ -15,8 +15,11 @@
 		}
 		?>
 	</title>
-
+    <script src="<?= base_url('assets/js/app.min.js');?>" type="text/javascript"></script>
+    <script src="<?= base_url('assets/js/jquery.combined.min.js');?>" type="text/javascript"></script>
+    <script src="<?= base_url('assets/css/bootstrap.min.css');?>" type="text/css"></script>
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" type="text/javascript"></script>
+
 
 	<?php if ($head) :?>
 		<?= $head;?>
