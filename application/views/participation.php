@@ -23,7 +23,6 @@
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script type="text/javascript">
 
-        // Load the Visualization API and the piechart package.
         google.load('visualization', '1', {'packages':['corechart']});
 
         // Set a callback to run when the Google Visualization API is loaded.
@@ -65,7 +64,6 @@
 
     <script type="text/javascript">
 
-        // Load the Visualization API and the piechart package.
         google.load('visualization', '1', {'packages':['corechart']});
 
         // Set a callback to run when the Google Visualization API is loaded.
@@ -101,7 +99,6 @@
 
     <script type="text/javascript">
 
-        // Load the Visualization API and the piechart package.
         google.load('visualization', '1', {'packages':['corechart']});
 
         // Set a callback to run when the Google Visualization API is loaded.
@@ -137,7 +134,6 @@
 
     <script type="text/javascript">
 
-        // Load the Visualization API and the piechart package.
         google.load('visualization', '1', {'packages':['corechart']});
 
         // Set a callback to run when the Google Visualization API is loaded.
@@ -180,7 +176,6 @@
 
     <script type="text/javascript">
 
-        // Load the Visualization API and the piechart package.
         google.load('visualization', '1', {'packages':['corechart']});
 
         // Set a callback to run when the Google Visualization API is loaded.
@@ -216,7 +211,6 @@
 
     <script type="text/javascript">
 
-        // Load the Visualization API and the piechart package.
         google.load('visualization', '1', {'packages':['corechart']});
 
         // Set a callback to run when the Google Visualization API is loaded.
@@ -252,7 +246,6 @@
 
     <script type="text/javascript">
 
-        // Load the Visualization API and the piechart package.
         google.load('visualization', '1', {'packages':['corechart']});
 
         // Set a callback to run when the Google Visualization API is loaded.
@@ -288,7 +281,6 @@
 
     <script type="text/javascript">
 
-        // Load the Visualization API and the piechart package.
         google.load('visualization', '1', {'packages':['corechart']});
 
         // Set a callback to run when the Google Visualization API is loaded.
@@ -325,7 +317,6 @@
 
     <script type="text/javascript">
 
-        // Load the Visualization API and the piechart package.
         google.load('visualization', '1', {'packages':['corechart']});
 
         // Set a callback to run when the Google Visualization API is loaded.

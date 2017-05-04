@@ -4,7 +4,7 @@
 <!-- Start Overall Reports and Participation Charts -->
 <script type="text/javascript">
 
-    // Load the Visualization API and the piechart package.
+    // Load the Visualization API
     google.load('visualization', '1', {'packages':['table']});
 
     // Set a callback to run when the Google Visualization API is loaded.
@@ -38,7 +38,7 @@
 
 <script type="text/javascript">
 
-    // Load the Visualization API and the piechart package.
+    
     google.load('visualization', '1', {'packages':['corechart']});
 
     // Set a callback to run when the Google Visualization API is loaded.
@@ -79,7 +79,7 @@
 
 <script type="text/javascript">
 
-    // Load the Visualization API and the piechart package.
+    
     google.load('visualization', '1', {'packages':['corechart']});
 
     // Set a callback to run when the Google Visualization API is loaded.
@@ -397,7 +397,6 @@
 
 <script type="text/javascript">
 
-    // Load the Visualization API and the piechart package.
     google.load('visualization', '1', {'packages':['corechart']});
 
     // Set a callback to run when the Google Visualization API is loaded.
@@ -440,7 +439,6 @@
 
 <script type="text/javascript">
 
-    // Load the Visualization API and the piechart package.
     google.load('visualization', '1', {'packages':['corechart']});
 
     // Set a callback to run when the Google Visualization API is loaded.
@@ -476,7 +474,6 @@
 
 <script type="text/javascript">
 
-    // Load the Visualization API and the piechart package.
     google.load('visualization', '1', {'packages':['corechart']});
 
     // Set a callback to run when the Google Visualization API is loaded.
@@ -512,7 +509,6 @@
 
 <script type="text/javascript">
 
-    // Load the Visualization API and the piechart package.
     google.load('visualization', '1', {'packages':['corechart']});
 
     // Set a callback to run when the Google Visualization API is loaded.
@@ -548,7 +544,6 @@
 
 <script type="text/javascript">
 
-    // Load the Visualization API and the piechart package.
     google.load('visualization', '1', {'packages':['corechart']});
 
     // Set a callback to run when the Google Visualization API is loaded.
@@ -585,7 +580,6 @@
 
 <script type="text/javascript">
 
-    // Load the Visualization API and the piechart package.
     google.load('visualization', '1', {'packages':['corechart']});
 
     // Set a callback to run when the Google Visualization API is loaded.
@@ -899,6 +893,159 @@
         });
         chart.draw(data, options);
     }
+</script>
+
+<script type="text/javascript">
+
+    google.load('visualization', '1', {'packages':['corechart']});
+
+    // Set a callback to run when the Google Visualization API is loaded.
+    google.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+
+        var data = new google.visualization.DataTable(<?= $participation_youth ;?>);
+
+        var options = {
+            title: "Participation Rate",
+            height: 400,
+            bar: {groupWidth: 25},
+            legend: { position: "none" },
+            vAxis: {
+                viewWindowMode:'explicit',
+                viewWindow: {
+                    max:100,
+                    min:50
+                }
+            },
+            annotations: {
+                textStyle: {
+                    color: 'black',
+                    fontSize: 10
+                },
+                alwaysOutside: true
+            }
+        };
+        // Instantiate and draw our chart, passing in some options.
+        var chart = new google.visualization.ColumnChart(document.getElementById('participation_youth'));
+        google.visualization.events.addListener(chart, 'ready', function () {
+            document.getElementById('participation_youth').innerHTML = '<a  href="' + chart.getImageURI() + '">Get Image</a>';
+        });
+        chart.draw(data, options);
+    }
+
+</script>
+
+<script type="text/javascript">
+
+    google.load('visualization', '1', {'packages':['corechart']});
+
+    // Set a callback to run when the Google Visualization API is loaded.
+    google.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+
+        var data = new google.visualization.DataTable(<?= $um_rate_yt ;?>);
+
+        var options = {
+            title: "Unemployment Rate",
+            height: 400,
+            vAxis: { format: 'short' },
+            bar: {groupWidth: 25},
+            legend: { position: "none" },
+            annotations: {
+                textStyle: {
+                    color: 'black',
+                    fontSize: 10
+                },
+                alwaysOutside: true
+            }
+        };
+        // Instantiate and draw our chart, passing in some options.
+        var chart = new google.visualization.ColumnChart(document.getElementById('um_rate_yt'));
+        google.visualization.events.addListener(chart, 'ready', function () {
+            document.getElementById('get_um_rate_yt').innerHTML = '<a  href="' + chart.getImageURI() + '">Get Image</a>';
+        });
+        chart.draw(data, options);
+    }
+
+</script>
+
+<script type="text/javascript">
+
+    google.load('visualization', '1', {'packages':['corechart']});
+
+    // Set a callback to run when the Google Visualization API is loaded.
+    google.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+
+        var data = new google.visualization.DataTable(<?= $employment_mm_yt ;?>);
+
+        var options = {
+            title: "Employment Rate M-M",
+            height: 400,
+            vAxis: { format: 'short' },
+            bar: {groupWidth: 25},
+            legend: { position: "none" },
+            vAxis: {
+                textPosition: 'none',
+                viewWindowMode:'explicit',
+                viewWindow: {
+                    max:2
+                }
+            },
+            annotations: {
+                textStyle: {
+                    color: 'black',
+                    fontSize: 10
+                },
+                alwaysOutside: true
+            }
+        };
+        // Instantiate and draw our chart, passing in some options.
+        var chart = new google.visualization.ColumnChart(document.getElementById('em_mm_yt'));
+        google.visualization.events.addListener(chart, 'ready', function () {
+            document.getElementById('get_em_mm_yt').innerHTML = '<a  href="' + chart.getImageURI() + '">Get Image</a>';
+        });
+        chart.draw(data, options);
+    }
+
+</script>
+
+<script type="text/javascript">
+
+    google.load('visualization', '1', {'packages':['corechart']});
+
+    // Set a callback to run when the Google Visualization API is loaded.
+    google.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+
+        var data = new google.visualization.DataTable(<?= $employment_yy_yt ;?>);
+
+        var options = {
+            title: "Employment Rate Y-Y",
+            height: 400,
+            vAxis: { format: 'short' },
+            bar: {groupWidth: 25},
+            legend: { position: "none" },
+            annotations: {
+                textStyle: {
+                    color: 'black',
+                    fontSize: 10
+                },
+                alwaysOutside: true
+            }
+        };
+        // Instantiate and draw our chart, passing in some options.
+        var chart = new google.visualization.ColumnChart(document.getElementById('em_yy_yt'));
+        google.visualization.events.addListener(chart, 'ready', function () {
+            document.getElementById('get_em_yy_yt').innerHTML = '<a  href="' + chart.getImageURI() + '">Get Image</a>';
+        });
+        chart.draw(data, options);
+    }
+
 </script>
 
 <!-- Youth Charts End -->
