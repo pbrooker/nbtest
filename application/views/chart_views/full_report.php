@@ -1048,6 +1048,144 @@
 
 </script>
 
+<script type="text/javascript">
+
+    google.load('visualization', '1', {'packages':['corechart']});
+
+    google.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+
+        var data = new google.visualization.DataTable(<?= $participation_youth ;?>);
+
+        var options = {
+            title: "Participation Rate - Youth",
+            height: 400,
+            bar: {groupWidth: 25},
+            legend: { position: "none" },
+            annotations: {
+                textStyle: {
+                    color: 'black',
+                    fontSize: 10
+                },
+                alwaysOutside: true
+            }
+        };
+        // Instantiate and draw our chart, passing in some options.
+        var chart = new google.visualization.ColumnChart(document.getElementById('participation_youth'));
+        google.visualization.events.addListener(chart, 'ready', function () {
+            document.getElementById('get_participation_youth').innerHTML =
+                '<a  href="' + chart.getImageURI() + '">Get Image</a>';
+        });
+        chart.draw(data, options);
+    }
+
+</script>
+
+<script type="text/javascript">
+
+    google.load('visualization', '1', {'packages':['corechart']});
+
+    google.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+
+        var data = new google.visualization.DataTable(<?= $um_rate_yt ;?>);
+
+        var options = {
+            title: "Unemployment Rate - Youth",
+            height: 400,
+            bar: {groupWidth: 25},
+            legend: { position: "none" },
+            annotations: {
+                textStyle: {
+                    color: 'black',
+                    fontSize: 10
+                },
+                alwaysOutside: true
+            }
+        };
+        // Instantiate and draw our chart, passing in some options.
+        var chart = new google.visualization.ColumnChart(document.getElementById('um_rate_yt'));
+        google.visualization.events.addListener(chart, 'ready', function () {
+            document.getElementById('get_um_rate_yt').innerHTML =
+                '<a  href="' + chart.getImageURI() + '">Get Image</a>';
+        });
+        chart.draw(data, options);
+    }
+
+</script>
+
+
+<script type="text/javascript">
+
+    google.load('visualization', '1', {'packages':['corechart']});
+
+    google.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+
+        var data = new google.visualization.DataTable(<?= $er_mm_yt ;?>);
+
+        var options = {
+            title: "Employment M-M - Youth",
+            height: 400,
+            bar: {groupWidth: 25},
+            legend: { position: "none" },
+            annotations: {
+                textStyle: {
+                    color: 'black',
+                    fontSize: 10
+                },
+                alwaysOutside: true
+            }
+        };
+        // Instantiate and draw our chart, passing in some options.
+        var chart = new google.visualization.ColumnChart(document.getElementById('er_mm_yt'));
+        google.visualization.events.addListener(chart, 'ready', function () {
+            document.getElementById('get_er_mm_yt').innerHTML =
+                '<a  href="' + chart.getImageURI() + '">Get Image</a>';
+        });
+        chart.draw(data, options);
+    }
+
+</script>
+
+
+<script type="text/javascript">
+
+    google.load('visualization', '1', {'packages':['corechart']});
+
+    google.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+
+        var data = new google.visualization.DataTable(<?= $er_yy_yt ;?>);
+
+        var options = {
+            title: "Employment Rate Y-Y - Youth",
+            height: 400,
+            bar: {groupWidth: 25},
+            legend: { position: "none" },
+            annotations: {
+                textStyle: {
+                    color: 'black',
+                    fontSize: 10
+                },
+                alwaysOutside: true
+            }
+        };
+        // Instantiate and draw our chart, passing in some options.
+        var chart = new google.visualization.ColumnChart(document.getElementById('er_yy_yt'));
+        google.visualization.events.addListener(chart, 'ready', function () {
+            document.getElementById('get_er_yy_yt').innerHTML =
+                '<a  href="' + chart.getImageURI() + '">Get Image</a>';
+        });
+        chart.draw(data, options);
+    }
+
+</script>
+
 <!-- Youth Charts End -->
 
 <!-- Southeast Charts Start -->

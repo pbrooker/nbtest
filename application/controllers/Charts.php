@@ -106,7 +106,8 @@ class Charts extends CI_Controller {
 	public function participationYY()
 	{
 		$this->form_validation->set_rules('startYear', 'Start Year', 'required|min_length[4]|max_length[4]');
-		$this->form_validation->set_rules('startMonth', 'Start Month', 'required|min_length[2]|max_length[2]');
+		$this->form_validation->set_rules('startMonth', 'Start Month',
+			'required|min_length[2]|max_length[2]|callback_monthCheck');
 
 		if ($this->form_validation->run() == TRUE)
 		{
@@ -126,6 +127,115 @@ class Charts extends CI_Controller {
 
 			$this->load->view('participation', $data);
 		}
+	}
+
+	public function getFullReport()
+	{
+		$this->form_validation->set_rules('startYear', 'Start Year', 'required|min_length[4]|max_length[4]');
+		$this->form_validation->set_rules('startMonth', 'Start Month',
+			'required|min_length[2]|max_length[2]|callback_monthCheck');
+
+		if ($this->form_validation->run() == TRUE) {
+			$startYear = $this->input->post('startYear');
+			$startMonth = $this->input->post('startMonth');
+
+			$date_array = array('startYear' => $startYear, 'startMonth' => $startMonth);
+
+			$dates = $this->_dateSelectionArray($date_array);
+
+			// Get Trendline and table charts
+			// for Month to Month trends
+			$MM = $this->_monthToMonthArray($date_array);
+
+			// for Year to Year trends
+			$YY = $this->_yearToYearArray($date_array);
+
+
+			// Get Participation Charts
+			$data = $this->generateParticipationCharts($date_array);
+
+
+			$data['labour_force_statistics'] = $this->generateOverallTableReportData($date_array);
+
+
+			// Get southeast reports
+			$se_date = $date_array;
+			$se_date['region'] = 'Southeast Region';
+			$data['southeast'] = $this->generateRegionTableReportData($se_date);
+
+			// Get southwest reports
+			$sw_date = $date_array;
+			$sw_date['region'] = 'Southwest Region';
+			$data['southwest'] = $this->generateRegionTableReportData($sw_date);
+
+			// Get central reports
+			$ce_date = $date_array;
+			$ce_date['region'] = 'Central Region';
+			$data['central'] = $this->generateRegionTableReportData($ce_date);
+
+			// Get northeast reports
+			$ne_date = $date_array;
+			$ne_date['region'] = 'Northeast Region';
+			$data['northeast'] = $this->generateRegionTableReportData($ne_date);
+
+			// Get northwest reports
+			$nw_date = $date_array;
+			$nw_date['region'] = 'Northwest Region';
+			$data['northwest'] = $this->generateRegionTableReportData($nw_date);
+
+			// Get Youth reports
+			$yt_date = $date_array;
+			$yt_date['region'] = 'Youth';
+			$data['youth'] = $this->generateRegionTableReportData($yt_date);
+
+			$dataLF_MM = array (
+				'where_in' => $MM,
+				'characteristics' => 'Labour force (x 1,000)'
+			);
+			$dataLF_YY = array (
+				'where_in' => $YY,
+				'characteristics' => 'Labour force (x 1,000)',
+			);
+			$dataEM_MM = array (
+				'where_in' => $MM,
+				'characteristics' => 'Employment (x 1,000)'
+			);
+			$dataEM_YY = array (
+				'where_in' => $YY,
+				'characteristics' => 'Employment (x 1,000)'
+			);
+			$dataUM_MM = array (
+				'where_in' => $MM,
+				'characteristics' => 'Unemployment rate (percent)'
+			);
+			$dataUM_YY = array (
+				'where_in' => $YY,
+				'characteristics' => 'Unemployment rate (percent)'
+			);
+
+			$youthCharts = $this->generateYouthParticipationCharts($date_array);
+
+			$data['er_mm_yt'] = $youthCharts['er_mm_yt'];
+			$data['er_yy_yt'] = $youthCharts['er_yy_yt'];
+			$data['participation_youth'] = $youthCharts['participation_youth'];
+			$data['um_rate_yt'] = $youthCharts['um_rate_yt'];
+
+			$data['labour_force_mm'] = $this->nbdata->getLabourForceData($dataLF_MM);
+			$data['labour_force_yy'] = $this->nbdata->getLabourForceData($dataLF_YY);
+			$data['employment_mm'] = $this->nbdata->getLabourForceData($dataEM_MM);
+			$data['employment_yy'] = $this->nbdata->getLabourForceData($dataEM_YY);
+			$data['unemployment_mm'] = $this->nbdata->getLabourForceData($dataUM_MM);
+			$data['unemployment_yy'] = $this->nbdata->getLabourForceData($dataUM_YY);
+
+		}
+
+		$this->template->write('custom_title', 'Custom Chart');
+		$this->template->write_view('head', 'chart_views/full_report', $data);
+		$this->template->write_view('content', 'chart_views/full_view');
+
+		$this->template->render();
+
+
 	}
 
 	public function getAllParticipationCharts()
