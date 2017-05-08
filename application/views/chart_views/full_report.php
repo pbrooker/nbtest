@@ -120,7 +120,6 @@
 
 <script type="text/javascript">
 
-    // Load the Visualization API and the piechart package.
     google.load('visualization', '1', {'packages':['corechart']});
 
     // Set a callback to run when the Google Visualization API is loaded.
@@ -128,31 +127,33 @@
 
     function drawChart() {
 
-        var data = new google.visualization.DataTable(<?= $employment_mm ;?>);
+        var data = new google.visualization.DataTable(<?= $employment_mm_trend ;?>);
 
         var options = {
-            title: "Employment M-M Trends",
+            title: "Employment Rate M-M",
             height: 400,
-            width: 600,
-            hAxis: { title: 'Month',
-                showTextEvery: 1,
-                slantedText: 'true',
-                slantedTextAngle: 45,
-                gridlines: {count: 12}
+            vAxis: { format: 'short' },
+            bar: {groupWidth: 25},
+            legend: { position: "none" },
+            vAxis: {
+                textPosition: 'none',
+                viewWindowMode:'explicit',
+                viewWindow: {
+                    max:2
+                }
             },
-            vAxis: { title: 'Labour Force', viewWindowMode:'explicit',
-                viewWindow:{
-                    max:370000,
-                    min:340000
-                }},
-            legend:"none",
-            trendlines: { 0: {} }
+            annotations: {
+                textStyle: {
+                    color: 'black',
+                    fontSize: 10
+                },
+                alwaysOutside: true
+            }
         };
         // Instantiate and draw our chart, passing in some options.
-        var chart = new google.visualization.LineChart(document.getElementById('chart_divEM_MM'));
-
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart_divERMM'));
         google.visualization.events.addListener(chart, 'ready', function () {
-            document.getElementById('get_chartEM_MM').innerHTML = '<a  href="' + chart.getImageURI() + '">Get Image</a>';
+            document.getElementById('get_chart_divERMM').innerHTML = '<a  href="' + chart.getImageURI() + '">Get Image</a>';
         });
         chart.draw(data, options);
     }
@@ -161,7 +162,6 @@
 
 <script type="text/javascript">
 
-    // Load the Visualization API and the piechart package.
     google.load('visualization', '1', {'packages':['corechart']});
 
     // Set a callback to run when the Google Visualization API is loaded.
@@ -169,40 +169,35 @@
 
     function drawChart() {
 
-        var data = new google.visualization.DataTable(<?= $employment_yy ;?>);
+        var data = new google.visualization.DataTable(<?= $employment_yy_trend ;?>);
 
         var options = {
-            title: "Employment Y-Y Trends",
+            title: "Employment Rate Y-Y",
             height: 400,
-            width: 600,
-            hAxis: { title: 'Month',
-                showTextEvery: 1,
-                slantedText: 'true',
-                slantedTextAngle: 45,
-                gridlines: {count: 12}
-            },
-            vAxis: { title: 'Labour Force', viewWindowMode:'explicit',
-                viewWindow:{
-                    max:370000,
-                    min:340000
-                }},
-            legend:"none",
-            trendlines: { 0: {} }
+            vAxis: { format: 'short' },
+            bar: {groupWidth: 25},
+            legend: { position: "none" },
+            annotations: {
+                textStyle: {
+                    color: 'black',
+                    fontSize: 10
+                },
+                alwaysOutside: true
+            }
         };
         // Instantiate and draw our chart, passing in some options.
-        var chart = new google.visualization.LineChart(document.getElementById('chart_divEM_YY'));
-
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart_divERYY'));
         google.visualization.events.addListener(chart, 'ready', function () {
-            document.getElementById('get_chartEM_YY').innerHTML = '<a  href="' + chart.getImageURI() + '">Get Image</a>';
+            document.getElementById('get_chart_divERYY').innerHTML = '<a  href="' + chart.getImageURI() + '">Get Image</a>';
         });
         chart.draw(data, options);
     }
 
 </script>
 
+
 <script type="text/javascript">
 
-    // Load the Visualization API and the piechart package.
     google.load('visualization', '1', {'packages':['corechart']});
 
     // Set a callback to run when the Google Visualization API is loaded.
@@ -210,7 +205,7 @@
 
     function drawChart() {
 
-        var data = new google.visualization.DataTable(<?= $unemployment_mm ;?>);
+        var data = new google.visualization.DataTable(<?= $unemployment_mm_trend ;?>);
 
         var options = {
             title: "Unemployment M-M Trends",
@@ -243,7 +238,6 @@
 
 <script type="text/javascript">
 
-    // Load the Visualization API and the piechart package.
     google.load('visualization', '1', {'packages':['corechart']});
 
     // Set a callback to run when the Google Visualization API is loaded.
@@ -251,7 +245,7 @@
 
     function drawChart() {
 
-        var data = new google.visualization.DataTable(<?= $unemployment_yy ;?>);
+        var data = new google.visualization.DataTable(<?= $unemployment_yy_trend ;?>);
 
         var options = {
             title: "Unemployment Y-Y Trends",
@@ -283,7 +277,6 @@
 </script>
 <script type="text/javascript">
 
-    // Load the Visualization API and the piechart package.
     google.load('visualization', '1', {'packages':['corechart']});
 
     // Set a callback to run when the Google Visualization API is loaded.
@@ -399,7 +392,6 @@
 
     google.load('visualization', '1', {'packages':['corechart']});
 
-    // Set a callback to run when the Google Visualization API is loaded.
     google.setOnLoadCallback(drawChart);
 
     function drawChart() {
@@ -441,7 +433,6 @@
 
     google.load('visualization', '1', {'packages':['corechart']});
 
-    // Set a callback to run when the Google Visualization API is loaded.
     google.setOnLoadCallback(drawChart);
 
     function drawChart() {
@@ -476,7 +467,6 @@
 
     google.load('visualization', '1', {'packages':['corechart']});
 
-    // Set a callback to run when the Google Visualization API is loaded.
     google.setOnLoadCallback(drawChart);
 
     function drawChart() {
@@ -511,7 +501,6 @@
 
     google.load('visualization', '1', {'packages':['corechart']});
 
-    // Set a callback to run when the Google Visualization API is loaded.
     google.setOnLoadCallback(drawChart);
 
     function drawChart() {
@@ -546,7 +535,6 @@
 
     google.load('visualization', '1', {'packages':['corechart']});
 
-    // Set a callback to run when the Google Visualization API is loaded.
     google.setOnLoadCallback(drawChart);
 
     function drawChart() {
@@ -582,7 +570,6 @@
 
     google.load('visualization', '1', {'packages':['corechart']});
 
-    // Set a callback to run when the Google Visualization API is loaded.
     google.setOnLoadCallback(drawChart);
 
     function drawChart() {
@@ -619,16 +606,14 @@
 <!-- Youth Charts Start -->
 <script type="text/javascript">
 
-    // Load the Visualization API and the piechart package.
     google.load('visualization', '1', {'packages':['table']});
 
-    // Set a callback to run when the Google Visualization API is loaded.
     google.setOnLoadCallback(drawTable);
 
     function drawTable() {
 
-        var data = new google.visualization.DataTable(<?= $youth_stats['data'] ;?>);
-        var title = "Labour Force Statistics: <?= $youth_stats['date'] ;?> - <?= $youth_stats['title'];?>";
+        var data = new google.visualization.DataTable(<?= $youth['youth_stats']['data'] ;?>);
+        var title = "Labour Force Statistics: <?= $youth['youth_stats']['date'] ;?> - <?= $youth['youth_stats']['title'];?>";
 
         var options = {
             title: title,
@@ -652,15 +637,13 @@
 
 <script type="text/javascript">
 
-    // Load the Visualization API and the piechart package.
     google.load('visualization', '1', {'packages':['corechart']});
 
-    // Set a callback to run when the Google Visualization API is loaded.
     google.setOnLoadCallback(drawChart);
 
     function drawChart() {
 
-        var data = new google.visualization.DataTable(<?= $yt_lf_mm ;?>);
+        var data = new google.visualization.DataTable(<?= $youth['yt_lf_mm'] ;?>);
 
         var options = {
             title: "Labour Force M-M Trends",
@@ -701,7 +684,7 @@
 
     function drawChart() {
 
-        var data = new google.visualization.DataTable(<?= $yt_lf_yy ;?>);
+        var data = new google.visualization.DataTable(<?= $youth['yt_lf_yy'] ;?>);
 
         var options = {
             title: "Labour Force Y-Y Trends",
@@ -742,7 +725,7 @@
 
     function drawChart() {
 
-        var data = new google.visualization.DataTable(<?= $yt_em_mm ;?>);
+        var data = new google.visualization.DataTable(<?= $youth['yt_em_mm'] ;?>);
 
         var options = {
             title: "Employment M-M Trends",
@@ -783,7 +766,7 @@
 
     function drawChart() {
 
-        var data = new google.visualization.DataTable(<?= $yt_em_yy ;?>);
+        var data = new google.visualization.DataTable(<?= $youth['yt_em_yy'] ;?>);
 
         var options = {
             title: "Employment Y-Y Trends",
@@ -824,7 +807,7 @@
 
     function drawChart() {
 
-        var data = new google.visualization.DataTable(<?= $yt_um_mm ;?>);
+        var data = new google.visualization.DataTable(<?= $youth['yt_um_mm'] ;?>);
 
         var options = {
             title: "Unemployment M-M Trends",
@@ -865,7 +848,7 @@
 
     function drawChart() {
 
-        var data = new google.visualization.DataTable(<?= $yt_um_yy ;?>);
+        var data = new google.visualization.DataTable(<?= $youth['yt_um_yy'] ;?>);
 
         var options = {
             title: "Unemployment Y-Y Trends",
@@ -911,13 +894,7 @@
             height: 400,
             bar: {groupWidth: 25},
             legend: { position: "none" },
-            vAxis: {
-                viewWindowMode:'explicit',
-                viewWindow: {
-                    max:100,
-                    min:50
-                }
-            },
+            
             annotations: {
                 textStyle: {
                     color: 'black',
@@ -927,9 +904,9 @@
             }
         };
         // Instantiate and draw our chart, passing in some options.
-        var chart = new google.visualization.ColumnChart(document.getElementById('participation_youth'));
+        var chart = new google.visualization.ColumnChart(document.getElementById('p_youth'));
         google.visualization.events.addListener(chart, 'ready', function () {
-            document.getElementById('participation_youth').innerHTML = '<a  href="' + chart.getImageURI() + '">Get Image</a>';
+            document.getElementById('p_youth').innerHTML = '<a  href="' + chart.getImageURI() + '">Get Image</a>';
         });
         chart.draw(data, options);
     }
@@ -980,7 +957,7 @@
 
     function drawChart() {
 
-        var data = new google.visualization.DataTable(<?= $employment_mm_yt ;?>);
+        var data = new google.visualization.DataTable(<?= $er_mm_yt ;?>);
 
         var options = {
             title: "Employment Rate M-M",
@@ -988,13 +965,7 @@
             vAxis: { format: 'short' },
             bar: {groupWidth: 25},
             legend: { position: "none" },
-            vAxis: {
-                textPosition: 'none',
-                viewWindowMode:'explicit',
-                viewWindow: {
-                    max:2
-                }
-            },
+
             annotations: {
                 textStyle: {
                     color: 'black',
@@ -1004,9 +975,9 @@
             }
         };
         // Instantiate and draw our chart, passing in some options.
-        var chart = new google.visualization.ColumnChart(document.getElementById('em_mm_yt'));
+        var chart = new google.visualization.ColumnChart(document.getElementById('er_mm_yt'));
         google.visualization.events.addListener(chart, 'ready', function () {
-            document.getElementById('get_em_mm_yt').innerHTML = '<a  href="' + chart.getImageURI() + '">Get Image</a>';
+            document.getElementById('get_er_mm_yt').innerHTML = '<a  href="' + chart.getImageURI() + '">Get Image</a>';
         });
         chart.draw(data, options);
     }
@@ -1022,7 +993,7 @@
 
     function drawChart() {
 
-        var data = new google.visualization.DataTable(<?= $employment_yy_yt ;?>);
+        var data = new google.visualization.DataTable(<?= $er_yy_yt ;?>);
 
         var options = {
             title: "Employment Rate Y-Y",
@@ -1039,152 +1010,16 @@
             }
         };
         // Instantiate and draw our chart, passing in some options.
-        var chart = new google.visualization.ColumnChart(document.getElementById('em_yy_yt'));
-        google.visualization.events.addListener(chart, 'ready', function () {
-            document.getElementById('get_em_yy_yt').innerHTML = '<a  href="' + chart.getImageURI() + '">Get Image</a>';
-        });
-        chart.draw(data, options);
-    }
-
-</script>
-
-<script type="text/javascript">
-
-    google.load('visualization', '1', {'packages':['corechart']});
-
-    google.setOnLoadCallback(drawChart);
-
-    function drawChart() {
-
-        var data = new google.visualization.DataTable(<?= $participation_youth ;?>);
-
-        var options = {
-            title: "Participation Rate - Youth",
-            height: 400,
-            bar: {groupWidth: 25},
-            legend: { position: "none" },
-            annotations: {
-                textStyle: {
-                    color: 'black',
-                    fontSize: 10
-                },
-                alwaysOutside: true
-            }
-        };
-        // Instantiate and draw our chart, passing in some options.
-        var chart = new google.visualization.ColumnChart(document.getElementById('participation_youth'));
-        google.visualization.events.addListener(chart, 'ready', function () {
-            document.getElementById('get_participation_youth').innerHTML =
-                '<a  href="' + chart.getImageURI() + '">Get Image</a>';
-        });
-        chart.draw(data, options);
-    }
-
-</script>
-
-<script type="text/javascript">
-
-    google.load('visualization', '1', {'packages':['corechart']});
-
-    google.setOnLoadCallback(drawChart);
-
-    function drawChart() {
-
-        var data = new google.visualization.DataTable(<?= $um_rate_yt ;?>);
-
-        var options = {
-            title: "Unemployment Rate - Youth",
-            height: 400,
-            bar: {groupWidth: 25},
-            legend: { position: "none" },
-            annotations: {
-                textStyle: {
-                    color: 'black',
-                    fontSize: 10
-                },
-                alwaysOutside: true
-            }
-        };
-        // Instantiate and draw our chart, passing in some options.
-        var chart = new google.visualization.ColumnChart(document.getElementById('um_rate_yt'));
-        google.visualization.events.addListener(chart, 'ready', function () {
-            document.getElementById('get_um_rate_yt').innerHTML =
-                '<a  href="' + chart.getImageURI() + '">Get Image</a>';
-        });
-        chart.draw(data, options);
-    }
-
-</script>
-
-
-<script type="text/javascript">
-
-    google.load('visualization', '1', {'packages':['corechart']});
-
-    google.setOnLoadCallback(drawChart);
-
-    function drawChart() {
-
-        var data = new google.visualization.DataTable(<?= $er_mm_yt ;?>);
-
-        var options = {
-            title: "Employment M-M - Youth",
-            height: 400,
-            bar: {groupWidth: 25},
-            legend: { position: "none" },
-            annotations: {
-                textStyle: {
-                    color: 'black',
-                    fontSize: 10
-                },
-                alwaysOutside: true
-            }
-        };
-        // Instantiate and draw our chart, passing in some options.
-        var chart = new google.visualization.ColumnChart(document.getElementById('er_mm_yt'));
-        google.visualization.events.addListener(chart, 'ready', function () {
-            document.getElementById('get_er_mm_yt').innerHTML =
-                '<a  href="' + chart.getImageURI() + '">Get Image</a>';
-        });
-        chart.draw(data, options);
-    }
-
-</script>
-
-
-<script type="text/javascript">
-
-    google.load('visualization', '1', {'packages':['corechart']});
-
-    google.setOnLoadCallback(drawChart);
-
-    function drawChart() {
-
-        var data = new google.visualization.DataTable(<?= $er_yy_yt ;?>);
-
-        var options = {
-            title: "Employment Rate Y-Y - Youth",
-            height: 400,
-            bar: {groupWidth: 25},
-            legend: { position: "none" },
-            annotations: {
-                textStyle: {
-                    color: 'black',
-                    fontSize: 10
-                },
-                alwaysOutside: true
-            }
-        };
-        // Instantiate and draw our chart, passing in some options.
         var chart = new google.visualization.ColumnChart(document.getElementById('er_yy_yt'));
         google.visualization.events.addListener(chart, 'ready', function () {
-            document.getElementById('get_er_yy_yt').innerHTML =
-                '<a  href="' + chart.getImageURI() + '">Get Image</a>';
+            document.getElementById('get_er_yy_yt').innerHTML = '<a  href="' + chart.getImageURI() + '">Get Image</a>';
         });
         chart.draw(data, options);
     }
 
 </script>
+
+
 
 <!-- Youth Charts End -->
 
@@ -1199,8 +1034,8 @@
 
     function drawTable() {
 
-        var data = new google.visualization.DataTable(<?= $se_lf_stats['data'] ;?>);
-        var title = "Labour Force Statistics: <?= $se_lf_stats['date'] ;?> - <?= $se_lf_stats['title'];?>";
+        var data = new google.visualization.DataTable(<?= $southeast['se_lf_stats']['data'] ;?>);
+        var title = "Labour Force Statistics: <?= $southeast['se_lf_stats']['date'] ;?> - <?= $southeast['se_lf_stats']['title'];?>";
 
         var options = {
             title:  title,
@@ -1232,7 +1067,7 @@
 
     function drawChart() {
 
-        var data = new google.visualization.DataTable(<?= $se_lf_mm ;?>);
+        var data = new google.visualization.DataTable(<?= $southeast['se_lf_mm'] ;?>);
 
         var options = {
             title: "Labour Force M-M Trends",
@@ -1273,7 +1108,7 @@
 
     function drawChart() {
 
-        var data = new google.visualization.DataTable(<?= $se_lf_yy ;?>);
+        var data = new google.visualization.DataTable(<?=  $southeast['se_lf_yy'] ;?>);
 
         var options = {
             title: "Labour Force Y-Y Trends",
@@ -1314,7 +1149,7 @@
 
     function drawChart() {
 
-        var data = new google.visualization.DataTable(<?= $se_em_mm ;?>);
+        var data = new google.visualization.DataTable(<?=  $southeast['se_em_mm'] ;?>);
 
         var options = {
             title: "Employment M-M Trends",
@@ -1355,7 +1190,7 @@
 
     function drawChart() {
 
-        var data = new google.visualization.DataTable(<?= $se_em_yy ;?>);
+        var data = new google.visualization.DataTable(<?=  $southeast['se_em_yy'] ;?>);
 
         var options = {
             title: "Employment Y-Y Trends",
@@ -1396,7 +1231,7 @@
 
     function drawChart() {
 
-        var data = new google.visualization.DataTable(<?= $se_um_mm ;?>);
+        var data = new google.visualization.DataTable(<?=  $southeast['se_um_mm'] ;?>);
 
         var options = {
             title: "Unemployment M-M Trends",
@@ -1437,7 +1272,7 @@
 
     function drawChart() {
 
-        var data = new google.visualization.DataTable(<?= $se_um_yy ;?>);
+        var data = new google.visualization.DataTable(<?=  $southeast['se_um_yy'] ;?>);
 
         var options = {
             title: "Unemployment Y-Y Trends",
@@ -1481,8 +1316,8 @@
 
     function drawTable() {
 
-        var data = new google.visualization.DataTable(<?= $sw_lf_stats['data'] ;?>);
-        var title = "Labour Force Statistics: <?= $sw_lf_stats['date'] ;?> - <?= $sw_lf_stats['title'];?>";
+        var data = new google.visualization.DataTable(<?= $southwest['sw_lf_stats']['data'] ;?>);
+        var title = "Labour Force Statistics: <?= $southwest['sw_lf_stats']['date'] ;?> - <?= $southwest['sw_lf_stats']['title'];?>";
 
         var options = {
             title: title,
@@ -1514,7 +1349,7 @@
 
     function drawChart() {
 
-        var data = new google.visualization.DataTable(<?= $sw_lf_mm ;?>);
+        var data = new google.visualization.DataTable(<?= $southwest['sw_lf_mm'] ;?>);
 
         var options = {
             title: "Labour Force M-M Trends",
@@ -1555,7 +1390,7 @@
 
     function drawChart() {
 
-        var data = new google.visualization.DataTable(<?= $sw_lf_yy ;?>);
+        var data = new google.visualization.DataTable(<?= $southwest['sw_lf_yy'] ;?>);
 
         var options = {
             title: "Labour Force Y-Y Trends",
@@ -1596,7 +1431,7 @@
 
     function drawChart() {
 
-        var data = new google.visualization.DataTable(<?= $sw_em_mm ;?>);
+        var data = new google.visualization.DataTable(<?= $southwest['sw_em_mm'] ;?>);
 
         var options = {
             title: "Employment M-M Trends",
@@ -1637,7 +1472,7 @@
 
     function drawChart() {
 
-        var data = new google.visualization.DataTable(<?= $sw_em_yy ;?>);
+        var data = new google.visualization.DataTable(<?= $southwest['sw_em_yy'] ;?>);
 
         var options = {
             title: "Employment Y-Y Trends",
@@ -1678,7 +1513,7 @@
 
     function drawChart() {
 
-        var data = new google.visualization.DataTable(<?= $sw_um_mm ;?>);
+        var data = new google.visualization.DataTable(<?= $southwest['sw_um_mm'] ;?>);
 
         var options = {
             title: "Unemployment M-M Trends",
@@ -1719,7 +1554,7 @@
 
     function drawChart() {
 
-        var data = new google.visualization.DataTable(<?= $sw_um_yy ;?>);
+        var data = new google.visualization.DataTable(<?= $southwest['sw_um_yy'] ;?>);
 
         var options = {
             title: "Unemployment Y-Y Trends",
@@ -1761,8 +1596,8 @@
 
     function drawTable() {
 
-        var data = new google.visualization.DataTable(<?= $ce_lf_stats['data'] ;?>);
-        var title = "Labour Force Statistics: <?= $ce_lf_stats['date'] ;?> - <?= $ce_lf_stats['title'];?>";
+        var data = new google.visualization.DataTable(<?= $central['ce_lf_stats']['data'] ;?>);
+        var title = "Labour Force Statistics: <?= $central['ce_lf_stats']['date'] ;?> - <?= $central['ce_lf_stats']['title'];?>";
 
         var options = {
             title: title,
@@ -1794,7 +1629,7 @@
 
     function drawChart() {
 
-        var data = new google.visualization.DataTable(<?= $ce_lf_mm ;?>);
+        var data = new google.visualization.DataTable(<?= $central['ce_lf_mm'] ;?>);
 
         var options = {
             title: "Labour Force M-M Trends",
@@ -1835,7 +1670,7 @@
 
     function drawChart() {
 
-        var data = new google.visualization.DataTable(<?= $ce_lf_yy ;?>);
+        var data = new google.visualization.DataTable(<?= $central['ce_lf_yy'] ;?>);
 
         var options = {
             title: "Labour Force Y-Y Trends",
@@ -1876,7 +1711,7 @@
 
     function drawChart() {
 
-        var data = new google.visualization.DataTable(<?= $ce_em_mm ;?>);
+        var data = new google.visualization.DataTable(<?= $central['ce_em_mm'] ;?>);
 
         var options = {
             title: "Employment M-M Trends",
@@ -1917,7 +1752,7 @@
 
     function drawChart() {
 
-        var data = new google.visualization.DataTable(<?= $ce_em_yy ;?>);
+        var data = new google.visualization.DataTable(<?= $central['ce_em_yy'] ;?>);
 
         var options = {
             title: "Employment Y-Y Trends",
@@ -1958,7 +1793,7 @@
 
     function drawChart() {
 
-        var data = new google.visualization.DataTable(<?= $ce_um_mm ;?>);
+        var data = new google.visualization.DataTable(<?= $central['ce_um_mm'] ;?>);
 
         var options = {
             title: "Unemployment M-M Trends",
@@ -1999,7 +1834,7 @@
 
     function drawChart() {
 
-        var data = new google.visualization.DataTable(<?= $ce_um_yy ;?>);
+        var data = new google.visualization.DataTable(<?= $central['ce_um_yy'] ;?>);
 
         var options = {
             title: "Unemployment Y-Y Trends",
@@ -2041,8 +1876,8 @@
 
     function drawTable() {
 
-        var data = new google.visualization.DataTable(<?= $nw_lf_stats['data'] ;?>);
-        var title = "Labour Force Statistics: <?= $nw_lf_stats['date'] ;?> - <?= $nw_lf_stats['title'];?>";
+        var data = new google.visualization.DataTable(<?= $northwest['nw_lf_stats']['data'] ;?>);
+        var title = "Labour Force Statistics: <?= $northwest['nw_lf_stats']['date'] ;?> - <?= $northwest['nw_lf_stats']['title'];?>";
 
         var options = {
             title: title,
@@ -2074,7 +1909,7 @@
 
     function drawChart() {
 
-        var data = new google.visualization.DataTable(<?= $nw_lf_mm ;?>);
+        var data = new google.visualization.DataTable(<?= $northwest['nw_lf_mm'] ;?>);
 
         var options = {
             title: "Labour Force M-M Trends",
@@ -2115,7 +1950,7 @@
 
     function drawChart() {
 
-        var data = new google.visualization.DataTable(<?= $nw_lf_yy ;?>);
+        var data = new google.visualization.DataTable(<?= $northwest['nw_lf_yy'] ;?>);
 
         var options = {
             title: "Labour Force Y-Y Trends",
@@ -2156,7 +1991,7 @@
 
     function drawChart() {
 
-        var data = new google.visualization.DataTable(<?= $nw_em_mm ;?>);
+        var data = new google.visualization.DataTable(<?= $northwest['nw_em_mm'] ;?>);
 
         var options = {
             title: "Employment M-M Trends",
@@ -2197,7 +2032,7 @@
 
     function drawChart() {
 
-        var data = new google.visualization.DataTable(<?= $nw_em_yy ;?>);
+        var data = new google.visualization.DataTable(<?= $northwest['nw_em_yy'] ;?>);
 
         var options = {
             title: "Employment Y-Y Trends",
@@ -2238,7 +2073,7 @@
 
     function drawChart() {
 
-        var data = new google.visualization.DataTable(<?= $nw_um_mm ;?>);
+        var data = new google.visualization.DataTable(<?= $northwest['nw_um_mm'] ;?>);
 
         var options = {
             title: "Unemployment M-M Trends",
@@ -2279,7 +2114,7 @@
 
     function drawChart() {
 
-        var data = new google.visualization.DataTable(<?= $nw_um_yy ;?>);
+        var data = new google.visualization.DataTable(<?= $northwest['nw_um_yy'] ;?>);
 
         var options = {
             title: "Unemployment Y-Y Trends",
@@ -2321,8 +2156,8 @@
 
     function drawTable() {
 
-        var data = new google.visualization.DataTable(<?= $ne_lf_stats['data'] ;?>);
-        var title = "Labour Force Statistics: <?= $ne_lf_stats['date'] ;?> - <?= $ne_lf_stats['title'];?>";
+        var data = new google.visualization.DataTable(<?= $northeast['ne_lf_stats']['data'] ;?>);
+        var title = "Labour Force Statistics: <?= $northeast['ne_lf_stats']['date'] ;?> - <?= $northeast['ne_lf_stats']['title'];?>";
 
         var options = {
             title: title,
@@ -2354,7 +2189,7 @@
 
     function drawChart() {
 
-        var data = new google.visualization.DataTable(<?= $ne_lf_mm ;?>);
+        var data = new google.visualization.DataTable(<?= $northeast['ne_lf_mm'] ;?>);
 
         var options = {
             title: "Labour Force M-M Trends",
@@ -2395,7 +2230,7 @@
 
     function drawChart() {
 
-        var data = new google.visualization.DataTable(<?= $ne_lf_yy ;?>);
+        var data = new google.visualization.DataTable(<?= $northeast['ne_lf_yy'] ;?>);
 
         var options = {
             title: "Labour Force Y-Y Trends",
@@ -2436,7 +2271,7 @@
 
     function drawChart() {
 
-        var data = new google.visualization.DataTable(<?= $ne_em_mm ;?>);
+        var data = new google.visualization.DataTable(<?= $northeast['ne_em_mm'] ;?>);
 
         var options = {
             title: "Employment M-M Trends",
@@ -2477,7 +2312,7 @@
 
     function drawChart() {
 
-        var data = new google.visualization.DataTable(<?= $ne_em_yy ;?>);
+        var data = new google.visualization.DataTable(<?= $northeast['ne_em_yy'] ;?>);
 
         var options = {
             title: "Employment Y-Y Trends",
@@ -2518,7 +2353,7 @@
 
     function drawChart() {
 
-        var data = new google.visualization.DataTable(<?= $ne_um_mm ;?>);
+        var data = new google.visualization.DataTable(<?= $northeast['ne_um_mm'] ;?>);
 
         var options = {
             title: "Unemployment M-M Trends",
@@ -2559,7 +2394,7 @@
 
     function drawChart() {
 
-        var data = new google.visualization.DataTable(<?= $ne_um_yy ;?>);
+        var data = new google.visualization.DataTable(<?= $northeast['ne_um_yy'] ;?>);
 
         var options = {
             title: "Unemployment Y-Y Trends",

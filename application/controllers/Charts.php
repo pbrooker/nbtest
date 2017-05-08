@@ -222,16 +222,16 @@ class Charts extends CI_Controller {
 
 			$data['labour_force_mm'] = $this->nbdata->getLabourForceData($dataLF_MM);
 			$data['labour_force_yy'] = $this->nbdata->getLabourForceData($dataLF_YY);
-			$data['employment_mm'] = $this->nbdata->getLabourForceData($dataEM_MM);
-			$data['employment_yy'] = $this->nbdata->getLabourForceData($dataEM_YY);
-			$data['unemployment_mm'] = $this->nbdata->getLabourForceData($dataUM_MM);
-			$data['unemployment_yy'] = $this->nbdata->getLabourForceData($dataUM_YY);
+			$data['employment_mm_trend'] = $this->nbdata->getLabourForceData($dataEM_MM);
+			$data['employment_yy_trend'] = $this->nbdata->getLabourForceData($dataEM_YY);
+			$data['unemployment_mm_trend'] = $this->nbdata->getLabourForceData($dataUM_MM);
+			$data['unemployment_yy_trend'] = $this->nbdata->getLabourForceData($dataUM_YY);
 
 		}
 
 		$this->template->write('custom_title', 'Custom Chart');
 		$this->template->write_view('head', 'chart_views/full_report', $data);
-		$this->template->write_view('content', 'chart_views/full_view');
+		$this->template->write_view('content', 'chart_views/full_view', $data);
 
 		$this->template->render();
 
@@ -674,23 +674,25 @@ class Charts extends CI_Controller {
 		// Employment Rate m-m
 		$erMMDates = $dates['month_month_array'];
 		$erMMDates['characteristics'] = 'Employment (x 1,000)';
-		$erMMDates['datatype'] = 'Unadjusted';
+		$erMMDates['datatype'] = 'Seasonally adjusted';
 		$erMMDates['chartType'] = 'perc';
 		$erMMDates['calcType'] = 'reverse';
 
 		//  Employment Rate
 		$erDates = $dates['dates'];
 		$erDates['characteristics'] = 'Employment (x 1,000)';
-		$erDates['datatype'] = 'Unadjusted';
+		$erDates['datatype'] = 'Seasonally adjusted';
 		$erDates['chartType'] = 'perc';
 
 		$dataParticipation = array (
 			'date' => $dates['startDate'],
-			'characteristics' => 'Participation rate (percent)'
+			'characteristics' => 'Participation rate (percent)',
+			'datatype' => 'Unadjusted'
 		);
 		$dataUnemployment = array (
 			'date' => $dates['startDate'],
-			'characteristics' => 'Unemployment rate (percent)'
+			'characteristics' => 'Unemployment rate (percent)',
+			'datatype' => 'Unadjusted'
 		);
 
 		// Common to all queries
