@@ -103,6 +103,12 @@ class Charts extends CI_Controller {
 		}
 	}
 
+	public function lmiPrimaryPage()
+	{
+		$year = date("Y") ;
+		$month = data("m");
+	}
+
 	public function participationYY()
 	{
 		$this->form_validation->set_rules('startYear', 'Start Year', 'required|min_length[4]|max_length[4]');
