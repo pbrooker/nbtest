@@ -229,6 +229,27 @@ class Datagathering_model extends CI_Model
 			$calcType = "";
 		}
 
+		if(isset($data['agegroup']) && $data['agegroup'] != "") {
+			$agegroup = $data['agegroup'];
+		} else {
+			$agegroup = '15 years and over';
+		}
+		if(isset($data['sex']) && $data['sex'] != "") {
+			$sex = $data['sex'];
+		} else {
+			$sex = 'Both sexes';
+		}
+		if(isset($data['statistics']) && $data['statistics'] != "") {
+			$statistics = $data['statistics'];
+		} else {
+			$statistics = 'Estimate';
+		}
+		if(isset($data['datatype']) && $data['datatype'] != "") {
+			$datatype = $data['datatype'];
+		} else {
+			$datatype = 'Seasonally adjusted';
+		}
+
 		$this->db->select("geography, value, CASE geography WHEN 'Canada' THEN 1 WHEN 'Newfoundland and Labrador' THEN
 		2 WHEN 'Prince Edward Island' THEN 3 WHEN 'Nova Scotia' THEN 4 WHEN 'New Brunswick' THEN 5 WHEN 'Quebec' THEN 6 
 		WHEN 'Ontario' THEN 7 WHEN 'Manitoba' THEN 8 WHEN 'Saskatchewan' THEN 9 WHEN 'Alberta' THEN 10 WHEN 
@@ -236,13 +257,14 @@ class Datagathering_model extends CI_Model
 			->from("`" . '02820087' . "`")
 			->where('ref_date =', $data['startDate'])
 			->where('`characteristics` =', $data['characteristics'])
-			->where('`agegroup` = ', $data['agegroup'])
-			->where('`sex` = ', $data['sex'])
-			->where('`statistics` = "Estimate"')
-			->where('`datatype` = ', $data['datatype'])
+			->where('`agegroup` = ', $agegroup)
+			->where('`sex` = ', $sex)
+			->where('`statistics` = ', $statistics)
+			->where('`datatype` = ', $datatype)
 			->order_by('order_prov', 'ASC');
 
 		$start = $this->db->get()->result();
+		$que = $this->db->last_query();
 
 		$this->db->select("geography, value, CASE geography WHEN 'Canada' THEN 1 WHEN 'Newfoundland and Labrador' THEN
 		2 WHEN 'Prince Edward Island' THEN 3 WHEN 'Nova Scotia' THEN 4 WHEN 'New Brunswick' THEN 5 WHEN 'Quebec' THEN 6 
@@ -251,13 +273,14 @@ class Datagathering_model extends CI_Model
 			->from("`" . '02820087' . "`")
 			->where('ref_date =', $data['endDate'])
 			->where('`characteristics` =', $data['characteristics'])
-			->where('`agegroup` = "15 years and over"')
-			->where('`sex` = "Both sexes"')
-			->where('`statistics` = "Estimate"')
-			->where('`datatype` = ', $data['datatype'])
+			->where('`agegroup` = ', $agegroup)
+			->where('`sex` = ', $sex)
+			->where('`statistics` = ', $statistics)
+			->where('`datatype` = ', $datatype)
 			->order_by('order_prov', 'ASC');
 
 		$end = $this->db->get()->result();
+		$q2 = $this->db->last_query();
 
 		$result = array();
 		foreach($start as $key => $value) {

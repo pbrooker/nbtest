@@ -127,13 +127,25 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <br><br>
 
 		<?php echo form_open('Charts/getFullReport') ;?>
-        <p>Get All Labour Force Charts</p>
+        <p>Get Full Report</p>
         <label for="startYear">Enter the year for reports (eg. 2016)</label>
         <input id="startYear" name="startYear" type="text" size="15"><br>
         <label for="startMonth">Enter the month in numberic format for reports (eg. 12 for December)</label>
         <input id="startMonth" name="startMonth" type="text" size="15"><br>
 
 		<?php echo form_submit('Charts', 'Get Full Report!');?>
+		<?php echo form_close();?>
+
+        <br><br>
+
+		<?php echo form_open('Charts/getYouthParticipationCharts') ;?>
+        <p>Get Youth Participation</p>
+        <label for="startYear">Enter the year for reports (eg. 2016)</label>
+        <input id="startYear" name="startYear" type="text" size="15"><br>
+        <label for="startMonth">Enter the month in numberic format for reports (eg. 12 for December)</label>
+        <input id="startMonth" name="startMonth" type="text" size="15"><br>
+
+		<?php echo form_submit('Charts', 'Get Youth Participation Report!');?>
 		<?php echo form_close();?>
 
 

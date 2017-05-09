@@ -894,7 +894,7 @@
             height: 400,
             bar: {groupWidth: 25},
             legend: { position: "none" },
-            
+
             annotations: {
                 textStyle: {
                     color: 'black',

@@ -238,6 +238,29 @@ class Charts extends CI_Controller {
 
 	}
 
+	public function getYouthParticipationCharts()
+	{
+		$this->form_validation->set_rules('startYear', 'Start Year', 'required|min_length[4]|max_length[4]');
+		$this->form_validation->set_rules('startMonth', 'Start Month',
+			'required|min_length[2]|max_length[2]|callback_monthCheck');
+
+		if ($this->form_validation->run() == TRUE) {
+			$startYear = $this->input->post('startYear');
+			$startMonth = $this->input->post('startMonth');
+
+			$date_array = array('startYear' => $startYear, 'startMonth' => $startMonth);
+
+			$data = $this->generateYouthParticipationCharts($date_array);
+
+		}
+
+		$this->template->write('custom_title', 'Youth Participation');
+		$this->template->write_view('head', 'chart_views/youth_participation', $data);
+		$this->template->write_view('content', 'chart_views/youth_participation_view', $data);
+
+		$this->template->render();
+	}
+
 	public function getAllParticipationCharts()
 	{
 		$this->form_validation->set_rules('startYear', 'Start Year', 'required|min_length[4]|max_length[4]');
@@ -674,14 +697,14 @@ class Charts extends CI_Controller {
 		// Employment Rate m-m
 		$erMMDates = $dates['month_month_array'];
 		$erMMDates['characteristics'] = 'Employment (x 1,000)';
-		$erMMDates['datatype'] = 'Seasonally adjusted';
+		$erMMDates['datatype'] = 'Unadjusted';
 		$erMMDates['chartType'] = 'perc';
 		$erMMDates['calcType'] = 'reverse';
 
 		//  Employment Rate
 		$erDates = $dates['dates'];
 		$erDates['characteristics'] = 'Employment (x 1,000)';
-		$erDates['datatype'] = 'Seasonally adjusted';
+		$erDates['datatype'] = 'Unadjusted';
 		$erDates['chartType'] = 'perc';
 
 		$dataParticipation = array (
