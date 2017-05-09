@@ -307,9 +307,9 @@
             }
         };
         // Instantiate and draw our chart, passing in some options.
-        var chart = new google.visualization.ColumnChart(document.getElementById('chart_divP'));
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart_participation'));
         google.visualization.events.addListener(chart, 'ready', function () {
-            document.getElementById('get_chart_divP').innerHTML = '<a  href="' + chart.getImageURI() + '">Get Image</a>';
+            document.getElementById('get_chart_participation').innerHTML = '<a  href="' + chart.getImageURI() + '">Get Image</a>';
         });
         chart.draw(data, options);
     }
@@ -906,7 +906,7 @@
         // Instantiate and draw our chart, passing in some options.
         var chart = new google.visualization.ColumnChart(document.getElementById('p_youth'));
         google.visualization.events.addListener(chart, 'ready', function () {
-            document.getElementById('p_youth').innerHTML = '<a  href="' + chart.getImageURI() + '">Get Image</a>';
+            document.getElementById('get_p_youth').innerHTML = '<a  href="' + chart.getImageURI() + '">Get Image</a>';
         });
         chart.draw(data, options);
     }

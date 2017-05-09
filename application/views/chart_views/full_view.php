@@ -45,13 +45,13 @@
 <!-- Participation Charts -->
 
 <!--Div that will hold the chart-->
-<div class="row">
-<div id="chart_divP" style="width: 90%"></div>
-<div style="margin-left: 100px"><button id="get_chart_divP"></button></div>
+<div class="col-md-12">
+<div id="chart_participation" style="width: 90%"></div>
+<div style="margin-left: 100px"><button id="get_chart_participation"></button></div>
 </div>
 <br>
 <br>
-<div class="row">
+<div class="col-md-12">
 <div id="chart_divMM" style="width: 90%"></div>
 <div style="margin-left: 100px"><button id="get_chart_divMM"></button></div>
 </div>

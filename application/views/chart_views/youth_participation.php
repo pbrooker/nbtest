@@ -15,10 +15,10 @@
 
         var options = {
             title: "Participation Rate",
-            height: 400,
+            height: 600,
+            vAxis: { format: 'short' },
             bar: {groupWidth: 25},
             legend: { position: "none" },
-
             annotations: {
                 textStyle: {
                     color: 'black',
@@ -28,9 +28,9 @@
             }
         };
         // Instantiate and draw our chart, passing in some options.
-        var p_chart = new google.visualization.ColumnChart(document.getElementById('p_youth'));
+        var p_chart = new google.visualization.ColumnChart(document.getElementById('youth_part'));
         google.visualization.events.addListener(p_chart, 'ready', function () {
-            document.getElementById('p_youth').innerHTML = '<a  href="' + p_chart.getImageURI() + '">Get Image</a>';
+            document.getElementById('get_youth_part').innerHTML = '<a  href="' + p_chart.getImageURI() + '">Get Image</a>';
         });
         p_chart.draw(p_data, options);
     }
