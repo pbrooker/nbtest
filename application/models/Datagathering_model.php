@@ -497,6 +497,7 @@ class Datagathering_model extends CI_Model
 		$this->db->order_by('ord_results', 'ASC');
 
 		$start_result = $this->db->get()->result();
+		$st = $this->db->last_query();
 
 		// add column for Youth chart
 		if($charttype == 'Youth') {
@@ -531,6 +532,7 @@ class Datagathering_model extends CI_Model
 		$this->db->order_by('ord_results', 'ASC');
 
 		$prev_result = $this->db->get()->result();
+		$pre = $this->db->last_query();
 
 		// add column for Youth chart
 		if($charttype == 'Youth') {
@@ -785,6 +787,21 @@ class Datagathering_model extends CI_Model
 				 ->where('lang =', $lang);
 
 		$query = $this->db->get();
+
+		return $query;
+	}
+
+	public function getLastUpdated($table)
+	{
+		$this->db->select('u.scan_date')
+				 ->from('nbdata_last_update u')
+				 ->join('nbdata_sources s', 's.id = u.source_id')
+				 ->where('s.name =', $table)
+				 ->where('last_modified is NOT NULL')
+				 ->order_by('u.scan_date', 'DESC')
+				 ->limit(1);
+
+		$query = $this->db->get()->row();
 
 		return $query;
 	}

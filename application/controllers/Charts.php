@@ -107,13 +107,107 @@ class Charts extends CI_Controller {
 	public function lmiPrimaryPage($lang = 'EN')
 	{
 		$year = date("Y");
-		$month = data("m");
 
-		$date_array = array('startYear' => $year, 'startMonth' => $month);
+		// Month should always be one month behind for LMI report
+		$month = date("m", strtotime("first day of last month"));
+
+
+		// Temporarily Set month to January while building - set value back to $month for live
+		$date_array = array('startYear' => $year, 'startMonth' => 01);
+
+		$data['date'] = date("F") . ' ' . $year;
 
 		$data['lmi_main_data'] = $this->generateOverallTableReportData($date_array);
+		$last_updated = $this->nbdata->getLastUpdated('02820087');
 
-		//$data['characteristics'] = $this->nbdata->get
+		if(isset($last_updated)) {
+			$data['last_updated'] = date("F j Y", strtotime($last_updated->scan_date));
+		} else {
+			$data['last_updated'] = 'Unknown';
+		}
+
+
+		$data['comparison_type'] = array(
+			'rate' => 'Rate Only',
+			'm-m' => 'Month over Month',
+			'y-y' => 'Year over Year'
+		);
+
+
+		$data['gender'] = array(
+			'female' => 'Female',
+			'male' => 'Male',
+			'both' => 'Both Sexes'
+		);
+
+
+
+		$data['characteristics_bar'] = array(
+			'disabled' => 'Please Select Option',
+			'participation' => 'Participation Rate',
+			'employment' => 'Employment Rate',
+			'unemployment' => 'Unemployment Rate',
+			'growth' => 'Employment Growth'
+		);
+
+		$data['characteristics_trend'] = array(
+			'disabled' => 'Please select Option',
+			'population' => 'Population',
+			'labour_force' => 'Labour Force',
+			'employment' => 'Employment',
+			'ft_employment' => 'Full Time Employment',
+			'pt_employment' => 'Part Time Employment',
+			'unemployment' => 'Unemployment',
+			'participation_rate' => 'Participation Rate',
+			'employment_rate' => 'Employment Rate',
+			'unemployment_rate' => 'Unemployment Rate'
+
+		);
+
+		$data['plot_type'] = array(
+			'monthly' => 'Monthly',
+			'yearly' => 'Yearly'
+		);
+
+		$data['months'] = $this->_months($lang);
+
+		$data['years'] = $this->_getYears($year);
+
+		$data['location'] = array(
+			'Canada' => 'All Provinces',
+			'Alberta' => 'Alberta',
+			'British Columbia' => 'British Columbia',
+			'Manitoba' => 'Manitoba',
+			'New Brunswick' => 'New Brunswick',
+			'Newfoundland and Labrador' => 'Newfoundland and Labrador',
+			'Nova Scotia' => 'Nova Scotia',
+			'Ontario' => 'Ontario',
+			'Prince Edward Island' => 'Prince Edward Island',
+			'Quebec' => 'Quebec',
+			'Saskatchewan' => 'Saskatchewan'
+		);
+
+		$data['agegroup_chart'] = array(
+			'15 years and over'	=> 'All',
+			'15 to 24 years' => 'Youth'
+		);
+
+		$data['agegroup_trend'] = array(
+			'disabled' => 'Please select Option',
+			'15_and_over' => '15 years and over',
+			'15_to_24' => '15 to 24 years',
+			'15_to_64' => '15 to 64 years',
+			'25_to_54' => '25 to 54 years',
+			'25_and_over' => '25 years and over',
+			'55_and_over' => '55 years and over'
+		);
+
+
+		$this->template->write('custom_title', 'Labour Market Insight');
+		$this->template->write_view('head', 'nbjobs_views/nbjobs_scripts', $data);
+		$this->template->write_view('content', 'nbjobs_views/tabbed_view', $data);
+
+		$this->template->render();
 
 
 
@@ -1394,5 +1488,70 @@ class Charts extends CI_Controller {
 
 		return $dates;
 	}
+
+	private function _months($lang)
+	{
+		$en_months = array(
+			'disabled' => 'Please Select',
+			'01' => 'January',
+			'02' => 'February',
+			'03' => 'March',
+			'04' => 'April',
+			'05' => 'May',
+			'06' => 'June',
+			'07' => 'July',
+			'08' => 'August',
+			'09' => 'September',
+			'10' => 'October',
+			'11' => 'November',
+			'12' => 'December'
+
+		);
+
+		$fr_months = array(
+			'disabled' => 'Sélectionnez',
+			'01' => 'Janvier',
+			'02' => 'Février',
+			'03' => 'Mars',
+			'04' => 'Avril',
+			'05' => 'Mai',
+			'06' => 'Juin',
+			'07' => 'Juillet',
+			'08' => 'Aout',
+			'09' => 'Septembre',
+			'10' => 'Octobre',
+			'11' => 'Novembre',
+			'12' => 'Décembre'
+		);
+
+		if($lang == 'EN') {
+
+			return $en_months;
+
+		} else {
+
+			return $fr_months;
+		}
+	}
+
+	/**
+	 * returns an array for year selection menu, limited to 10 years including the current year
+	 * @param $year
+	 * @return array
+	 */
+	private function _getYears($year)
+	{
+		$years = array(
+			'disabled' => 'Please Select'
+		);
+
+		for($i = 0; $i < 10; $i++) {
+
+			$years[$year - $i] = $year - $i;
+		}
+
+		return $years;
+	}
+
 }
 
