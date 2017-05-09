@@ -103,10 +103,20 @@ class Charts extends CI_Controller {
 		}
 	}
 
-	public function lmiPrimaryPage()
+	// TODO finish this function first
+	public function lmiPrimaryPage($lang = 'EN')
 	{
-		$year = date("Y") ;
+		$year = date("Y");
 		$month = data("m");
+
+		$date_array = array('startYear' => $year, 'startMonth' => $month);
+
+		$data['lmi_main_data'] = $this->generateOverallTableReportData($date_array);
+
+		//$data['characteristics'] = $this->nbdata->get
+
+
+
 	}
 
 	public function participationYY()
