@@ -110,22 +110,59 @@ class Charts extends CI_Controller {
 
 		// Month should always be one month behind for LMI report
 		$month = date("m", strtotime("first day of last month"));
+		$day = date("d");
 
-
-		// Temporarily Set month to January while building - set value back to $month for live
-		$date_array = array('startYear' => $year, 'startMonth' => 01);
-
-		$data['date'] = date("F") . ' ' . $year;
-
-		$data['lmi_main_data'] = $this->generateOverallTableReportData($date_array);
 		$last_updated = $this->nbdata->getLastUpdated('02820087');
 
-		if(isset($last_updated)) {
+		if (isset($last_updated)) {
 			$data['last_updated'] = date("F j Y", strtotime($last_updated->scan_date));
+			$month_last_updated = date("m", strtotime($last_updated->scan_date));
+			$year_last_updated = date("Y", strtotime($last_updated->scan_date));
+
+			// If it is first half of month, and there is no updated record, go back one month further
+			// (until date is known for sure when reports are updated, then change number to reflect that)
+			// to ensure data is present for auto generated report
+			if ($day <= 15) {
+				if (($month_last_updated - 1) <= 0) {
+					$year_last_updated = $year_last_updated - 1;
+					$month_last_updated = 12;
+				} else {
+					$month_last_updated = $month_last_updated - 1;
+				}
+				$date_array = array('startYear' => $year_last_updated, 'startMonth' => ((int)$month_last_updated));
+			} else {
+
+				$date_array = array('startYear' => $year_last_updated, 'startMonth' => ((int)$month_last_updated));
+
+			}
 		} else {
 			$data['last_updated'] = 'Unknown';
+
+			// If it is first half of month, and there is no updated record, go back one month further
+			// (until date is known for sure when reports are updated, then change number to reflect that)
+			// to ensure data is present for auto generated report
+			if ($day <= 15) {
+
+				if (($month - 1) <= 0)
+					$month = 12;
+				$year = $year - 1;
+				$date_array = array('startYear' => $year, 'startMonth' => $month);
+			} else {
+
+				$date_array = array('startYear' => $year, 'startMonth' => $month);
+			}
+
 		}
 
+		// Get Table data for last month available
+		$data['lmi_main_data'] = $this->generateOverallTableReportData($date_array);
+
+
+		if (date("F", strtotime("first day of last month")) == 'December') {
+			$data['date'] = date("F", strtotime("first day of last month")) . ' ' . $year - 1;
+		} else {
+			$data['date'] = date("F", strtotime("first day of last month")) . ' ' . $year;
+		}
 
 		$data['comparison_type'] = array(
 			'rate' => 'Rate Only',
@@ -139,8 +176,6 @@ class Charts extends CI_Controller {
 			'male' => 'Male',
 			'both' => 'Both Sexes'
 		);
-
-
 
 		$data['characteristics_bar'] = array(
 			'disabled' => 'Please Select Option',
@@ -208,7 +243,6 @@ class Charts extends CI_Controller {
 		$this->template->write_view('content', 'nbjobs_views/tabbed_view', $data);
 
 		$this->template->render();
-
 
 
 	}
