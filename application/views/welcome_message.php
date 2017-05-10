@@ -37,7 +37,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<p>Data will be gathered from the targeted resources</p>
 		<p>If you want to do something else, why not try a chart? :-)</p>
         <a href="<?= base_url('Charts/selectChart/');?>" class="btn btn-success">Charts</a>
-        <a href="<?= base_url('Charts/customLabourForceChartBuild');?>" class="btn btn-success">Custom Chart</a>
         <a href="<?= base_url('Charts/lmiPrimaryPage');?>" class="btn btn-success">LMI Main</a>
 	</div>
 

@@ -103,7 +103,13 @@ class Charts extends CI_Controller {
 		}
 	}
 
-	// TODO finish this function first
+	/**
+	 * $lang may end up being unused depending on Drupal. This function loads the view for The Labour
+	 * Force Chart and the tabbed view for building out the custom bar charts and trend charts.
+	 * Array choices for some agegroups are limited as there is no associated data in some of the tables for
+	 * those groups.
+	 * @param string $lang
+	 */
 	public function lmiPrimaryPage($lang = 'EN')
 	{
 		$year = date("Y");
@@ -652,61 +658,7 @@ class Charts extends CI_Controller {
 		$dates = $this->_dateSelectionArray($date);
 	}
 
-	public function customLabourForceChartBuild($lang = 'EN')
-	{
 
-
-		if($lang == 'EN') {
-			$table_087 = array('language' => 'EN', 'table' => '02820087');
-		} else {
-			$table_087 = array('language' => 'FR', 'table' => '02820087');
-		}
-		if($lang == 'EN') {
-			$table_122 = array('language' => 'EN', 'table' => '02820122');
-		} else {
-			$table_122 = array('language' => 'FR', 'table' => '02820122');
-		}
-
-		$geo = $this->nbdata->getGeography($lang);
-		$geography = array();
-
-		if($geo->num_rows() > 0) {
-			foreach ($geo->result() as $key => $value) {
-				$geography[$value->name] = $value->name;
-			}
-		}
-		$char087 = $this->nbdata->getCharacteristics($table_087);
-		$char122 = $this->nbdata->getCharacteristics($table_122);
-		$characteristics = array();
-
-		if($char087->num_rows() > 0) {
-			foreach ($char087->result() as $key => $value) {
-				$char2820087[$value->characteristic] = $value->characteristic;
-			}
-		}
-		if($char122->num_rows() > 0) {
-			foreach ($char122->result() as $key => $value) {
-				$char2820122[$value->characteristic] = $value->characteristic;
-			}
-		}
-
-
-
-		$data['agegroups'] = $this->_arrays('agegroups');
-		$data['sex'] = $this->_arrays('sex');
-		$data['stats'] = $this->_arrays('stat_02820087');
-		$data['datatype'] = $this->_arrays('dt_02820087');
-		$data['geography'] = $geography;
-		$data['characteristics'] = $char2820087;
-
-
-		if (isset($data)) {
-
-			$this->load->view('forms/labour_force_custom', $data);
-		}
-
-
-	}
 
 	public function generateOverallTableReportData($data)
 	{

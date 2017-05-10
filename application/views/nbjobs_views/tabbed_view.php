@@ -28,7 +28,7 @@
 			<form id="barChart" action="<?=base_url('Charts/manualBarChart');?>" method="post">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <select class="form-control col-md-4" name="characteristic">
+                        <select class="form-control col-md-4" name="characteristic" id="characteristic">
 
                         <?php foreach($characteristics_bar as $key => $value): ?>
                             <?php if($key == 'disabled'): ?>
@@ -101,7 +101,7 @@
 			<form id="trendChart" action="<?= base_url('Charts/manualTrendChart');?>" method="post">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <select class="form-control col-md-4" name="characteristic">
+                        <select class="form-control col-md-4" name="characteristic_trend" id="characteristic_trend">
 
                             <?php foreach($characteristics_trend as $key => $value): ?>
                                 <?php if($key == 'disabled'): ?>
@@ -123,7 +123,7 @@
                     <?php foreach($plot_type as $key => $value): ?>
 
                         <div class="radio-inline">
-                            <label><input type="radio" name="compAnswer" value="<?= $key ;?>"><?=$value;?> </label>
+                            <label><input type="radio" name="plotAnswer" value="<?= $key ;?>"><?=$value;?> </label>
                         </div>
 
                     <?php endforeach;?>
@@ -133,7 +133,7 @@
                 <div class="col-md-8">
                     <div class="col-md-4">
                         <div class="form-group">
-                            <select class="form-control col-md-4" name="month">
+                            <select class="form-control col-md-4" name="month" id="month">
                                 <?php foreach($months as $key => $value): ?>
                                 <?php if($key == 'disabled'): ?>
                                     <option value="<?= $key;?>" selected disabled><?= $value;?></option>
@@ -148,7 +148,7 @@
 
                     <div class="col-md-4">
                         <div class="form-group">
-                            <select class="form-control col-md-4" name="year">
+                            <select class="form-control col-md-4" name="year" id="year.">
                                 <?php foreach($years as $key => $value): ?>
                                     <?php if($key == 'disabled'): ?>
                                         <option value="<?= $key;?>" selected disabled><?= $value;?></option>
@@ -180,7 +180,7 @@
                     <div class="col-md-6">
                         <p>Age Group</p>
                         <div class="form-group">
-                            <select class="form-control col-md-4" name="agegroup">
+                            <select class="form-control col-md-4" name="agegroup_trend" id="agegroup_trend">
                                 <?php foreach($agegroup_trend as $key => $value): ?>
                                     <?php if($key == 'disabled'): ?>
                                         <option value="<?= $key;?>" selected disabled><?= $value;?></option>
