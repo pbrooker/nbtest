@@ -63,13 +63,18 @@
                 <?php endforeach; ?>
 
                 <h4>4. Select Location</h4>
-                <?php foreach($location as $key => $value):?>
+				<?php foreach($location as $key => $value):?>
+					<?php if($key == 'Canada'): ?>
+                        <div class="checkbox">
+                            <label><input type="checkbox"  class="selectAll" name="location" value="<?= $key ;?>"><?= $value ;?></label>
+                        </div>
+					<?php else: ?>
+                        <div class="checkbox">
+                            <label><input type="checkbox"  class="location" name="location" value="<?= $key ;?>"><?= $value ;?></label>
+                        </div>
+					<?php endif;?>
 
-                <div class="checkbox">
-                    <label><input type="checkbox" value="<?= $key ;?>"><?= $value ;?></label>
-                </div>
-
-                <?php endforeach; ?>
+				<?php endforeach; ?>
 
                 <button name="button" type="submit" class="btn btn-small btn-primary" disabled="">Generate Chart</button>
 
@@ -177,10 +182,15 @@
                 <br>
                 <h4>5. Select Location</h4>
                 <?php foreach($location as $key => $value):?>
-
-                    <div class="checkbox">
-                        <label><input type="checkbox" value="<?= $key ;?>"><?= $value ;?></label>
-                    </div>
+                    <?php if($key == 'Canada'): ?>
+                        <div class="checkbox">
+                            <label><input type="checkbox"  class="selectAll" name="location" value="<?= $key ;?>"><?= $value ;?></label>
+                        </div>
+                    <?php else: ?>
+                        <div class="checkbox">
+                            <label><input type="checkbox"  class="location"  name="location" value="<?= $key ;?>"><?= $value ;?></label>
+                        </div>
+                    <?php endif;?>
 
                 <?php endforeach; ?>
 

@@ -115,6 +115,7 @@ class Charts extends CI_Controller {
 		$last_updated = $this->nbdata->getLastUpdated('02820087');
 
 		if (isset($last_updated)) {
+
 			$data['last_updated'] = date("F j Y", strtotime($last_updated->scan_date));
 			$month_last_updated = date("m", strtotime($last_updated->scan_date));
 			$year_last_updated = date("Y", strtotime($last_updated->scan_date));
@@ -123,19 +124,26 @@ class Charts extends CI_Controller {
 			// (until date is known for sure when reports are updated, then change number to reflect that)
 			// to ensure data is present for auto generated report
 			if ($day <= 15) {
+
 				if (($month_last_updated - 1) <= 0) {
+
 					$year_last_updated = $year_last_updated - 1;
 					$month_last_updated = 12;
+
 				} else {
+
 					$month_last_updated = $month_last_updated - 1;
 				}
+
 				$date_array = array('startYear' => $year_last_updated, 'startMonth' => ((int)$month_last_updated));
+
 			} else {
 
 				$date_array = array('startYear' => $year_last_updated, 'startMonth' => ((int)$month_last_updated));
 
 			}
 		} else {
+
 			$data['last_updated'] = 'Unknown';
 
 			// If it is first half of month, and there is no updated record, go back one month further
@@ -147,9 +155,11 @@ class Charts extends CI_Controller {
 					$month = 12;
 				$year = $year - 1;
 				$date_array = array('startYear' => $year, 'startMonth' => $month);
+
 			} else {
 
 				$date_array = array('startYear' => $year, 'startMonth' => $month);
+
 			}
 
 		}
@@ -159,9 +169,13 @@ class Charts extends CI_Controller {
 
 
 		if (date("F", strtotime("first day of last month")) == 'December') {
+
 			$data['date'] = date("F", strtotime("first day of last month")) . ' ' . $year - 1;
+
 		} else {
+
 			$data['date'] = date("F", strtotime("first day of last month")) . ' ' . $year;
+
 		}
 
 		$data['comparison_type'] = array(
@@ -239,6 +253,7 @@ class Charts extends CI_Controller {
 
 
 		$this->template->write('custom_title', 'Labour Market Insight');
+		$this->template->add_js('custom_chart.Init();', 'embed');
 		$this->template->write_view('head', 'nbjobs_views/nbjobs_scripts', $data);
 		$this->template->write_view('content', 'nbjobs_views/tabbed_view', $data);
 
