@@ -2,36 +2,117 @@
 
     custom_chart.Init = function() {
 
+        $.validator.setDefaults({
+            ignore: ""
+        });
+
+        $('#barChart').validate({
+            ignore: "",
+            rules: {
+                characteristic: {
+                    required: true
+                },
+                compAnswer: {
+                    required: true
+                },
+                ageAnswer: {
+                    required: true
+                },
+                location: {
+                    required: true
+                }
+
+            },
+            messages: {
+                characteristic: {
+                    required: "Please select a characteristic"
+                },
+                compAnswer: {
+                    required: "Please select a comparison type"
+                },
+                ageAnswer: {
+                    required: "Please select an agegroup"
+                },
+                location: {
+                    required: "Please select a location"
+                }
+            },
+            errorPlacement: function (error, element) {
+                if( element.is(':radio') || element.is(':checkbox')) {
+                    error.appendTo(element.parent());
+                } else {
+                    error.insertAfter(element);
+                }
+            },
+            submitHandler: function(form){
+                form.submit();
+            }
+        });
 
 
-        // $('#barChart').validate({
-        //     ignore: [],
-        //     rules: {
-        //         characteristic: {
-        //             required: true
-        //         },
-        //         compAnswer: {
-        //             required: true
-        //         },
-        //         ageAnswer: {
-        //             required: true
-        //         },
-        //
-        //
-        //     },
-        //     messages: {
-        //         first_name: {
-        //             required: "Please select the start date"
-        //         },
-        //         last_name: {
-        //             required: "Please select the end date"
-        //         },
-        //     },
-        //     errorPlacement: function (error, element) {},
-        //     submitHandler: function(form){
-        //         form.submit();
-        //     }
-        // });
+        $('#trendChart').validate({
+            ignore: "",
+            rules: {
+                characteristic: {
+                    required: true
+                },
+                compAnswer: {
+                    required: true
+                },
+                month: {
+                  required: true
+                },
+                year: {
+                  required: true
+                },
+                gender: {
+                    require: true
+                },
+                agegroup: {
+                    required: true
+                },
+                location: {
+                    required: true
+                }
+
+            },
+            messages: {
+                characteristic: {
+                    required: "Please select a characteristic"
+                },
+                compAnswer: {
+                    required: "Please select a comparison type"
+                },
+                month: {
+                    required: "Please select a month"
+                },
+                year: {
+                    required: "Please select a year"
+                },
+                agegroup: {
+                    required: "Please select an age group"
+                },
+                gender: {
+                  required: "Please select gender"
+                },
+                location: {
+                    required: "Please select a location"
+                }
+            },
+            errorPlacement: function (error, element) {
+                if( element.is(':radio') || element.is(':checkbox')) {
+                    error.appendTo(element.parent());
+                } else {
+                    error.insertAfter(element);
+                }
+            },
+            submitHandler: function(form){
+                if($('#trendChart').valid()) {
+                    form.submit();
+                }
+
+            }
+        });
 
         $('.selectAll').click(function() {
             $(this.form.elements).filter('.location').prop('checked', this.checked);

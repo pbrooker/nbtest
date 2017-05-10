@@ -27,18 +27,20 @@
 
 			<form id="barChart" action="<?=base_url('Charts/manualBarChart');?>" method="post">
                 <div class="col-md-6">
-                    <select class="form-control col-md-4" id="characteristic">
+                    <div class="form-group">
+                        <select class="form-control col-md-4" name="characteristic">
 
-                    <?php foreach($characteristics_bar as $key => $value): ?>
-                        <?php if($key == 'disabled'): ?>
-                            <option value="<?= $key;?>" selected disabled><?= $value;?></option>
-                        <?php else: ?>
-                            <option value="<?= $key;?>"><?= $value;?></option>
-                        <?php endif ;?>
+                        <?php foreach($characteristics_bar as $key => $value): ?>
+                            <?php if($key == 'disabled'): ?>
+                                <option value="<?= $key;?>" selected disabled><?= $value;?></option>
+                            <?php else: ?>
+                                <option value="<?= $key;?>"><?= $value;?></option>
+                            <?php endif ;?>
 
-                    <?php endforeach;?>
+                        <?php endforeach;?>
 
-                    </select>
+                        </select>
+                    </div>
                 </div>
                 <br>
                 <br>
@@ -46,38 +48,42 @@
                 <h4>2. Choose Comparison Type</h4>
 
                 <?php foreach($comparison_type as $key => $value): ?>
-
-                <div class="radio-inline">
-                    <label><input type="radio" name="compAnswer" value="<?= $key ;?>"><?=$value;?> </label>
+                <div class="form-group">
+                    <div class="radio-inline">
+                        <label><input type="radio" name="compAnswer" value="<?= $key ;?>"><?=$value;?> </label>
+                    </div>
                 </div>
 
                 <?php endforeach;?>
 
                 <h4>3. Select Age Group</h4>
                 <?php foreach($agegroup_chart as $key => $value): ?>
-
-                <div class="radio-inline">
-                    <label><input type="radio" name="ageAnswer" value="<?= $key ;?>"><?=$value;?> </label>
+                <div class="form-group">
+                    <div class="radio-inline">
+                        <label><input type="radio" name="ageAnswer" value="<?= $key ;?>"><?=$value;?> </label>
+                    </div>
                 </div>
 
                 <?php endforeach; ?>
 
                 <h4>4. Select Location</h4>
-				<?php foreach($location as $key => $value):?>
-					<?php if($key == 'Canada'): ?>
-                        <div class="checkbox">
-                            <label><input type="checkbox"  class="selectAll" name="location" value="<?= $key ;?>"><?= $value ;?></label>
-                        </div>
-					<?php else: ?>
-                        <div class="checkbox">
-                            <label><input type="checkbox"  class="location" name="location" value="<?= $key ;?>"><?= $value ;?></label>
-                        </div>
-					<?php endif;?>
+                <div class="form-group">
+                    <?php foreach($location as $key => $value):?>
+                        <?php if($key == 'Canada'): ?>
+                            <div class="checkbox">
+                                <label><input type="checkbox"  class="selectAll" name="location" value="<?= $key ;?>"><?= $value ;?></label>
+                            </div>
+                        <?php else: ?>
+                            <div class="checkbox">
+                                <label><input type="checkbox"  class="location" name="location" value="<?= $key ;?>"><?= $value ;?></label>
+                            </div>
+                        <?php endif;?>
 
-				<?php endforeach; ?>
-
-                <button name="button" type="submit" class="btn btn-small btn-primary" disabled="">Generate Chart</button>
-
+                    <?php endforeach; ?>
+                </div>
+                <div class="actionForm">
+                    <button  type="submit" id="barChartSend" class="btn btn-small btn-primary">Generate Chart</button>
+                </div>
 
             </form>
 
@@ -94,49 +100,10 @@
 
 			<form id="trendChart" action="<?= base_url('Charts/manualTrendChart');?>" method="post">
                 <div class="col-md-6">
-                    <select class="form-control col-md-4" id="characteristic">
+                    <div class="form-group">
+                        <select class="form-control col-md-4" name="characteristic">
 
-                        <?php foreach($characteristics_trend as $key => $value): ?>
-                            <?php if($key == 'disabled'): ?>
-                                <option value="<?= $key;?>" selected disabled><?= $value;?></option>
-                            <?php else: ?>
-                                <option value="<?= $key;?>"><?= $value;?></option>
-                            <?php endif ;?>
-
-                        <?php endforeach;?>
-
-                    </select>
-                </div>
-                <br>
-                <br>
-                <h4>2. Plot Data</h4>
-
-                <?php foreach($plot_type as $key => $value): ?>
-
-                    <div class="radio-inline">
-                        <label><input type="radio" name="compAnswer" value="<?= $key ;?>"><?=$value;?> </label>
-                    </div>
-
-                <?php endforeach;?>
-
-                <h4>3. Select Date</h4>
-                <div class="col-md-8">
-                    <div class="col-md-4">
-                        <select class="form-control col-md-4" id="month">
-                            <?php foreach($months as $key => $value): ?>
-                            <?php if($key == 'disabled'): ?>
-                                <option value="<?= $key;?>" selected disabled><?= $value;?></option>
-                            <?php else: ?>
-                                <option value="<?= $key;?>"><?= $value;?></option>
-                            <?php endif ;?>
-
-                            <?php endforeach;?>
-                        </select>
-                    </div>
-
-                    <div class="col-md-4">
-                        <select class="form-control col-md-4" id="year">
-                            <?php foreach($years as $key => $value): ?>
+                            <?php foreach($characteristics_trend as $key => $value): ?>
                                 <?php if($key == 'disabled'): ?>
                                     <option value="<?= $key;?>" selected disabled><?= $value;?></option>
                                 <?php else: ?>
@@ -144,7 +111,54 @@
                                 <?php endif ;?>
 
                             <?php endforeach;?>
+
                         </select>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <h4>2. Plot Data</h4>
+
+                <div class="form-group">
+                    <?php foreach($plot_type as $key => $value): ?>
+
+                        <div class="radio-inline">
+                            <label><input type="radio" name="compAnswer" value="<?= $key ;?>"><?=$value;?> </label>
+                        </div>
+
+                    <?php endforeach;?>
+                </div>
+
+                <h4>3. Select Date</h4>
+                <div class="col-md-8">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <select class="form-control col-md-4" name="month">
+                                <?php foreach($months as $key => $value): ?>
+                                <?php if($key == 'disabled'): ?>
+                                    <option value="<?= $key;?>" selected disabled><?= $value;?></option>
+                                <?php else: ?>
+                                    <option value="<?= $key;?>"><?= $value;?></option>
+                                <?php endif ;?>
+
+                                <?php endforeach;?>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <select class="form-control col-md-4" name="year">
+                                <?php foreach($years as $key => $value): ?>
+                                    <?php if($key == 'disabled'): ?>
+                                        <option value="<?= $key;?>" selected disabled><?= $value;?></option>
+                                    <?php else: ?>
+                                        <option value="<?= $key;?>"><?= $value;?></option>
+                                    <?php endif ;?>
+
+                                <?php endforeach;?>
+                            </select>
+                        </div>
                     </div>
                 </div>
                 <br>
@@ -153,49 +167,54 @@
                 <div class="col-md-10">
                     <div class="col-md-4">
                         <p>Gender</p>
+                        <div class="form-group">
+                            <?php foreach($gender as $key => $value): ?>
 
-                        <?php foreach($gender as $key => $value): ?>
+                                <div class="radio-inline">
+                                    <label><input type="radio" name="gender" value="<?= $key ;?>"><?=$value;?> </label>
+                                </div>
 
-                            <div class="radio-inline">
-                                <label><input type="radio" name="compAnswer" value="<?= $key ;?>"><?=$value;?> </label>
-                            </div>
-
-                        <?php endforeach;?>
-
+                            <?php endforeach;?>
+                        </div>
                     </div>
                     <div class="col-md-6">
                         <p>Age Group</p>
-                        <select class="form-control col-md-4" id="agegroup">
-                            <?php foreach($agegroup_trend as $key => $value): ?>
-                                <?php if($key == 'disabled'): ?>
-                                    <option value="<?= $key;?>" selected disabled><?= $value;?></option>
-                                <?php else: ?>
-                                    <option value="<?= $key;?>"><?= $value;?></option>
-                                <?php endif ;?>
+                        <div class="form-group">
+                            <select class="form-control col-md-4" name="agegroup">
+                                <?php foreach($agegroup_trend as $key => $value): ?>
+                                    <?php if($key == 'disabled'): ?>
+                                        <option value="<?= $key;?>" selected disabled><?= $value;?></option>
+                                    <?php else: ?>
+                                        <option value="<?= $key;?>"><?= $value;?></option>
+                                    <?php endif ;?>
 
-                            <?php endforeach;?>
-                        </select>
+                                <?php endforeach;?>
+                            </select>
+                        </div>
                     </div>
                 </div>
                 <br>
                 <br>
                 <br>
                 <h4>5. Select Location</h4>
-                <?php foreach($location as $key => $value):?>
-                    <?php if($key == 'Canada'): ?>
-                        <div class="checkbox">
-                            <label><input type="checkbox"  class="selectAll" name="location" value="<?= $key ;?>"><?= $value ;?></label>
-                        </div>
-                    <?php else: ?>
-                        <div class="checkbox">
-                            <label><input type="checkbox"  class="location"  name="location" value="<?= $key ;?>"><?= $value ;?></label>
-                        </div>
-                    <?php endif;?>
+                <div class="form-group">
+                    <?php foreach($location as $key => $value):?>
+                        <?php if($key == 'Canada'): ?>
+                            <div class="checkbox">
+                                <label><input type="checkbox"  class="selectAll" name="location" value="<?= $key ;?>"><?= $value ;?></label>
+                            </div>
+                        <?php else: ?>
+                            <div class="checkbox">
+                                <label><input type="checkbox"  class="location"  name="location" value="<?= $key ;?>"><?= $value ;?></label>
+                            </div>
+                        <?php endif;?>
 
-                <?php endforeach; ?>
+                    <?php endforeach; ?>
+                </div>
 
-                <button name="button" type="submit" class="btn btn-small btn-primary" disabled="">Generate Chart</button>
-
+                <div class="actionForm">
+                    <button  type="submit" id="trendChartSend" class="btn btn-small btn-primary" >Generate Chart</button>
+                </div>
             </form>
 
             <div id="trencChartHolder"></div>
